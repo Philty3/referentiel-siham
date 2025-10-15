@@ -124,7 +124,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 text-xs" style={{ padding: '0 0.5rem', height: 'auto' }}>
+                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
                     Actions
                   </TableHead>
                   {columns.map((column) => (
@@ -132,8 +132,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
                         column.key === columns[0].key ? 'bg-muted/50 font-bold' : 'font-semibold'
-                      } px-2 text-xs`}
-                      style={{ padding: '0 0.5rem', height: 'auto' }}
+                      } px-2 py-1 text-xs`}
                     >
                       {column.label}
                     </TableHead>
@@ -161,9 +160,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           key={index}
                           className="hover:bg-muted/30 transition-colors cursor-pointer"
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
-                          style={{ height: '20px' }}
                         >
-                          <TableCell className="sticky left-0 z-10 bg-background px-2" style={{ padding: '0 0.5rem', height: '20px', lineHeight: '20px' }}>
+                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
                             <div className="flex gap-0.5">
                               <Button
                                 size="sm"
@@ -199,10 +197,9 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           {columns.map((column) => (
                             <TableCell
                               key={column.key}
-                              className={`px-2 text-xs ${
+                              className={`px-2 py-0.5 text-xs ${
                                 column.key === columns[0].key ? 'bg-background font-medium' : ''
                               } ${column.truncate ? `max-w-[${column.width || '200px'}] truncate` : ''}`}
-                              style={{ padding: '0 0.5rem', height: '20px', lineHeight: '20px' }}
                             >
                               {row[column.key]}
                             </TableCell>
