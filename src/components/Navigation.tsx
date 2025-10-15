@@ -8,6 +8,7 @@ const navItems = [
   { name: "Positions", path: "/ref3" },
   { name: "Corps", path: "/ref4" },
   { name: "Grades", path: "/grades" },
+  { name: "Congés/absences", path: "/conges" },
 ];
 
 export const Navigation = () => {
