@@ -227,120 +227,120 @@ const Reference1 = () => {
   ];
 
   const renderExpandedContent = (row: StatutContractuel) => (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-0 text-xs">
-      <div>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0 text-xs items-start">
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Code Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Catégorie Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.categorieSiham}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Libellé court Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Libellé long Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Date Deb:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDeb}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Date Fin:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFin}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Références réglementaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Droit public / Droit privé:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.droitPublicPrive}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Cas d'utilisation:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Permanent / temporaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.permanentTemporaire}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Règle de durées:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Type de contrat:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.typeContrat}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Cat. FP:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.catFP}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Sous catégorie:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Obligations statutaires d'enseignement:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.obligationsStatutairesEnseignement}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Bibliothèque des actes:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Informations complémentaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Mode de gestion / rémunération:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Grade TG:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Pseudo grade:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.pseudoGrade}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Echelon:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.echelon}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Indice brut ou majoré forcé:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.indiceBrutMajoreForce}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Situation statutaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.situationStatutaire}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Régime Sécurité sociale:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeSecuriteSociale}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Régime retraite:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeRetraite}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Code et Libellé Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">RG pour RDD depuis Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Code CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
       </div>
-      <div>
+      <div className="flex flex-col items-start">
         <p className="font-semibold text-foreground">Libellé CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
       </div>
