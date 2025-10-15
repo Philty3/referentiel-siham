@@ -56,12 +56,14 @@ const Reference1 = () => {
         const lines = text.split("\n");
         const parsedData: StatutContractuel[] = [];
 
-        // Skip header (lines 0-4 based on the CSV structure)
+        // Skip header lines (0-4), data starts at line 5
         for (let i = 5; i < lines.length; i++) {
           const line = lines[i].trim();
           if (!line) continue;
 
+          // Split by semicolon
           const values = line.split(";");
+          
           if (values.length >= 29) {
             parsedData.push({
               codeSiham: values[0] || "",
@@ -119,26 +121,27 @@ const Reference1 = () => {
         item.categorieSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.libelleCourtSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.libelleLongSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.codeCISIRH.toLowerCase().includes(searchTerm.toLowerCase())
+        item.codeCISIRH.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleCISIRH.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   }, [searchTerm, data]);
 
   return (
-    <div className="container mx-auto max-w-[95vw] px-4 py-8">
+    <div className="container mx-auto max-w-[98vw] px-4 py-8">
       <Card className="overflow-hidden">
         <div className="border-b bg-muted/50 px-6 py-4">
           <h2 className="text-2xl font-bold text-foreground">Statuts contractuels</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Référentiel des statuts contractuels SIHAM ({data.length} entrées)
+            Référentiel des statuts contractuels SIHAM - {data.length} entrées
           </p>
         </div>
 
-        <div className="p-4">
+        <div className="border-b p-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Rechercher par code SIHAM, catégorie, libellé ou code CISIRH..."
+              placeholder="Rechercher par code, catégorie, libellé..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -154,69 +157,84 @@ const Reference1 = () => {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="min-w-[100px] font-semibold">Code Siham</TableHead>
-                  <TableHead className="min-w-[120px] font-semibold">Catégorie Siham</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Libellé court Siham</TableHead>
-                  <TableHead className="min-w-[250px] font-semibold">Libellé long Siham</TableHead>
-                  <TableHead className="min-w-[100px] font-semibold">Date Deb</TableHead>
-                  <TableHead className="min-w-[100px] font-semibold">Date Fin</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Références réglementaires</TableHead>
-                  <TableHead className="min-w-[120px] font-semibold">Droit public / Droit privé</TableHead>
-                  <TableHead className="min-w-[300px] font-semibold">Cas d'utilisation</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Permanent / temporaire</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Règle de durées</TableHead>
-                  <TableHead className="min-w-[120px] font-semibold">Type de contrat</TableHead>
+                <TableRow className="bg-muted/30">
+                  <TableHead className="sticky left-0 z-10 min-w-[110px] bg-muted/30 font-semibold">
+                    Code Siham
+                  </TableHead>
+                  <TableHead className="min-w-[130px] font-semibold">Catégorie Siham</TableHead>
+                  <TableHead className="min-w-[180px] font-semibold">Libellé court Siham</TableHead>
+                  <TableHead className="min-w-[280px] font-semibold">Libellé long Siham</TableHead>
+                  <TableHead className="min-w-[110px] font-semibold">Date Deb</TableHead>
+                  <TableHead className="min-w-[110px] font-semibold">Date Fin</TableHead>
+                  <TableHead className="min-w-[220px] font-semibold">Références réglementaires</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Droit public / Droit privé</TableHead>
+                  <TableHead className="min-w-[350px] font-semibold">Cas d'utilisation</TableHead>
+                  <TableHead className="min-w-[170px] font-semibold">Permanent / temporaire</TableHead>
+                  <TableHead className="min-w-[220px] font-semibold">Règle de durées</TableHead>
+                  <TableHead className="min-w-[140px] font-semibold">Type de contrat</TableHead>
                   <TableHead className="min-w-[100px] font-semibold">Cat. FP</TableHead>
-                  <TableHead className="min-w-[120px] font-semibold">Sous catégorie</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Obligations statutaires d'enseignement</TableHead>
+                  <TableHead className="min-w-[140px] font-semibold">Sous catégorie</TableHead>
+                  <TableHead className="min-w-[250px] font-semibold">
+                    Obligations statutaires d'enseignement
+                  </TableHead>
                   <TableHead className="min-w-[200px] font-semibold">Bibliothèque des actes</TableHead>
-                  <TableHead className="min-w-[300px] font-semibold">Informations complémentaires à saisir dans Siham</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Mode de gestion / Mode de rémunération</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Grade TG</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Pseudo grade</TableHead>
+                  <TableHead className="min-w-[350px] font-semibold">
+                    Informations complémentaires à saisir dans Siham
+                  </TableHead>
+                  <TableHead className="min-w-[250px] font-semibold">
+                    Mode de gestion / Mode de rémunération
+                  </TableHead>
+                  <TableHead className="min-w-[180px] font-semibold">Grade TG</TableHead>
+                  <TableHead className="min-w-[180px] font-semibold">Pseudo grade</TableHead>
                   <TableHead className="min-w-[100px] font-semibold">Echelon</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Indice brut ou majoré forcé</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Situation statutaire</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Régime Sécurité sociale</TableHead>
+                  <TableHead className="min-w-[180px] font-semibold">
+                    Indice brut ou majoré forcé
+                  </TableHead>
+                  <TableHead className="min-w-[170px] font-semibold">Situation statutaire</TableHead>
+                  <TableHead className="min-w-[180px] font-semibold">Régime Sécurité sociale</TableHead>
                   <TableHead className="min-w-[150px] font-semibold">Régime retraite</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Code et Libellé Harpège</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">RG pour RDD depuis Harpège</TableHead>
-                  <TableHead className="min-w-[100px] font-semibold">Code CISIRH</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Libellé CISIRH</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">
+                    Code et Libellé Harpège
+                  </TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">
+                    RG pour RDD depuis Harpège
+                  </TableHead>
+                  <TableHead className="min-w-[120px] font-semibold">Code CISIRH</TableHead>
+                  <TableHead className="min-w-[220px] font-semibold">Libellé CISIRH</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length === 0 ? (
                   <TableRow>
-                    <TableCell
-                      colSpan={29}
-                      className="h-24 text-center text-muted-foreground"
-                    >
+                    <TableCell colSpan={29} className="h-24 text-center text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
                 ) : (
                   filteredData.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">{row.codeSiham}</TableCell>
+                    <TableRow key={index} className="hover:bg-muted/50">
+                      <TableCell className="sticky left-0 z-10 bg-background font-medium">
+                        {row.codeSiham}
+                      </TableCell>
                       <TableCell>{row.categorieSiham}</TableCell>
                       <TableCell>{row.libelleCourtSiham}</TableCell>
-                      <TableCell className="whitespace-normal">{row.libelleLongSiham}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.libelleLongSiham}</TableCell>
                       <TableCell>{row.dateDeb}</TableCell>
                       <TableCell>{row.dateFin}</TableCell>
-                      <TableCell className="whitespace-normal">{row.referencesReglementaires}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.referencesReglementaires}</TableCell>
                       <TableCell>{row.droitPublicPrive}</TableCell>
-                      <TableCell className="whitespace-normal">{row.casUtilisation}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.casUtilisation}</TableCell>
                       <TableCell>{row.permanentTemporaire}</TableCell>
-                      <TableCell className="whitespace-normal">{row.regleDurees}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.regleDurees}</TableCell>
                       <TableCell>{row.typeContrat}</TableCell>
                       <TableCell>{row.catFP}</TableCell>
                       <TableCell>{row.sousCategorie}</TableCell>
-                      <TableCell className="whitespace-normal">{row.obligationsStatutairesEnseignement}</TableCell>
-                      <TableCell className="whitespace-normal">{row.bibliothequeActes}</TableCell>
-                      <TableCell className="whitespace-normal">{row.infosComplementaires}</TableCell>
-                      <TableCell className="whitespace-normal">{row.modeGestionRemuneration}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">
+                        {row.obligationsStatutairesEnseignement}
+                      </TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.bibliothequeActes}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.infosComplementaires}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.modeGestionRemuneration}</TableCell>
                       <TableCell>{row.gradeTG}</TableCell>
                       <TableCell>{row.pseudoGrade}</TableCell>
                       <TableCell>{row.echelon}</TableCell>
@@ -224,10 +242,10 @@ const Reference1 = () => {
                       <TableCell>{row.situationStatutaire}</TableCell>
                       <TableCell>{row.regimeSecuriteSociale}</TableCell>
                       <TableCell>{row.regimeRetraite}</TableCell>
-                      <TableCell className="whitespace-normal">{row.codeLibelleHarpege}</TableCell>
-                      <TableCell className="whitespace-normal">{row.rgPourRDD}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.codeLibelleHarpege}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.rgPourRDD}</TableCell>
                       <TableCell>{row.codeCISIRH}</TableCell>
-                      <TableCell className="whitespace-normal">{row.libelleCISIRH}</TableCell>
+                      <TableCell className="whitespace-pre-wrap">{row.libelleCISIRH}</TableCell>
                     </TableRow>
                   ))
                 )}
