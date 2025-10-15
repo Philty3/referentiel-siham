@@ -6,6 +6,35 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
+import { format } from "date-fns";
+
+const formatExcelDate = (value: any): string => {
+  if (!value) return "";
+  
+  // Si c'est un nombre (date Excel sérielle)
+  if (typeof value === "number") {
+    const date = XLSX.SSF.parse_date_code(value);
+    return `${String(date.d).padStart(2, "0")}/${String(date.m).padStart(2, "0")}/${date.y}`;
+  }
+  
+  // Si c'est déjà une string, essayer de la parser
+  if (typeof value === "string") {
+    // Si déjà au bon format, retourner tel quel
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
+    
+    // Essayer de parser différents formats
+    try {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return format(date, "dd/MM/yyyy");
+      }
+    } catch (e) {
+      // Ignorer les erreurs de parsing
+    }
+  }
+  
+  return String(value);
+};
 
 interface Position {
   code: string;
@@ -51,8 +80,8 @@ const Reference3 = () => {
               temoinPositionEntreeSortie: String(row[5] || ""),
               temoinLienEnfantObligatoire: String(row[6] || ""),
               temExclusionInclusionReglem: String(row[7] || ""),
-              dateDebutValidite: String(row[8] || ""),
-              dateFinValidite: String(row[9] || ""),
+              dateDebutValidite: formatExcelDate(row[8]),
+              dateFinValidite: formatExcelDate(row[9]),
             });
           }
         }
