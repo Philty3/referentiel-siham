@@ -151,45 +151,45 @@ const Reference3 = () => {
   ];
 
   const renderExpandedContent = (row: Position) => (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-0 text-xs">
+    <div className="grid grid-cols-2 gap-4 text-xs">
       <div>
-        <p className="font-semibold text-foreground">Code:</p>
+        <p className="font-semibold text-foreground mb-1">Code:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.code}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé court:</p>
+        <p className="font-semibold text-foreground mb-1">Libellé court:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourt}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé long:</p>
+        <p className="font-semibold text-foreground mb-1">Libellé long:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLong}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé long (bis):</p>
+        <p className="font-semibold text-foreground mb-1">Libellé long (bis):</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongBis}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Position statutaire:</p>
+        <p className="font-semibold text-foreground mb-1">Position statutaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.positionStatutaire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Témoin position entrée / sortie:</p>
+        <p className="font-semibold text-foreground mb-1">Témoin position entrée / sortie:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.temoinPositionEntreeSortie}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Témoin lien enfant obligatoire:</p>
+        <p className="font-semibold text-foreground mb-1">Témoin lien enfant obligatoire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.temoinLienEnfantObligatoire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Témoin exclusion/inclusion des réglem.:</p>
+        <p className="font-semibold text-foreground mb-1">Témoin exclusion/inclusion des réglem.:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.temExclusionInclusionReglem}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Date de début de validité:</p>
+        <p className="font-semibold text-foreground mb-1">Date de début de validité:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDebutValidite}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Date de fin de validité:</p>
+        <p className="font-semibold text-foreground mb-1">Date de fin de validité:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFinValidite}</p>
       </div>
     </div>

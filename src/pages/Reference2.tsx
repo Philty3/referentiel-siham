@@ -223,117 +223,117 @@ const Reference2 = () => {
   ];
 
   const renderExpandedContent = (row: Vacataire) => (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-0 text-xs">
+    <div className="grid grid-cols-2 gap-4 text-xs">
       <div>
-        <p className="font-semibold text-foreground">Code Siham:</p>
+        <p className="font-semibold text-foreground mb-1">Code Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Catégorie Siham:</p>
+        <p className="font-semibold text-foreground mb-1">Catégorie Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.categorieSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé court Siham:</p>
+        <p className="font-semibold text-foreground mb-1">Libellé court Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé long Siham:</p>
+        <p className="font-semibold text-foreground mb-1">Libellé long Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Date Deb:</p>
+        <p className="font-semibold text-foreground mb-1">Date Deb:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDeb}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Date Fin:</p>
+        <p className="font-semibold text-foreground mb-1">Date Fin:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFin}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Références réglementaires:</p>
+        <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Cas d'utilisation:</p>
+        <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Permanent / temporaire:</p>
+        <p className="font-semibold text-foreground mb-1">Permanent / temporaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.permanentTemporaire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Règle de durées:</p>
+        <p className="font-semibold text-foreground mb-1">Règle de durées:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Type de contrat:</p>
+        <p className="font-semibold text-foreground mb-1">Type de contrat:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.typeContrat}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Cat. FP:</p>
+        <p className="font-semibold text-foreground mb-1">Cat. FP:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.catFP}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Sous catégorie:</p>
+        <p className="font-semibold text-foreground mb-1">Sous catégorie:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Obligations statutaires d'enseignement:</p>
+        <p className="font-semibold text-foreground mb-1">Obligations statutaires d'enseignement:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.obligationsStatutairesEnseignement}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Bibliothèque des actes:</p>
+        <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Informations complémentaires:</p>
+        <p className="font-semibold text-foreground mb-1">Informations complémentaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Mode de gestion / rémunération:</p>
+        <p className="font-semibold text-foreground mb-1">Mode de gestion / rémunération:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Grade TG:</p>
+        <p className="font-semibold text-foreground mb-1">Grade TG:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Pseudo grade:</p>
+        <p className="font-semibold text-foreground mb-1">Pseudo grade:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.pseudoGrade}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Echelon:</p>
+        <p className="font-semibold text-foreground mb-1">Echelon:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.echelon}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Indice brut ou majoré forcé:</p>
+        <p className="font-semibold text-foreground mb-1">Indice brut ou majoré forcé:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.indiceBrutMajoreForce}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Situation statutaire:</p>
+        <p className="font-semibold text-foreground mb-1">Situation statutaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.situationStatutaire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Régime Sécurité sociale:</p>
+        <p className="font-semibold text-foreground mb-1">Régime Sécurité sociale:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeSecuriteSociale}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Régime retraite:</p>
+        <p className="font-semibold text-foreground mb-1">Régime retraite:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeRetraite}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Code et Libellé Harpège:</p>
+        <p className="font-semibold text-foreground mb-1">Code et Libellé Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">RG pour RDD depuis Harpège:</p>
+        <p className="font-semibold text-foreground mb-1">RG pour RDD depuis Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Code CISIRH:</p>
+        <p className="font-semibold text-foreground mb-1">Code CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground">Libellé CISIRH:</p>
+        <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
       </div>
     </div>
