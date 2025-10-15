@@ -51,8 +51,12 @@ const Reference1 = () => {
 
   useEffect(() => {
     fetch("/data/statuts-contractuels.csv")
-      .then((response) => response.text())
-      .then((text) => {
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => {
+        // Decode avec UTF-8 explicite
+        const decoder = new TextDecoder("utf-8");
+        const text = decoder.decode(buffer);
+        
         const lines = text.split("\n");
         const parsedData: StatutContractuel[] = [];
 
@@ -129,15 +133,15 @@ const Reference1 = () => {
 
   return (
     <div className="container mx-auto max-w-[98vw] px-4 py-8">
-      <Card className="overflow-hidden">
-        <div className="border-b bg-muted/50 px-6 py-4">
+      <Card className="overflow-hidden shadow-lg">
+        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-6 py-4">
           <h2 className="text-2xl font-bold text-foreground">Statuts contractuels</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Référentiel des statuts contractuels SIHAM - {data.length} entrées
           </p>
         </div>
 
-        <div className="border-b p-4">
+        <div className="border-b bg-muted/20 p-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -157,8 +161,8 @@ const Reference1 = () => {
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="sticky left-0 z-10 min-w-[110px] bg-muted/30 font-semibold">
+                <TableRow className="bg-muted/50">
+                  <TableHead className="sticky left-0 z-10 min-w-[110px] bg-muted/50 font-bold">
                     Code Siham
                   </TableHead>
                   <TableHead className="min-w-[130px] font-semibold">Catégorie Siham</TableHead>
@@ -212,7 +216,7 @@ const Reference1 = () => {
                   </TableRow>
                 ) : (
                   filteredData.map((row, index) => (
-                    <TableRow key={index} className="hover:bg-muted/50">
+                    <TableRow key={index} className="hover:bg-muted/30 transition-colors">
                       <TableCell className="sticky left-0 z-10 bg-background font-medium">
                         {row.codeSiham}
                       </TableCell>
