@@ -13,16 +13,34 @@ const formatExcelDate = (value: any): string => {
   
   // Si c'est un nombre (date Excel sérielle)
   if (typeof value === "number") {
-    const date = XLSX.SSF.parse_date_code(value);
-    return `${String(date.d).padStart(2, "0")}/${String(date.m).padStart(2, "0")}/${date.y}`;
+    // Convertir le numéro de série Excel en date JavaScript
+    // Excel commence à compter depuis le 1er janvier 1900
+    // Il y a un bug dans Excel qui compte 1900 comme année bissextile, donc on doit ajuster
+    const excelEpoch = new Date(1899, 11, 30); // 30 décembre 1899
+    const date = new Date(excelEpoch.getTime() + value * 24 * 60 * 60 * 1000);
+    
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    
+    return `${day}/${month}/${year}`;
   }
   
-  // Si c'est déjà une string, essayer de la parser
+  // Si c'est déjà une string
   if (typeof value === "string") {
     // Si déjà au bon format, retourner tel quel
     if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
     
-    // Essayer de parser différents formats
+    // Si format DD/M/YYYY ou D/MM/YYYY ou D/M/YYYY
+    const frenchDateMatch = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (frenchDateMatch) {
+      const day = frenchDateMatch[1].padStart(2, "0");
+      const month = frenchDateMatch[2].padStart(2, "0");
+      const year = frenchDateMatch[3];
+      return `${day}/${month}/${year}`;
+    }
+    
+    // Essayer de parser d'autres formats
     try {
       const date = new Date(value);
       if (!isNaN(date.getTime())) {
@@ -31,6 +49,11 @@ const formatExcelDate = (value: any): string => {
     } catch (e) {
       // Ignorer les erreurs de parsing
     }
+  }
+  
+  // Si c'est un objet Date
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return format(value, "dd/MM/yyyy");
   }
   
   return String(value);
