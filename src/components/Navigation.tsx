@@ -6,7 +6,7 @@ const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
   { name: "Vacataires", path: "/ref2" },
   { name: "Positions", path: "/ref3" },
-  { name: "Référentiel 4", path: "/ref4" },
+  { name: "Corps", path: "/ref4" },
 ];
 
 export const Navigation = () => {
