@@ -161,7 +161,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           className="hover:bg-muted/30 transition-colors cursor-pointer h-[20px]"
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
                         >
-                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-0 h-[20px]">
+                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-0 h-[20px] leading-none">
                             <div className="flex gap-0.5">
                               <Button
                                 size="sm"
@@ -197,7 +197,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           {columns.map((column) => (
                             <TableCell
                               key={column.key}
-                              className={`px-2 py-0 h-[20px] text-xs ${
+                              className={`px-2 py-0 h-[20px] leading-none text-xs ${
                                 column.key === columns[0].key ? 'bg-background font-medium' : ''
                               } ${column.truncate ? `max-w-[${column.width || '200px'}] truncate` : ''}`}
                             >
