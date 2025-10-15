@@ -16,8 +16,8 @@ const Reference1 = () => {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <DataTable
-        title="Référentiel 1"
-        description="Données du premier référentiel SIHAM"
+        title="Statuts contractuels"
+        description="Référentiel des statuts contractuels SIHAM"
         data={sampleData}
         columns={columns}
       />

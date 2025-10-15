@@ -3,7 +3,7 @@ import { FileSpreadsheet } from "lucide-react";
 
 const navItems = [
   { name: "Accueil", path: "/" },
-  { name: "Référentiel 1", path: "/ref1" },
+  { name: "Statuts contractuels", path: "/ref1" },
   { name: "Référentiel 2", path: "/ref2" },
   { name: "Référentiel 3", path: "/ref3" },
   { name: "Référentiel 4", path: "/ref4" },
