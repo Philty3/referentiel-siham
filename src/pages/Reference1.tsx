@@ -275,20 +275,64 @@ const Reference1 = () => {
   const renderExpandedContent = (row: StatutContractuel) => (
     <div className="grid grid-cols-2 gap-4 text-xs">
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé long:</p>
+        <p className="font-semibold text-foreground mb-1">Code Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Catégorie Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.categorieSiham}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Libellé court Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Libellé long Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Date Deb:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDeb}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Date Fin:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFin}</p>
       </div>
       <div>
         <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
       </div>
       <div>
+        <p className="font-semibold text-foreground mb-1">Droit public / Droit privé:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.droitPublicPrive}</p>
+      </div>
+      <div>
         <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
       </div>
       <div>
+        <p className="font-semibold text-foreground mb-1">Permanent / temporaire:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.permanentTemporaire}</p>
+      </div>
+      <div>
         <p className="font-semibold text-foreground mb-1">Règle de durées:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Type de contrat:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.typeContrat}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Cat. FP:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.catFP}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Sous catégorie:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Obligations statutaires d'enseignement:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.obligationsStatutairesEnseignement}</p>
       </div>
       <div>
         <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
@@ -303,12 +347,44 @@ const Reference1 = () => {
         <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
       </div>
       <div>
+        <p className="font-semibold text-foreground mb-1">Grade TG:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Pseudo grade:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.pseudoGrade}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Echelon:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.echelon}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Indice brut ou majoré forcé:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.indiceBrutMajoreForce}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Situation statutaire:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.situationStatutaire}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Régime Sécurité sociale:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeSecuriteSociale}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Régime retraite:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeRetraite}</p>
+      </div>
+      <div>
         <p className="font-semibold text-foreground mb-1">Code et Libellé Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
       </div>
       <div>
         <p className="font-semibold text-foreground mb-1">RG pour RDD depuis Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground mb-1">Code CISIRH:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
       </div>
       <div>
         <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
