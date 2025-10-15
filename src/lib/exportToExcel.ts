@@ -1,41 +1,48 @@
 import * as XLSX from "xlsx";
+import { formatExcelDate } from "./dateValidator";
 
 export const exportAllDataToExcel = async () => {
   try {
     // Créer un nouveau classeur
     const workbook = XLSX.utils.book_new();
 
-    // Définir les pages et leurs données
+    // Définir les pages et leurs données avec les champs de dates
     const pages = [
       {
         name: "Statuts contractuels",
         file: "/data/contractuels.xlsx",
-        sheetName: "Statuts contractuels"
+        sheetName: "Statuts contractuels",
+        dateFields: ["dateDeb", "dateFin"]
       },
       {
         name: "Vacataires",
         file: "/data/vacataires.xlsx",
-        sheetName: "Vacataires"
+        sheetName: "Vacataires",
+        dateFields: ["dateDeb", "dateFin"]
       },
       {
         name: "Positions",
         file: "/data/positions.xlsx",
-        sheetName: "Positions"
+        sheetName: "Positions",
+        dateFields: ["dateDeb", "dateFin"]
       },
       {
         name: "Corps",
         file: "/data/corps.xlsx",
-        sheetName: "Corps"
+        sheetName: "Corps",
+        dateFields: ["dateDeb", "dateFin"]
       },
       {
         name: "Grades",
         file: "/data/grades.xlsx",
-        sheetName: "Grades"
+        sheetName: "Grades",
+        dateFields: ["dateDeb", "dateFin"]
       },
       {
         name: "Congés/absences",
         file: "/data/conges.xlsx",
-        sheetName: "Congés-absences"
+        sheetName: "Congés-absences",
+        dateFields: ["dateDebutValidite", "dateFinValidite"]
       }
     ];
 
@@ -48,8 +55,25 @@ export const exportAllDataToExcel = async () => {
         const sourceSheetName = sourceWorkbook.SheetNames[0];
         const sourceSheet = sourceWorkbook.Sheets[sourceSheetName];
         
+        // Convertir la feuille en JSON pour formater les dates
+        const jsonData = XLSX.utils.sheet_to_json(sourceSheet);
+        
+        // Formater les dates dans les données
+        const formattedData = jsonData.map((row: any) => {
+          const formattedRow = { ...row };
+          page.dateFields.forEach(field => {
+            if (formattedRow[field]) {
+              formattedRow[field] = formatExcelDate(formattedRow[field]);
+            }
+          });
+          return formattedRow;
+        });
+        
+        // Créer une nouvelle feuille avec les données formatées
+        const newSheet = XLSX.utils.json_to_sheet(formattedData);
+        
         // Ajouter la feuille au nouveau classeur avec le nom de la page
-        XLSX.utils.book_append_sheet(workbook, sourceSheet, page.sheetName);
+        XLSX.utils.book_append_sheet(workbook, newSheet, page.sheetName);
       } catch (error) {
         console.error(`Erreur lors du chargement de ${page.name}:`, error);
       }
