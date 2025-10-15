@@ -9,7 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Search, Edit, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import * as XLSX from "xlsx";
 
 interface StatutContractuel {
@@ -49,6 +53,10 @@ const Reference1 = () => {
   const [filteredData, setFilteredData] = useState<StatutContractuel[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [editingItem, setEditingItem] = useState<StatutContractuel | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetch("/data/contractuels.xlsx")
@@ -127,6 +135,43 @@ const Reference1 = () => {
     setFilteredData(filtered);
   }, [searchTerm, data]);
 
+  const handleEdit = (item: StatutContractuel, index: number) => {
+    setEditingItem({ ...item });
+    setEditingIndex(index);
+    setIsDialogOpen(true);
+  };
+
+  const handleSave = () => {
+    if (editingItem && editingIndex !== null) {
+      const updatedData = [...data];
+      updatedData[editingIndex] = editingItem;
+      setData(updatedData);
+      setIsDialogOpen(false);
+      setEditingItem(null);
+      setEditingIndex(null);
+      toast({
+        title: "Modifications enregistrées",
+        description: "L'élément a été mis à jour avec succès.",
+      });
+    }
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedData = data.filter((_, i) => i !== index);
+    setData(updatedData);
+    toast({
+      title: "Élément supprimé",
+      description: "L'élément a été supprimé avec succès.",
+      variant: "destructive",
+    });
+  };
+
+  const handleInputChange = (field: keyof StatutContractuel, value: string) => {
+    if (editingItem) {
+      setEditingItem({ ...editingItem, [field]: value });
+    }
+  };
+
   return (
     <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
       <Card className="overflow-hidden shadow-lg">
@@ -158,7 +203,10 @@ const Reference1 = () => {
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[90px] bg-muted/50 font-bold px-2 py-2 text-xs">
+                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-2 text-xs">
+                    Actions
+                  </TableHead>
+                  <TableHead className="w-[90px] bg-muted/50 font-bold px-2 py-2 text-xs">
                     Code Siham
                   </TableHead>
                   <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Catégorie Siham</TableHead>
@@ -206,16 +254,38 @@ const Reference1 = () => {
               <TableBody>
                 {filteredData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={29} className="h-20 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={30} className="h-20 text-center text-sm text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredData.map((row, index) => (
-                    <TableRow key={index} className="hover:bg-muted/30 transition-colors">
-                      <TableCell className="sticky left-0 z-10 bg-background font-medium px-2 py-1.5 text-xs">
-                        {row.codeSiham}
-                      </TableCell>
+                  filteredData.map((row, index) => {
+                    const originalIndex = data.findIndex(item => item.codeSiham === row.codeSiham && item.libelleLongSiham === row.libelleLongSiham);
+                    return (
+                      <TableRow key={index} className="hover:bg-muted/30 transition-colors">
+                        <TableCell className="sticky left-0 z-10 bg-background px-2 py-1.5">
+                          <div className="flex gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 w-7 p-0"
+                              onClick={() => handleEdit(row, originalIndex)}
+                            >
+                              <Edit className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                              onClick={() => handleDelete(originalIndex)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                        <TableCell className="bg-background font-medium px-2 py-1.5 text-xs">
+                          {row.codeSiham}
+                        </TableCell>
                       <TableCell className="px-2 py-1.5 text-xs">{row.categorieSiham}</TableCell>
                       <TableCell className="px-2 py-1.5 text-xs">{row.libelleCourtSiham}</TableCell>
                       <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleLongSiham}</TableCell>
@@ -246,14 +316,111 @@ const Reference1 = () => {
                       <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.rgPourRDD}</TableCell>
                       <TableCell className="px-2 py-1.5 text-xs">{row.codeCISIRH}</TableCell>
                       <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleCISIRH}</TableCell>
-                    </TableRow>
-                  ))
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>
           )}
         </div>
       </Card>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier l'élément</DialogTitle>
+          </DialogHeader>
+          {editingItem && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="codeSiham" className="text-xs">Code Siham</Label>
+                  <Input
+                    id="codeSiham"
+                    value={editingItem.codeSiham}
+                    onChange={(e) => handleInputChange("codeSiham", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="categorieSiham" className="text-xs">Catégorie Siham</Label>
+                  <Input
+                    id="categorieSiham"
+                    value={editingItem.categorieSiham}
+                    onChange={(e) => handleInputChange("categorieSiham", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleCourtSiham" className="text-xs">Libellé court Siham</Label>
+                <Input
+                  id="libelleCourtSiham"
+                  value={editingItem.libelleCourtSiham}
+                  onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleLongSiham" className="text-xs">Libellé long Siham</Label>
+                <Input
+                  id="libelleLongSiham"
+                  value={editingItem.libelleLongSiham}
+                  onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dateDeb" className="text-xs">Date Deb</Label>
+                  <Input
+                    id="dateDeb"
+                    value={editingItem.dateDeb}
+                    onChange={(e) => handleInputChange("dateDeb", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dateFin" className="text-xs">Date Fin</Label>
+                  <Input
+                    id="dateFin"
+                    value={editingItem.dateFin}
+                    onChange={(e) => handleInputChange("dateFin", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
+                <Input
+                  id="codeCISIRH"
+                  value={editingItem.codeCISIRH}
+                  onChange={(e) => handleInputChange("codeCISIRH", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
+                <Input
+                  id="libelleCISIRH"
+                  value={editingItem.libelleCISIRH}
+                  onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={handleSave}>
+              Enregistrer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
