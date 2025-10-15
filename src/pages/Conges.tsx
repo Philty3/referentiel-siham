@@ -6,58 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
-import { format } from "date-fns";
-
-const formatExcelDate = (value: any): string => {
-  if (!value) return "";
-  
-  // Si c'est un nombre (date Excel sérielle)
-  if (typeof value === "number") {
-    // Convertir le numéro de série Excel en date JavaScript
-    // Excel commence à compter depuis le 1er janvier 1900
-    // Il y a un bug dans Excel qui compte 1900 comme année bissextile, donc on doit ajuster
-    const excelEpoch = new Date(1899, 11, 30); // 30 décembre 1899
-    const date = new Date(excelEpoch.getTime() + value * 24 * 60 * 60 * 1000);
-    
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    
-    return `${day}/${month}/${year}`;
-  }
-  
-  // Si c'est déjà une string
-  if (typeof value === "string") {
-    // Si déjà au bon format, retourner tel quel
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return value;
-    
-    // Si format DD/M/YYYY ou D/MM/YYYY ou D/M/YYYY
-    const frenchDateMatch = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (frenchDateMatch) {
-      const day = frenchDateMatch[1].padStart(2, "0");
-      const month = frenchDateMatch[2].padStart(2, "0");
-      const year = frenchDateMatch[3];
-      return `${day}/${month}/${year}`;
-    }
-    
-    // Essayer de parser d'autres formats
-    try {
-      const date = new Date(value);
-      if (!isNaN(date.getTime())) {
-        return format(date, "dd/MM/yyyy");
-      }
-    } catch (e) {
-      // Ignorer les erreurs de parsing
-    }
-  }
-  
-  // Si c'est un objet Date
-  if (value instanceof Date && !isNaN(value.getTime())) {
-    return format(value, "dd/MM/yyyy");
-  }
-  
-  return String(value);
-};
+import { formatExcelDate, validateDataDates, logDateValidationErrors } from "@/lib/dateValidator";
 
 interface Conge {
   code: string;
@@ -102,6 +51,11 @@ const Conges = () => {
         }
 
         setData(parsedData);
+        
+        // Valider les dates
+        const dateErrors = validateDataDates(parsedData, ["dateDebutValidite", "dateFinValidite"], "Congés/absences");
+        logDateValidationErrors(dateErrors);
+        
         setLoading(false);
       })
       .catch((error) => {
