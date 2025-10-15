@@ -128,124 +128,124 @@ const Reference1 = () => {
   }, [searchTerm, data]);
 
   return (
-    <div className="container mx-auto max-w-[98vw] px-4 py-8">
+    <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
       <Card className="overflow-hidden shadow-lg">
-        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-6 py-4">
-          <h2 className="text-2xl font-bold text-foreground">Statuts contractuels</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Référentiel des statuts contractuels SIHAM - {data.length} entrées
+        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3">
+          <h2 className="text-xl font-bold text-foreground">Statuts contractuels</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {data.length} entrées
           </p>
         </div>
 
-        <div className="border-b bg-muted/20 p-4">
+        <div className="border-b bg-muted/20 p-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Rechercher par code, catégorie, libellé..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-9 h-9 text-sm"
             />
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
           {loading ? (
-            <div className="flex h-48 items-center justify-center text-muted-foreground">
+            <div className="flex h-32 items-center justify-center text-sm text-muted-foreground">
               Chargement des données...
             </div>
           ) : (
-            <Table>
+            <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 min-w-[110px] bg-muted/50 font-bold">
+                  <TableHead className="sticky left-0 z-10 w-[90px] bg-muted/50 font-bold px-2 py-2 text-xs">
                     Code Siham
                   </TableHead>
-                  <TableHead className="min-w-[130px] font-semibold">Catégorie Siham</TableHead>
-                  <TableHead className="min-w-[180px] font-semibold">Libellé court Siham</TableHead>
-                  <TableHead className="min-w-[280px] font-semibold">Libellé long Siham</TableHead>
-                  <TableHead className="min-w-[110px] font-semibold">Date Deb</TableHead>
-                  <TableHead className="min-w-[110px] font-semibold">Date Fin</TableHead>
-                  <TableHead className="min-w-[220px] font-semibold">Références réglementaires</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Droit public / Droit privé</TableHead>
-                  <TableHead className="min-w-[350px] font-semibold">Cas d'utilisation</TableHead>
-                  <TableHead className="min-w-[170px] font-semibold">Permanent / temporaire</TableHead>
-                  <TableHead className="min-w-[220px] font-semibold">Règle de durées</TableHead>
-                  <TableHead className="min-w-[140px] font-semibold">Type de contrat</TableHead>
-                  <TableHead className="min-w-[100px] font-semibold">Cat. FP</TableHead>
-                  <TableHead className="min-w-[140px] font-semibold">Sous catégorie</TableHead>
-                  <TableHead className="min-w-[250px] font-semibold">
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Catégorie Siham</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Libellé court Siham</TableHead>
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">Libellé long Siham</TableHead>
+                  <TableHead className="w-[85px] font-semibold px-2 py-2 text-xs">Date Deb</TableHead>
+                  <TableHead className="w-[85px] font-semibold px-2 py-2 text-xs">Date Fin</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Références réglementaires</TableHead>
+                  <TableHead className="w-[120px] font-semibold px-2 py-2 text-xs">Droit public / Droit privé</TableHead>
+                  <TableHead className="w-[250px] font-semibold px-2 py-2 text-xs">Cas d'utilisation</TableHead>
+                  <TableHead className="w-[130px] font-semibold px-2 py-2 text-xs">Permanent / temporaire</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Règle de durées</TableHead>
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Type de contrat</TableHead>
+                  <TableHead className="w-[80px] font-semibold px-2 py-2 text-xs">Cat. FP</TableHead>
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Sous catégorie</TableHead>
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">
                     Obligations statutaires d'enseignement
                   </TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">Bibliothèque des actes</TableHead>
-                  <TableHead className="min-w-[350px] font-semibold">
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">Bibliothèque des actes</TableHead>
+                  <TableHead className="w-[250px] font-semibold px-2 py-2 text-xs">
                     Informations complémentaires à saisir dans Siham
                   </TableHead>
-                  <TableHead className="min-w-[250px] font-semibold">
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">
                     Mode de gestion / Mode de rémunération
                   </TableHead>
-                  <TableHead className="min-w-[180px] font-semibold">Grade TG</TableHead>
-                  <TableHead className="min-w-[180px] font-semibold">Pseudo grade</TableHead>
-                  <TableHead className="min-w-[100px] font-semibold">Echelon</TableHead>
-                  <TableHead className="min-w-[180px] font-semibold">
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Grade TG</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Pseudo grade</TableHead>
+                  <TableHead className="w-[80px] font-semibold px-2 py-2 text-xs">Echelon</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">
                     Indice brut ou majoré forcé
                   </TableHead>
-                  <TableHead className="min-w-[170px] font-semibold">Situation statutaire</TableHead>
-                  <TableHead className="min-w-[180px] font-semibold">Régime Sécurité sociale</TableHead>
-                  <TableHead className="min-w-[150px] font-semibold">Régime retraite</TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">
+                  <TableHead className="w-[130px] font-semibold px-2 py-2 text-xs">Situation statutaire</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Régime Sécurité sociale</TableHead>
+                  <TableHead className="w-[120px] font-semibold px-2 py-2 text-xs">Régime retraite</TableHead>
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">
                     Code et Libellé Harpège
                   </TableHead>
-                  <TableHead className="min-w-[200px] font-semibold">
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">
                     RG pour RDD depuis Harpège
                   </TableHead>
-                  <TableHead className="min-w-[120px] font-semibold">Code CISIRH</TableHead>
-                  <TableHead className="min-w-[220px] font-semibold">Libellé CISIRH</TableHead>
+                  <TableHead className="w-[100px] font-semibold px-2 py-2 text-xs">Code CISIRH</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Libellé CISIRH</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={29} className="h-24 text-center text-muted-foreground">
+                    <TableCell colSpan={29} className="h-20 text-center text-sm text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
                 ) : (
                   filteredData.map((row, index) => (
                     <TableRow key={index} className="hover:bg-muted/30 transition-colors">
-                      <TableCell className="sticky left-0 z-10 bg-background font-medium">
+                      <TableCell className="sticky left-0 z-10 bg-background font-medium px-2 py-1.5 text-xs">
                         {row.codeSiham}
                       </TableCell>
-                      <TableCell>{row.categorieSiham}</TableCell>
-                      <TableCell>{row.libelleCourtSiham}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.libelleLongSiham}</TableCell>
-                      <TableCell>{row.dateDeb}</TableCell>
-                      <TableCell>{row.dateFin}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.referencesReglementaires}</TableCell>
-                      <TableCell>{row.droitPublicPrive}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.casUtilisation}</TableCell>
-                      <TableCell>{row.permanentTemporaire}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.regleDurees}</TableCell>
-                      <TableCell>{row.typeContrat}</TableCell>
-                      <TableCell>{row.catFP}</TableCell>
-                      <TableCell>{row.sousCategorie}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">
+                      <TableCell className="px-2 py-1.5 text-xs">{row.categorieSiham}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.libelleCourtSiham}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleLongSiham}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.dateDeb}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.dateFin}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.referencesReglementaires}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.droitPublicPrive}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.casUtilisation}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.permanentTemporaire}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.regleDurees}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.typeContrat}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.catFP}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.sousCategorie}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">
                         {row.obligationsStatutairesEnseignement}
                       </TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.bibliothequeActes}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.infosComplementaires}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.modeGestionRemuneration}</TableCell>
-                      <TableCell>{row.gradeTG}</TableCell>
-                      <TableCell>{row.pseudoGrade}</TableCell>
-                      <TableCell>{row.echelon}</TableCell>
-                      <TableCell>{row.indiceBrutMajoreForce}</TableCell>
-                      <TableCell>{row.situationStatutaire}</TableCell>
-                      <TableCell>{row.regimeSecuriteSociale}</TableCell>
-                      <TableCell>{row.regimeRetraite}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.codeLibelleHarpege}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.rgPourRDD}</TableCell>
-                      <TableCell>{row.codeCISIRH}</TableCell>
-                      <TableCell className="whitespace-pre-wrap">{row.libelleCISIRH}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.bibliothequeActes}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.infosComplementaires}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.modeGestionRemuneration}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.gradeTG}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.pseudoGrade}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.echelon}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.indiceBrutMajoreForce}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.situationStatutaire}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.regimeSecuriteSociale}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.regimeRetraite}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.codeLibelleHarpege}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.rgPourRDD}</TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs">{row.codeCISIRH}</TableCell>
+                      <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleCISIRH}</TableCell>
                     </TableRow>
                   ))
                 )}
