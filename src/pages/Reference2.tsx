@@ -1,25 +1,422 @@
-import { DataTable } from "@/components/DataTable";
+import { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Search, Edit, Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import * as XLSX from "xlsx";
+
+interface Vacataire {
+  codeSiham: string;
+  categorieSiham: string;
+  libelleCourtSiham: string;
+  libelleLongSiham: string;
+  dateDeb: string;
+  dateFin: string;
+  referencesReglementaires: string;
+  casUtilisation: string;
+  permanentTemporaire: string;
+  regleDurees: string;
+  typeContrat: string;
+  catFP: string;
+  sousCategorie: string;
+  obligationsStatutairesEnseignement: string;
+  bibliothequeActes: string;
+  infosComplementaires: string;
+  modeGestionRemuneration: string;
+  gradeTG: string;
+  pseudoGrade: string;
+  echelon: string;
+  indiceBrutMajoreForce: string;
+  situationStatutaire: string;
+  regimeSecuriteSociale: string;
+  regimeRetraite: string;
+  codeLibelleHarpege: string;
+  rgPourRDD: string;
+  codeCISIRH: string;
+  libelleCISIRH: string;
+}
 
 const Reference2 = () => {
-  const sampleData = [
-    { id: "A1", description: "Description A1", categorie: "Type 1" },
-    { id: "A2", description: "Description A2", categorie: "Type 2" },
-  ];
+  const [data, setData] = useState<Vacataire[]>([]);
+  const [filteredData, setFilteredData] = useState<Vacataire[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [editingItem, setEditingItem] = useState<Vacataire | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const columns = [
-    { key: "id", label: "ID" },
-    { key: "description", label: "Description" },
-    { key: "categorie", label: "Catégorie" },
-  ];
+  useEffect(() => {
+    fetch("/data/vacataires.xlsx")
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => {
+        const workbook = XLSX.read(buffer, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        
+        const parsedData: Vacataire[] = [];
+        
+        // Start from row 1 (skip header row 0)
+        for (let i = 1; i < jsonData.length; i++) {
+          const row = jsonData[i] as any[];
+          if (row.length >= 28) {
+            parsedData.push({
+              codeSiham: String(row[0] || ""),
+              categorieSiham: String(row[1] || ""),
+              libelleCourtSiham: String(row[2] || ""),
+              libelleLongSiham: String(row[3] || ""),
+              dateDeb: String(row[4] || ""),
+              dateFin: String(row[5] || ""),
+              referencesReglementaires: String(row[6] || ""),
+              casUtilisation: String(row[7] || ""),
+              permanentTemporaire: String(row[8] || ""),
+              regleDurees: String(row[9] || ""),
+              typeContrat: String(row[10] || ""),
+              catFP: String(row[11] || ""),
+              sousCategorie: String(row[12] || ""),
+              obligationsStatutairesEnseignement: String(row[13] || ""),
+              bibliothequeActes: String(row[14] || ""),
+              infosComplementaires: String(row[15] || ""),
+              modeGestionRemuneration: String(row[16] || ""),
+              gradeTG: String(row[17] || ""),
+              pseudoGrade: String(row[18] || ""),
+              echelon: String(row[19] || ""),
+              indiceBrutMajoreForce: String(row[20] || ""),
+              situationStatutaire: String(row[21] || ""),
+              regimeSecuriteSociale: String(row[22] || ""),
+              regimeRetraite: String(row[23] || ""),
+              codeLibelleHarpege: String(row[24] || ""),
+              rgPourRDD: String(row[25] || ""),
+              codeCISIRH: String(row[26] || ""),
+              libelleCISIRH: String(row[27] || ""),
+            });
+          }
+        }
+
+        setData(parsedData);
+        setFilteredData(parsedData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement des données:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredData(data);
+      return;
+    }
+
+    const filtered = data.filter(
+      (item) =>
+        item.codeSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.categorieSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleCourtSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleLongSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.codeCISIRH.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleCISIRH.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [searchTerm, data]);
+
+  const handleEdit = (item: Vacataire, index: number) => {
+    setEditingItem({ ...item });
+    setEditingIndex(index);
+    setIsDialogOpen(true);
+  };
+
+  const handleSave = () => {
+    if (editingItem && editingIndex !== null) {
+      const updatedData = [...data];
+      updatedData[editingIndex] = editingItem;
+      setData(updatedData);
+      setIsDialogOpen(false);
+      setEditingItem(null);
+      setEditingIndex(null);
+      toast({
+        title: "Modifications enregistrées",
+        description: "L'élément a été mis à jour avec succès.",
+      });
+    }
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedData = data.filter((_, i) => i !== index);
+    setData(updatedData);
+    toast({
+      title: "Élément supprimé",
+      description: "L'élément a été supprimé avec succès.",
+      variant: "destructive",
+    });
+  };
+
+  const handleInputChange = (field: keyof Vacataire, value: string) => {
+    if (editingItem) {
+      setEditingItem({ ...editingItem, [field]: value });
+    }
+  };
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-8">
-      <DataTable
-        title="Référentiel 2"
-        description="Données du deuxième référentiel SIHAM"
-        data={sampleData}
-        columns={columns}
-      />
+    <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
+      <Card className="overflow-hidden shadow-lg">
+        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3">
+          <h2 className="text-xl font-bold text-foreground">Vacataires</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            {data.length} entrées
+          </p>
+        </div>
+
+        <div className="border-b bg-muted/20 p-3">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Rechercher par code, catégorie, libellé..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 h-9 text-sm"
+            />
+          </div>
+        </div>
+
+        <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
+          {loading ? (
+            <div className="flex h-32 items-center justify-center text-sm text-muted-foreground">
+              Chargement des données...
+            </div>
+          ) : (
+            <Table className="text-sm">
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-2 text-xs">
+                    Actions
+                  </TableHead>
+                  <TableHead className="w-[90px] bg-muted/50 font-bold px-2 py-2 text-xs">
+                    Code Siham
+                  </TableHead>
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Catégorie Siham</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Libellé court Siham</TableHead>
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">Libellé long Siham</TableHead>
+                  <TableHead className="w-[85px] font-semibold px-2 py-2 text-xs">Date Deb</TableHead>
+                  <TableHead className="w-[85px] font-semibold px-2 py-2 text-xs">Date Fin</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Références réglementaires</TableHead>
+                  <TableHead className="w-[250px] font-semibold px-2 py-2 text-xs">Cas d'utilisation</TableHead>
+                  <TableHead className="w-[130px] font-semibold px-2 py-2 text-xs">Permanent / temporaire</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Règle de durées</TableHead>
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Type de contrat</TableHead>
+                  <TableHead className="w-[80px] font-semibold px-2 py-2 text-xs">Cat. FP</TableHead>
+                  <TableHead className="w-[110px] font-semibold px-2 py-2 text-xs">Sous catégorie</TableHead>
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">
+                    Obligations statutaires d'enseignement
+                  </TableHead>
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">Bibliothèque des actes</TableHead>
+                  <TableHead className="w-[250px] font-semibold px-2 py-2 text-xs">
+                    Informations complémentaires à saisir dans Siham
+                  </TableHead>
+                  <TableHead className="w-[200px] font-semibold px-2 py-2 text-xs">
+                    Mode de gestion / Mode de rémunération
+                  </TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Grade TG</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Pseudo grade</TableHead>
+                  <TableHead className="w-[80px] font-semibold px-2 py-2 text-xs">Echelon</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">
+                    Indice brut ou majoré forcé
+                  </TableHead>
+                  <TableHead className="w-[130px] font-semibold px-2 py-2 text-xs">Situation statutaire</TableHead>
+                  <TableHead className="w-[140px] font-semibold px-2 py-2 text-xs">Régime Sécurité sociale</TableHead>
+                  <TableHead className="w-[120px] font-semibold px-2 py-2 text-xs">Régime retraite</TableHead>
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">
+                    Code et Libellé Harpège
+                  </TableHead>
+                  <TableHead className="w-[160px] font-semibold px-2 py-2 text-xs">
+                    RG pour RDD depuis Harpège
+                  </TableHead>
+                  <TableHead className="w-[100px] font-semibold px-2 py-2 text-xs">Code CISIRH</TableHead>
+                  <TableHead className="w-[180px] font-semibold px-2 py-2 text-xs">Libellé CISIRH</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredData.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={29} className="h-20 text-center text-sm text-muted-foreground">
+                      Aucune donnée trouvée
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredData.map((row, index) => {
+                    const originalIndex = data.findIndex(item => item.codeSiham === row.codeSiham && item.libelleLongSiham === row.libelleLongSiham);
+                    return (
+                      <TableRow key={index} className="hover:bg-muted/30 transition-colors">
+                        <TableCell className="sticky left-0 z-10 bg-background px-2 py-1.5">
+                          <div className="flex gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 w-7 p-0"
+                              onClick={() => handleEdit(row, originalIndex)}
+                            >
+                              <Edit className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                              onClick={() => handleDelete(originalIndex)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                        <TableCell className="bg-background font-medium px-2 py-1.5 text-xs">
+                          {row.codeSiham}
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.categorieSiham}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.libelleCourtSiham}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleLongSiham}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.dateDeb}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.dateFin}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.referencesReglementaires}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.casUtilisation}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.permanentTemporaire}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.regleDurees}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.typeContrat}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.catFP}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.sousCategorie}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">
+                          {row.obligationsStatutairesEnseignement}
+                        </TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.bibliothequeActes}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.infosComplementaires}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.modeGestionRemuneration}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.gradeTG}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.pseudoGrade}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.echelon}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.indiceBrutMajoreForce}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.situationStatutaire}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.regimeSecuriteSociale}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.regimeRetraite}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.codeLibelleHarpege}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.rgPourRDD}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-xs">{row.codeCISIRH}</TableCell>
+                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleCISIRH}</TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+      </Card>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier l'élément</DialogTitle>
+          </DialogHeader>
+          {editingItem && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="codeSiham" className="text-xs">Code Siham</Label>
+                  <Input
+                    id="codeSiham"
+                    value={editingItem.codeSiham}
+                    onChange={(e) => handleInputChange("codeSiham", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="categorieSiham" className="text-xs">Catégorie Siham</Label>
+                  <Input
+                    id="categorieSiham"
+                    value={editingItem.categorieSiham}
+                    onChange={(e) => handleInputChange("categorieSiham", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleCourtSiham" className="text-xs">Libellé court Siham</Label>
+                <Input
+                  id="libelleCourtSiham"
+                  value={editingItem.libelleCourtSiham}
+                  onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleLongSiham" className="text-xs">Libellé long Siham</Label>
+                <Input
+                  id="libelleLongSiham"
+                  value={editingItem.libelleLongSiham}
+                  onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dateDeb" className="text-xs">Date Deb</Label>
+                  <Input
+                    id="dateDeb"
+                    value={editingItem.dateDeb}
+                    onChange={(e) => handleInputChange("dateDeb", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dateFin" className="text-xs">Date Fin</Label>
+                  <Input
+                    id="dateFin"
+                    value={editingItem.dateFin}
+                    onChange={(e) => handleInputChange("dateFin", e.target.value)}
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
+                <Input
+                  id="codeCISIRH"
+                  value={editingItem.codeCISIRH}
+                  onChange={(e) => handleInputChange("codeCISIRH", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
+                <Input
+                  id="libelleCISIRH"
+                  value={editingItem.libelleCISIRH}
+                  onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)}
+                  className="text-sm"
+                />
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button onClick={handleSave}>
+              Enregistrer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
