@@ -30,7 +30,7 @@ export const DataTable = ({ title, description, data, columns }: DataTableProps)
           <TableHeader>
             <TableRow>
               {columns.map((column) => (
-                <TableHead key={column.key} className="font-semibold">
+                <TableHead key={column.key} className="font-semibold py-1 text-xs">
                   {column.label}
                 </TableHead>
               ))}
@@ -50,7 +50,7 @@ export const DataTable = ({ title, description, data, columns }: DataTableProps)
               data.map((row, index) => (
                 <TableRow key={index}>
                   {columns.map((column) => (
-                    <TableCell key={column.key}>
+                    <TableCell key={column.key} className="py-0.5 text-xs">
                       {row[column.key]}
                     </TableCell>
                   ))}

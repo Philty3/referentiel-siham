@@ -124,7 +124,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-2 text-xs">
+                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
                     Actions
                   </TableHead>
                   {columns.map((column) => (
@@ -132,7 +132,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
                         column.key === columns[0].key ? 'bg-muted/50 font-bold' : 'font-semibold'
-                      } px-2 py-2 text-xs`}
+                      } px-2 py-1 text-xs`}
                     >
                       {column.label}
                     </TableHead>
@@ -161,43 +161,43 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           className="hover:bg-muted/30 transition-colors cursor-pointer"
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
                         >
-                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-1.5">
-                            <div className="flex gap-1">
+                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
+                            <div className="flex gap-0.5">
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-7 w-7 p-0"
+                                className="h-6 w-6 p-0"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   onEdit(row, originalIndex);
                                 }}
                               >
-                                <Edit className="h-3.5 w-3.5" />
+                                <Edit className="h-3 w-3" />
                               </Button>
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                                className="h-6 w-6 p-0 text-destructive hover:text-destructive"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   onDelete(originalIndex);
                                 }}
                               >
-                                <Trash2 className="h-3.5 w-3.5" />
+                                <Trash2 className="h-3 w-3" />
                               </Button>
                               <Button
                                 size="sm"
                                 variant="ghost"
-                                className="h-7 w-7 p-0"
+                                className="h-6 w-6 p-0"
                               >
-                                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                                <ChevronDown className={`h-3 w-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                               </Button>
                             </div>
                           </TableCell>
                           {columns.map((column) => (
                             <TableCell
                               key={column.key}
-                              className={`px-2 py-1.5 text-xs ${
+                              className={`px-2 py-0.5 text-xs ${
                                 column.key === columns[0].key ? 'bg-background font-medium' : ''
                               } ${column.truncate ? `max-w-[${column.width || '200px'}] truncate` : ''}`}
                             >
