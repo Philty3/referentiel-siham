@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Edit, Trash2, ChevronDown } from "lucide-react";
+import { Search, Edit, Trash2, ChevronDown, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Column {
@@ -30,6 +30,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   loading: boolean;
   onEdit: (item: T, index: number) => void;
   onDelete: (index: number) => void;
+  onAdd: () => void;
   renderExpandedContent: (item: T) => React.ReactNode;
   itemsPerPage?: number;
 }
@@ -42,6 +43,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   loading,
   onEdit,
   onDelete,
+  onAdd,
   renderExpandedContent,
   itemsPerPage = 20,
 }: DataTableWithPaginationProps<T>) {
@@ -84,11 +86,21 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   return (
     <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
       <Card className="overflow-hidden shadow-lg">
-        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3">
-          <h2 className="text-xl font-bold text-foreground">{title}</h2>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
-          </p>
+        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-foreground">{title}</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
+            </p>
+          </div>
+          <Button
+            onClick={onAdd}
+            size="sm"
+            className="h-9 gap-1.5"
+          >
+            <Plus className="h-4 w-4" />
+            Ajouter
+          </Button>
         </div>
 
         <div className="border-b bg-muted/20 p-3">

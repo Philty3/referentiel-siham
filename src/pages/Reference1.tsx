@@ -104,6 +104,43 @@ const Reference1 = () => {
       });
   }, []);
 
+  const handleAdd = () => {
+    const newItem: StatutContractuel = {
+      codeSiham: "",
+      categorieSiham: "",
+      libelleCourtSiham: "",
+      libelleLongSiham: "",
+      dateDeb: "",
+      dateFin: "",
+      referencesReglementaires: "",
+      droitPublicPrive: "",
+      casUtilisation: "",
+      permanentTemporaire: "",
+      regleDurees: "",
+      typeContrat: "",
+      catFP: "",
+      sousCategorie: "",
+      obligationsStatutairesEnseignement: "",
+      bibliothequeActes: "",
+      infosComplementaires: "",
+      modeGestionRemuneration: "",
+      gradeTG: "",
+      pseudoGrade: "",
+      echelon: "",
+      indiceBrutMajoreForce: "",
+      situationStatutaire: "",
+      regimeSecuriteSociale: "",
+      regimeRetraite: "",
+      codeLibelleHarpege: "",
+      rgPourRDD: "",
+      codeCISIRH: "",
+      libelleCISIRH: "",
+    };
+    setEditingItem(newItem);
+    setEditingIndex(null);
+    setIsDialogOpen(true);
+  };
+
   const handleEdit = (item: StatutContractuel, index: number) => {
     setEditingItem({ ...item });
     setEditingIndex(index);
@@ -111,17 +148,27 @@ const Reference1 = () => {
   };
 
   const handleSave = () => {
-    if (editingItem && editingIndex !== null) {
-      const updatedData = [...data];
-      updatedData[editingIndex] = editingItem;
-      setData(updatedData);
+    if (editingItem) {
+      if (editingIndex !== null) {
+        // Modification d'un élément existant
+        const updatedData = [...data];
+        updatedData[editingIndex] = editingItem;
+        setData(updatedData);
+        toast({
+          title: "Modifications enregistrées",
+          description: "L'élément a été mis à jour avec succès.",
+        });
+      } else {
+        // Ajout d'un nouvel élément
+        setData([...data, editingItem]);
+        toast({
+          title: "Élément ajouté",
+          description: "Le nouvel élément a été créé avec succès.",
+        });
+      }
       setIsDialogOpen(false);
       setEditingItem(null);
       setEditingIndex(null);
-      toast({
-        title: "Modifications enregistrées",
-        description: "L'élément a été mis à jour avec succès.",
-      });
     }
   };
 
@@ -228,13 +275,14 @@ const Reference1 = () => {
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
       />
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Modifier l'élément</DialogTitle>
+            <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
           </DialogHeader>
           {editingItem && (
             <div className="grid gap-4 py-4">
