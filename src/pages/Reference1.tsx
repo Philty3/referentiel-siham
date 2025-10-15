@@ -12,16 +12,35 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 interface StatutContractuel {
-  codeSimam: string;
-  categorie: string;
-  libelleCourt: string;
-  libelleLong: string;
+  codeSiham: string;
+  categorieSiham: string;
+  libelleCourtSiham: string;
+  libelleLongSiham: string;
   dateDeb: string;
   dateFin: string;
   referencesReglementaires: string;
   droitPublicPrive: string;
   casUtilisation: string;
   permanentTemporaire: string;
+  regleDurees: string;
+  typeContrat: string;
+  catFP: string;
+  sousCategorie: string;
+  obligationsStatutairesEnseignement: string;
+  bibliothequeActes: string;
+  infosComplementaires: string;
+  modeGestionRemuneration: string;
+  gradeTG: string;
+  pseudoGrade: string;
+  echelon: string;
+  indiceBrutMajoreForce: string;
+  situationStatutaire: string;
+  regimeSecuriteSociale: string;
+  regimeRetraite: string;
+  codeLibelleHarpege: string;
+  rgPourRDD: string;
+  codeCISIRH: string;
+  libelleCISIRH: string;
 }
 
 const Reference1 = () => {
@@ -43,18 +62,37 @@ const Reference1 = () => {
           if (!line) continue;
 
           const values = line.split(";");
-          if (values.length >= 10) {
+          if (values.length >= 29) {
             parsedData.push({
-              codeSimam: values[0] || "",
-              categorie: values[1] || "",
-              libelleCourt: values[2] || "",
-              libelleLong: values[3] || "",
+              codeSiham: values[0] || "",
+              categorieSiham: values[1] || "",
+              libelleCourtSiham: values[2] || "",
+              libelleLongSiham: values[3] || "",
               dateDeb: values[4] || "",
               dateFin: values[5] || "",
               referencesReglementaires: values[6] || "",
               droitPublicPrive: values[7] || "",
               casUtilisation: values[8] || "",
               permanentTemporaire: values[9] || "",
+              regleDurees: values[10] || "",
+              typeContrat: values[11] || "",
+              catFP: values[12] || "",
+              sousCategorie: values[13] || "",
+              obligationsStatutairesEnseignement: values[14] || "",
+              bibliothequeActes: values[15] || "",
+              infosComplementaires: values[16] || "",
+              modeGestionRemuneration: values[17] || "",
+              gradeTG: values[18] || "",
+              pseudoGrade: values[19] || "",
+              echelon: values[20] || "",
+              indiceBrutMajoreForce: values[21] || "",
+              situationStatutaire: values[22] || "",
+              regimeSecuriteSociale: values[23] || "",
+              regimeRetraite: values[24] || "",
+              codeLibelleHarpege: values[25] || "",
+              rgPourRDD: values[26] || "",
+              codeCISIRH: values[27] || "",
+              libelleCISIRH: values[28] || "",
             });
           }
         }
@@ -77,16 +115,17 @@ const Reference1 = () => {
 
     const filtered = data.filter(
       (item) =>
-        item.codeSimam.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.categorie.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.libelleCourt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.libelleLong.toLowerCase().includes(searchTerm.toLowerCase())
+        item.codeSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.categorieSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleCourtSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.libelleLongSiham.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.codeCISIRH.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredData(filtered);
   }, [searchTerm, data]);
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-8">
+    <div className="container mx-auto max-w-[95vw] px-4 py-8">
       <Card className="overflow-hidden">
         <div className="border-b bg-muted/50 px-6 py-4">
           <h2 className="text-2xl font-bold text-foreground">Statuts contractuels</h2>
@@ -99,7 +138,7 @@ const Reference1 = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Rechercher par code, catégorie ou libellé..."
+              placeholder="Rechercher par code SIHAM, catégorie, libellé ou code CISIRH..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -116,21 +155,42 @@ const Reference1 = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="font-semibold">Code SIHAM</TableHead>
-                  <TableHead className="font-semibold">Catégorie</TableHead>
-                  <TableHead className="font-semibold">Libellé court</TableHead>
-                  <TableHead className="font-semibold">Libellé long</TableHead>
-                  <TableHead className="font-semibold">Date début</TableHead>
-                  <TableHead className="font-semibold">Date fin</TableHead>
-                  <TableHead className="font-semibold">Droit</TableHead>
-                  <TableHead className="font-semibold">Permanent/Temporaire</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Code Siham</TableHead>
+                  <TableHead className="min-w-[120px] font-semibold">Catégorie Siham</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Libellé court Siham</TableHead>
+                  <TableHead className="min-w-[250px] font-semibold">Libellé long Siham</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Date Deb</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Date Fin</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Références réglementaires</TableHead>
+                  <TableHead className="min-w-[120px] font-semibold">Droit public / Droit privé</TableHead>
+                  <TableHead className="min-w-[300px] font-semibold">Cas d'utilisation</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Permanent / temporaire</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Règle de durées</TableHead>
+                  <TableHead className="min-w-[120px] font-semibold">Type de contrat</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Cat. FP</TableHead>
+                  <TableHead className="min-w-[120px] font-semibold">Sous catégorie</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Obligations statutaires d'enseignement</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Bibliothèque des actes</TableHead>
+                  <TableHead className="min-w-[300px] font-semibold">Informations complémentaires à saisir dans Siham</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Mode de gestion / Mode de rémunération</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Grade TG</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Pseudo grade</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Echelon</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Indice brut ou majoré forcé</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Situation statutaire</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Régime Sécurité sociale</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">Régime retraite</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Code et Libellé Harpège</TableHead>
+                  <TableHead className="min-w-[150px] font-semibold">RG pour RDD depuis Harpège</TableHead>
+                  <TableHead className="min-w-[100px] font-semibold">Code CISIRH</TableHead>
+                  <TableHead className="min-w-[200px] font-semibold">Libellé CISIRH</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredData.length === 0 ? (
                   <TableRow>
                     <TableCell
-                      colSpan={8}
+                      colSpan={29}
                       className="h-24 text-center text-muted-foreground"
                     >
                       Aucune donnée trouvée
@@ -139,14 +199,35 @@ const Reference1 = () => {
                 ) : (
                   filteredData.map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell className="font-medium">{row.codeSimam}</TableCell>
-                      <TableCell>{row.categorie}</TableCell>
-                      <TableCell>{row.libelleCourt}</TableCell>
-                      <TableCell className="max-w-md">{row.libelleLong}</TableCell>
+                      <TableCell className="font-medium">{row.codeSiham}</TableCell>
+                      <TableCell>{row.categorieSiham}</TableCell>
+                      <TableCell>{row.libelleCourtSiham}</TableCell>
+                      <TableCell className="whitespace-normal">{row.libelleLongSiham}</TableCell>
                       <TableCell>{row.dateDeb}</TableCell>
                       <TableCell>{row.dateFin}</TableCell>
+                      <TableCell className="whitespace-normal">{row.referencesReglementaires}</TableCell>
                       <TableCell>{row.droitPublicPrive}</TableCell>
+                      <TableCell className="whitespace-normal">{row.casUtilisation}</TableCell>
                       <TableCell>{row.permanentTemporaire}</TableCell>
+                      <TableCell className="whitespace-normal">{row.regleDurees}</TableCell>
+                      <TableCell>{row.typeContrat}</TableCell>
+                      <TableCell>{row.catFP}</TableCell>
+                      <TableCell>{row.sousCategorie}</TableCell>
+                      <TableCell className="whitespace-normal">{row.obligationsStatutairesEnseignement}</TableCell>
+                      <TableCell className="whitespace-normal">{row.bibliothequeActes}</TableCell>
+                      <TableCell className="whitespace-normal">{row.infosComplementaires}</TableCell>
+                      <TableCell className="whitespace-normal">{row.modeGestionRemuneration}</TableCell>
+                      <TableCell>{row.gradeTG}</TableCell>
+                      <TableCell>{row.pseudoGrade}</TableCell>
+                      <TableCell>{row.echelon}</TableCell>
+                      <TableCell>{row.indiceBrutMajoreForce}</TableCell>
+                      <TableCell>{row.situationStatutaire}</TableCell>
+                      <TableCell>{row.regimeSecuriteSociale}</TableCell>
+                      <TableCell>{row.regimeRetraite}</TableCell>
+                      <TableCell className="whitespace-normal">{row.codeLibelleHarpege}</TableCell>
+                      <TableCell className="whitespace-normal">{row.rgPourRDD}</TableCell>
+                      <TableCell>{row.codeCISIRH}</TableCell>
+                      <TableCell className="whitespace-normal">{row.libelleCISIRH}</TableCell>
                     </TableRow>
                   ))
                 )}
