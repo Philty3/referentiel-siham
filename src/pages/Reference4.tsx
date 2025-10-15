@@ -305,98 +305,72 @@ const Reference4 = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="code" className="text-xs">Code</Label>
-                  <Input
-                    id="code"
-                    value={editingItem.code}
-                    onChange={(e) => handleInputChange("code", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="code" value={editingItem.code} onChange={(e) => handleInputChange("code", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="libelle" className="text-xs">Libellé</Label>
-                  <Input
-                    id="libelle"
-                    value={editingItem.libelle}
-                    onChange={(e) => handleInputChange("libelle", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="libelle" value={editingItem.libelle} onChange={(e) => handleInputChange("libelle", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleLong" className="text-xs">Libellé long</Label>
-                <Input
-                  id="libelleLong"
-                  value={editingItem.libelleLong}
-                  onChange={(e) => handleInputChange("libelleLong", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleLong" value={editingItem.libelleLong} onChange={(e) => handleInputChange("libelleLong", e.target.value)} className="text-sm" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleLongBis" className="text-xs">Libellé long (bis)</Label>
-                <Input
-                  id="libelleLongBis"
-                  value={editingItem.libelleLongBis}
-                  onChange={(e) => handleInputChange("libelleLongBis", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleLongBis" value={editingItem.libelleLongBis} onChange={(e) => handleInputChange("libelleLongBis", e.target.value)} className="text-sm" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleCourtBis" className="text-xs">Libellé court (bis)</Label>
-                <Input
-                  id="libelleCourtBis"
-                  value={editingItem.libelleCourtBis}
-                  onChange={(e) => handleInputChange("libelleCourtBis", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleCourtBis" value={editingItem.libelleCourtBis} onChange={(e) => handleInputChange("libelleCourtBis", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="temExclusionInclusionReglem" className="text-xs">Témoin exclusion/inclusion des réglem.</Label>
+                <Input id="temExclusionInclusionReglem" value={editingItem.temExclusionInclusionReglem} onChange={(e) => handleInputChange("temExclusionInclusionReglem", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="dateDebutValidite" className="text-xs">Date de début de validité</Label>
-                  <Input
-                    id="dateDebutValidite"
-                    value={editingItem.dateDebutValidite}
-                    onChange={(e) => handleInputChange("dateDebutValidite", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="dateDebutValidite" className="text-xs">Date de début de validité (JJ/MM/AAAA)</Label>
+                  <Input id="dateDebutValidite" value={editingItem.dateDebutValidite} onChange={(e) => handleInputChange("dateDebutValidite", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dateFinValidite" className="text-xs">Date de fin de validité</Label>
-                  <Input
-                    id="dateFinValidite"
-                    value={editingItem.dateFinValidite}
-                    onChange={(e) => handleInputChange("dateFinValidite", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="dateFinValidite" className="text-xs">Date de fin de validité (JJ/MM/AAAA)</Label>
+                  <Input id="dateFinValidite" value={editingItem.dateFinValidite} onChange={(e) => handleInputChange("dateFinValidite", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="codeFiliere" className="text-xs">Code-Filière</Label>
-                  <Input
-                    id="codeFiliere"
-                    value={editingItem.codeFiliere}
-                    onChange={(e) => handleInputChange("codeFiliere", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="codeFiliere" value={editingItem.codeFiliere} onChange={(e) => handleInputChange("codeFiliere", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="filiere" className="text-xs">Filière</Label>
-                  <Input
-                    id="filiere"
-                    value={editingItem.filiere}
-                    onChange={(e) => handleInputChange("filiere", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="filiere" value={editingItem.filiere} onChange={(e) => handleInputChange("filiere", e.target.value)} className="text-sm" />
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="categorieStatutaire" className="text-xs">Catégorie statutaire</Label>
-                <Input
-                  id="categorieStatutaire"
-                  value={editingItem.categorieStatutaire}
-                  onChange={(e) => handleInputChange("categorieStatutaire", e.target.value)}
-                  className="text-sm"
-                />
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="nombresGrades" className="text-xs">Nombres de grades</Label>
+                  <Input id="nombresGrades" value={editingItem.nombresGrades} onChange={(e) => handleInputChange("nombresGrades", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="corpsExtinction" className="text-xs">Corps en extinction</Label>
+                  <Input id="corpsExtinction" value={editingItem.corpsExtinction} onChange={(e) => handleInputChange("corpsExtinction", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="codeCategorieStatutaire" className="text-xs">Code-Catégorie statutaire</Label>
+                  <Input id="codeCategorieStatutaire" value={editingItem.codeCategorieStatutaire} onChange={(e) => handleInputChange("codeCategorieStatutaire", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="categorieStatutaire" className="text-xs">Catégorie statutaire</Label>
+                  <Input id="categorieStatutaire" value={editingItem.categorieStatutaire} onChange={(e) => handleInputChange("categorieStatutaire", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="serviceStatutaire" className="text-xs">Service Statutaire</Label>
+                  <Input id="serviceStatutaire" value={editingItem.serviceStatutaire} onChange={(e) => handleInputChange("serviceStatutaire", e.target.value)} className="text-sm" />
+                </div>
               </div>
             </div>
           )}

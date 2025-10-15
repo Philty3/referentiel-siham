@@ -417,78 +417,134 @@ const Reference1 = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="codeSiham" className="text-xs">Code Siham</Label>
-                  <Input
-                    id="codeSiham"
-                    value={editingItem.codeSiham}
-                    onChange={(e) => handleInputChange("codeSiham", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="codeSiham" value={editingItem.codeSiham} onChange={(e) => handleInputChange("codeSiham", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="categorieSiham" className="text-xs">Catégorie Siham</Label>
-                  <Input
-                    id="categorieSiham"
-                    value={editingItem.categorieSiham}
-                    onChange={(e) => handleInputChange("categorieSiham", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="categorieSiham" value={editingItem.categorieSiham} onChange={(e) => handleInputChange("categorieSiham", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleCourtSiham" className="text-xs">Libellé court Siham</Label>
-                <Input
-                  id="libelleCourtSiham"
-                  value={editingItem.libelleCourtSiham}
-                  onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleCourtSiham" value={editingItem.libelleCourtSiham} onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)} className="text-sm" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleLongSiham" className="text-xs">Libellé long Siham</Label>
-                <Input
-                  id="libelleLongSiham"
-                  value={editingItem.libelleLongSiham}
-                  onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleLongSiham" value={editingItem.libelleLongSiham} onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="dateDeb" className="text-xs">Date Deb</Label>
-                  <Input
-                    id="dateDeb"
-                    value={editingItem.dateDeb}
-                    onChange={(e) => handleInputChange("dateDeb", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="dateDeb" className="text-xs">Date Deb (JJ/MM/AAAA)</Label>
+                  <Input id="dateDeb" value={editingItem.dateDeb} onChange={(e) => handleInputChange("dateDeb", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dateFin" className="text-xs">Date Fin</Label>
-                  <Input
-                    id="dateFin"
-                    value={editingItem.dateFin}
-                    onChange={(e) => handleInputChange("dateFin", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="dateFin" className="text-xs">Date Fin (JJ/MM/AAAA)</Label>
+                  <Input id="dateFin" value={editingItem.dateFin} onChange={(e) => handleInputChange("dateFin", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
-                <Input
-                  id="codeCISIRH"
-                  value={editingItem.codeCISIRH}
-                  onChange={(e) => handleInputChange("codeCISIRH", e.target.value)}
-                  className="text-sm"
-                />
+                <Label htmlFor="referencesReglementaires" className="text-xs">Références réglementaires</Label>
+                <Input id="referencesReglementaires" value={editingItem.referencesReglementaires} onChange={(e) => handleInputChange("referencesReglementaires", e.target.value)} className="text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="droitPublicPrive" className="text-xs">Droit public / Droit privé</Label>
+                  <Input id="droitPublicPrive" value={editingItem.droitPublicPrive} onChange={(e) => handleInputChange("droitPublicPrive", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="permanentTemporaire" className="text-xs">Permanent / temporaire</Label>
+                  <Input id="permanentTemporaire" value={editingItem.permanentTemporaire} onChange={(e) => handleInputChange("permanentTemporaire", e.target.value)} className="text-sm" />
+                </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
-                <Input
-                  id="libelleCISIRH"
-                  value={editingItem.libelleCISIRH}
-                  onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)}
-                  className="text-sm"
-                />
+                <Label htmlFor="casUtilisation" className="text-xs">Cas d'utilisation</Label>
+                <Input id="casUtilisation" value={editingItem.casUtilisation} onChange={(e) => handleInputChange("casUtilisation", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="regleDurees" className="text-xs">Règle de durées</Label>
+                <Input id="regleDurees" value={editingItem.regleDurees} onChange={(e) => handleInputChange("regleDurees", e.target.value)} className="text-sm" />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="typeContrat" className="text-xs">Type de contrat</Label>
+                  <Input id="typeContrat" value={editingItem.typeContrat} onChange={(e) => handleInputChange("typeContrat", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="catFP" className="text-xs">Cat. FP</Label>
+                  <Input id="catFP" value={editingItem.catFP} onChange={(e) => handleInputChange("catFP", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sousCategorie" className="text-xs">Sous catégorie</Label>
+                  <Input id="sousCategorie" value={editingItem.sousCategorie} onChange={(e) => handleInputChange("sousCategorie", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="obligationsStatutairesEnseignement" className="text-xs">Obligations statutaires d'enseignement</Label>
+                <Input id="obligationsStatutairesEnseignement" value={editingItem.obligationsStatutairesEnseignement} onChange={(e) => handleInputChange("obligationsStatutairesEnseignement", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bibliothequeActes" className="text-xs">Bibliothèque des actes</Label>
+                <Input id="bibliothequeActes" value={editingItem.bibliothequeActes} onChange={(e) => handleInputChange("bibliothequeActes", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="infosComplementaires" className="text-xs">Informations complémentaires à saisir dans Siham</Label>
+                <Input id="infosComplementaires" value={editingItem.infosComplementaires} onChange={(e) => handleInputChange("infosComplementaires", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="modeGestionRemuneration" className="text-xs">Mode de gestion / Mode de rémunération</Label>
+                <Input id="modeGestionRemuneration" value={editingItem.modeGestionRemuneration} onChange={(e) => handleInputChange("modeGestionRemuneration", e.target.value)} className="text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="gradeTG" className="text-xs">Grade TG</Label>
+                  <Input id="gradeTG" value={editingItem.gradeTG} onChange={(e) => handleInputChange("gradeTG", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pseudoGrade" className="text-xs">Pseudo grade</Label>
+                  <Input id="pseudoGrade" value={editingItem.pseudoGrade} onChange={(e) => handleInputChange("pseudoGrade", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="echelon" className="text-xs">Echelon</Label>
+                  <Input id="echelon" value={editingItem.echelon} onChange={(e) => handleInputChange("echelon", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="indiceBrutMajoreForce" className="text-xs">Indice brut ou majoré forcé</Label>
+                  <Input id="indiceBrutMajoreForce" value={editingItem.indiceBrutMajoreForce} onChange={(e) => handleInputChange("indiceBrutMajoreForce", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="situationStatutaire" className="text-xs">Situation statutaire</Label>
+                  <Input id="situationStatutaire" value={editingItem.situationStatutaire} onChange={(e) => handleInputChange("situationStatutaire", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="regimeSecuriteSociale" className="text-xs">Régime Sécurité sociale</Label>
+                  <Input id="regimeSecuriteSociale" value={editingItem.regimeSecuriteSociale} onChange={(e) => handleInputChange("regimeSecuriteSociale", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="regimeRetraite" className="text-xs">Régime retraite</Label>
+                  <Input id="regimeRetraite" value={editingItem.regimeRetraite} onChange={(e) => handleInputChange("regimeRetraite", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="codeLibelleHarpege" className="text-xs">Code et Libellé Harpège</Label>
+                <Input id="codeLibelleHarpege" value={editingItem.codeLibelleHarpege} onChange={(e) => handleInputChange("codeLibelleHarpege", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="rgPourRDD" className="text-xs">RG pour RDD depuis Harpège</Label>
+                <Input id="rgPourRDD" value={editingItem.rgPourRDD} onChange={(e) => handleInputChange("rgPourRDD", e.target.value)} className="text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
+                  <Input id="codeCISIRH" value={editingItem.codeCISIRH} onChange={(e) => handleInputChange("codeCISIRH", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
+                  <Input id="libelleCISIRH" value={editingItem.libelleCISIRH} onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)} className="text-sm" />
+                </div>
               </div>
             </div>
           )}

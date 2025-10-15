@@ -305,80 +305,74 @@ const Grades = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="code" className="text-xs">Code</Label>
-                  <Input
-                    id="code"
-                    value={editingItem.code}
-                    onChange={(e) => handleInputChange("code", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="code" value={editingItem.code} onChange={(e) => handleInputChange("code", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="libelle" className="text-xs">Libellé</Label>
-                  <Input
-                    id="libelle"
-                    value={editingItem.libelle}
-                    onChange={(e) => handleInputChange("libelle", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="libelle" value={editingItem.libelle} onChange={(e) => handleInputChange("libelle", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="libelleLong" className="text-xs">Libellé long</Label>
-                <Input
-                  id="libelleLong"
-                  value={editingItem.libelleLong}
-                  onChange={(e) => handleInputChange("libelleLong", e.target.value)}
-                  className="text-sm"
-                />
+                <Input id="libelleLong" value={editingItem.libelleLong} onChange={(e) => handleInputChange("libelleLong", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="categorieStatutaire" className="text-xs">Catégorie statutaire</Label>
-                  <Input
-                    id="categorieStatutaire"
-                    value={editingItem.categorieStatutaire}
-                    onChange={(e) => handleInputChange("categorieStatutaire", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Input id="categorieStatutaire" value={editingItem.categorieStatutaire} onChange={(e) => handleInputChange("categorieStatutaire", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="filiere" className="text-xs">Filière</Label>
-                  <Input
-                    id="filiere"
-                    value={editingItem.filiere}
-                    onChange={(e) => handleInputChange("filiere", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="codeFiliere" className="text-xs">Code-Filière</Label>
+                  <Input id="codeFiliere" value={editingItem.codeFiliere} onChange={(e) => handleInputChange("codeFiliere", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="corpsCadreEmploi" className="text-xs">Corps / Cadre d'emploi</Label>
-                <Input
-                  id="corpsCadreEmploi"
-                  value={editingItem.corpsCadreEmploi}
-                  onChange={(e) => handleInputChange("corpsCadreEmploi", e.target.value)}
-                  className="text-sm"
-                />
+                <Label htmlFor="filiere" className="text-xs">Filière</Label>
+                <Input id="filiere" value={editingItem.filiere} onChange={(e) => handleInputChange("filiere", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="dateDebutValidite" className="text-xs">Date de début de validité</Label>
-                  <Input
-                    id="dateDebutValidite"
-                    value={editingItem.dateDebutValidite}
-                    onChange={(e) => handleInputChange("dateDebutValidite", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="codeCorpsCadreEmploi" className="text-xs">Code-Corps / Cadre d'emploi</Label>
+                  <Input id="codeCorpsCadreEmploi" value={editingItem.codeCorpsCadreEmploi} onChange={(e) => handleInputChange("codeCorpsCadreEmploi", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="dateFinValidite" className="text-xs">Date de fin de validité</Label>
-                  <Input
-                    id="dateFinValidite"
-                    value={editingItem.dateFinValidite}
-                    onChange={(e) => handleInputChange("dateFinValidite", e.target.value)}
-                    className="text-sm"
-                  />
+                  <Label htmlFor="corpsCadreEmploi" className="text-xs">Corps / Cadre d'emploi</Label>
+                  <Input id="corpsCadreEmploi" value={editingItem.corpsCadreEmploi} onChange={(e) => handleInputChange("corpsCadreEmploi", e.target.value)} className="text-sm" />
                 </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="codeGroupeHierarchique" className="text-xs">Code-Groupe hiérarchique</Label>
+                  <Input id="codeGroupeHierarchique" value={editingItem.codeGroupeHierarchique} onChange={(e) => handleInputChange("codeGroupeHierarchique", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="groupeHierarchique" className="text-xs">Groupe hiérarchique</Label>
+                  <Input id="groupeHierarchique" value={editingItem.groupeHierarchique} onChange={(e) => handleInputChange("groupeHierarchique", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="ageLimiteDepartRetraite" className="text-xs">Age limite de départ en retraite</Label>
+                  <Input id="ageLimiteDepartRetraite" value={editingItem.ageLimiteDepartRetraite} onChange={(e) => handleInputChange("ageLimiteDepartRetraite", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="temExclusionInclusionReglem" className="text-xs">Témoin exclusion/inclusion des réglem.</Label>
+                  <Input id="temExclusionInclusionReglem" value={editingItem.temExclusionInclusionReglem} onChange={(e) => handleInputChange("temExclusionInclusionReglem", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dateDebutValidite" className="text-xs">Date de début de validité (JJ/MM/AAAA)</Label>
+                  <Input id="dateDebutValidite" value={editingItem.dateDebutValidite} onChange={(e) => handleInputChange("dateDebutValidite", e.target.value)} className="text-sm" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="dateFinValidite" className="text-xs">Date de fin de validité (JJ/MM/AAAA)</Label>
+                  <Input id="dateFinValidite" value={editingItem.dateFinValidite} onChange={(e) => handleInputChange("dateFinValidite", e.target.value)} className="text-sm" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="codeTresorerieGenerale" className="text-xs">Code trésorerie générale</Label>
+                <Input id="codeTresorerieGenerale" value={editingItem.codeTresorerieGenerale} onChange={(e) => handleInputChange("codeTresorerieGenerale", e.target.value)} className="text-sm" />
               </div>
             </div>
           )}
