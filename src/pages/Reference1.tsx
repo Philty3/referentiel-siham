@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import * as XLSX from "xlsx";
 
 interface StatutContractuel {
   codeSiham: string;
@@ -50,55 +51,50 @@ const Reference1 = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/statuts-contractuels.csv")
+    fetch("/data/contractuels.xlsx")
       .then((response) => response.arrayBuffer())
       .then((buffer) => {
-        // Decode avec UTF-8 explicite
-        const decoder = new TextDecoder("utf-8");
-        const text = decoder.decode(buffer);
+        const workbook = XLSX.read(buffer, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
-        const lines = text.split("\n");
         const parsedData: StatutContractuel[] = [];
-
-        // Skip header lines (0-4), data starts at line 5
-        for (let i = 5; i < lines.length; i++) {
-          const line = lines[i].trim();
-          if (!line) continue;
-
-          // Split by semicolon
-          const values = line.split(";");
-          
-          if (values.length >= 29) {
+        
+        // Start from row 1 (skip header row 0)
+        for (let i = 1; i < jsonData.length; i++) {
+          const row = jsonData[i] as any[];
+          if (row.length >= 29) {
             parsedData.push({
-              codeSiham: values[0] || "",
-              categorieSiham: values[1] || "",
-              libelleCourtSiham: values[2] || "",
-              libelleLongSiham: values[3] || "",
-              dateDeb: values[4] || "",
-              dateFin: values[5] || "",
-              referencesReglementaires: values[6] || "",
-              droitPublicPrive: values[7] || "",
-              casUtilisation: values[8] || "",
-              permanentTemporaire: values[9] || "",
-              regleDurees: values[10] || "",
-              typeContrat: values[11] || "",
-              catFP: values[12] || "",
-              sousCategorie: values[13] || "",
-              obligationsStatutairesEnseignement: values[14] || "",
-              bibliothequeActes: values[15] || "",
-              infosComplementaires: values[16] || "",
-              modeGestionRemuneration: values[17] || "",
-              gradeTG: values[18] || "",
-              pseudoGrade: values[19] || "",
-              echelon: values[20] || "",
-              indiceBrutMajoreForce: values[21] || "",
-              situationStatutaire: values[22] || "",
-              regimeSecuriteSociale: values[23] || "",
-              regimeRetraite: values[24] || "",
-              codeLibelleHarpege: values[25] || "",
-              rgPourRDD: values[26] || "",
-              codeCISIRH: values[27] || "",
-              libelleCISIRH: values[28] || "",
+              codeSiham: String(row[0] || ""),
+              categorieSiham: String(row[1] || ""),
+              libelleCourtSiham: String(row[2] || ""),
+              libelleLongSiham: String(row[3] || ""),
+              dateDeb: String(row[4] || ""),
+              dateFin: String(row[5] || ""),
+              referencesReglementaires: String(row[6] || ""),
+              droitPublicPrive: String(row[7] || ""),
+              casUtilisation: String(row[8] || ""),
+              permanentTemporaire: String(row[9] || ""),
+              regleDurees: String(row[10] || ""),
+              typeContrat: String(row[11] || ""),
+              catFP: String(row[12] || ""),
+              sousCategorie: String(row[13] || ""),
+              obligationsStatutairesEnseignement: String(row[14] || ""),
+              bibliothequeActes: String(row[15] || ""),
+              infosComplementaires: String(row[16] || ""),
+              modeGestionRemuneration: String(row[17] || ""),
+              gradeTG: String(row[18] || ""),
+              pseudoGrade: String(row[19] || ""),
+              echelon: String(row[20] || ""),
+              indiceBrutMajoreForce: String(row[21] || ""),
+              situationStatutaire: String(row[22] || ""),
+              regimeSecuriteSociale: String(row[23] || ""),
+              regimeRetraite: String(row[24] || ""),
+              codeLibelleHarpege: String(row[25] || ""),
+              rgPourRDD: String(row[26] || ""),
+              codeCISIRH: String(row[27] || ""),
+              libelleCISIRH: String(row[28] || ""),
             });
           }
         }
