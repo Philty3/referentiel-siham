@@ -13,6 +13,7 @@ const navItems = [
   { name: "Corps", path: "/ref4" },
   { name: "Grades", path: "/grades" },
   { name: "Congés/absences", path: "/conges" },
+  { name: "Emplois", path: "/emplois" },
 ];
 
 export const Navigation = () => {

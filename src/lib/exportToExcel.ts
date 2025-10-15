@@ -43,6 +43,12 @@ export const exportAllDataToExcel = async () => {
         file: "/data/conges.xlsx",
         sheetName: "Congés-absences",
         dateFields: ["dateDebutValidite", "dateFinValidite"]
+      },
+      {
+        name: "Emplois",
+        file: "/data/emplois.xlsx",
+        sheetName: "Emplois",
+        dateFields: ["dateEffet"]
       }
     ];
 
