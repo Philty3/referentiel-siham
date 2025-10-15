@@ -124,7 +124,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-0 text-xs">
                     Actions
                   </TableHead>
                   {columns.map((column) => (
@@ -132,7 +132,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
                         column.key === columns[0].key ? 'bg-muted/50 font-bold' : 'font-semibold'
-                      } px-2 py-1 text-xs`}
+                      } px-2 py-0 text-xs`}
                     >
                       {column.label}
                     </TableHead>
