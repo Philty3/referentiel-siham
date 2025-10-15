@@ -8,7 +8,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
 import { formatExcelDate, validateDataDates, logDateValidationErrors } from "@/lib/dateValidator";
 
-interface Vacataire {
+interface Contractuel {
   codeSiham: string;
   categorieSiham: string;
   libelleCourtSiham: string;
@@ -16,6 +16,7 @@ interface Vacataire {
   dateDeb: string;
   dateFin: string;
   referencesReglementaires: string;
+  droitPublicPrive: string;
   casUtilisation: string;
   permanentTemporaire: string;
   regleDurees: string;
@@ -40,15 +41,15 @@ interface Vacataire {
 }
 
 const Reference2 = () => {
-  const [data, setData] = useState<Vacataire[]>([]);
+  const [data, setData] = useState<Contractuel[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<Vacataire | null>(null);
+  const [editingItem, setEditingItem] = useState<Contractuel | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    fetch("/data/vacataires.xlsx")
+    fetch("/data/contractuels.xlsx")
       .then((response) => response.arrayBuffer())
       .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
@@ -56,11 +57,11 @@ const Reference2 = () => {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
-        const parsedData: Vacataire[] = [];
+        const parsedData: Contractuel[] = [];
         
         for (let i = 1; i < jsonData.length; i++) {
           const row = jsonData[i] as any[];
-          if (row.length >= 28) {
+          if (row.length >= 29) {
             parsedData.push({
               codeSiham: String(row[0] || ""),
               categorieSiham: String(row[1] || ""),
@@ -69,27 +70,28 @@ const Reference2 = () => {
               dateDeb: formatExcelDate(row[4]),
               dateFin: formatExcelDate(row[5]),
               referencesReglementaires: String(row[6] || ""),
-              casUtilisation: String(row[7] || ""),
-              permanentTemporaire: String(row[8] || ""),
-              regleDurees: String(row[9] || ""),
-              typeContrat: String(row[10] || ""),
-              catFP: String(row[11] || ""),
-              sousCategorie: String(row[12] || ""),
-              obligationsStatutairesEnseignement: String(row[13] || ""),
-              bibliothequeActes: String(row[14] || ""),
-              infosComplementaires: String(row[15] || ""),
-              modeGestionRemuneration: String(row[16] || ""),
-              gradeTG: String(row[17] || ""),
-              pseudoGrade: String(row[18] || ""),
-              echelon: String(row[19] || ""),
-              indiceBrutMajoreForce: String(row[20] || ""),
-              situationStatutaire: String(row[21] || ""),
-              regimeSecuriteSociale: String(row[22] || ""),
-              regimeRetraite: String(row[23] || ""),
-              codeLibelleHarpege: String(row[24] || ""),
-              rgPourRDD: String(row[25] || ""),
-              codeCISIRH: String(row[26] || ""),
-              libelleCISIRH: String(row[27] || ""),
+              droitPublicPrive: String(row[7] || ""),
+              casUtilisation: String(row[8] || ""),
+              permanentTemporaire: String(row[9] || ""),
+              regleDurees: String(row[10] || ""),
+              typeContrat: String(row[11] || ""),
+              catFP: String(row[12] || ""),
+              sousCategorie: String(row[13] || ""),
+              obligationsStatutairesEnseignement: String(row[14] || ""),
+              bibliothequeActes: String(row[15] || ""),
+              infosComplementaires: String(row[16] || ""),
+              modeGestionRemuneration: String(row[17] || ""),
+              gradeTG: String(row[18] || ""),
+              pseudoGrade: String(row[19] || ""),
+              echelon: String(row[20] || ""),
+              indiceBrutMajoreForce: String(row[21] || ""),
+              situationStatutaire: String(row[22] || ""),
+              regimeSecuriteSociale: String(row[23] || ""),
+              regimeRetraite: String(row[24] || ""),
+              codeLibelleHarpege: String(row[25] || ""),
+              rgPourRDD: String(row[26] || ""),
+              codeCISIRH: String(row[27] || ""),
+              libelleCISIRH: String(row[28] || ""),
             });
           }
         }
@@ -97,7 +99,7 @@ const Reference2 = () => {
         setData(parsedData);
         
         // Valider les dates
-        const dateErrors = validateDataDates(parsedData, ["dateDeb", "dateFin"], "Vacataires");
+        const dateErrors = validateDataDates(parsedData, ["dateDeb", "dateFin"], "Statuts Contractuels");
         logDateValidationErrors(dateErrors);
         
         setLoading(false);
@@ -109,7 +111,7 @@ const Reference2 = () => {
   }, []);
 
   const handleAdd = () => {
-    const newItem: Vacataire = {
+    const newItem: Contractuel = {
       codeSiham: "",
       categorieSiham: "",
       libelleCourtSiham: "",
@@ -117,6 +119,7 @@ const Reference2 = () => {
       dateDeb: "",
       dateFin: "",
       referencesReglementaires: "",
+      droitPublicPrive: "",
       casUtilisation: "",
       permanentTemporaire: "",
       regleDurees: "",
@@ -144,7 +147,7 @@ const Reference2 = () => {
     setIsDialogOpen(true);
   };
 
-  const handleEdit = (item: Vacataire, index: number) => {
+  const handleEdit = (item: Contractuel, index: number) => {
     setEditingItem({ ...item });
     setEditingIndex(index);
     setIsDialogOpen(true);
@@ -185,7 +188,7 @@ const Reference2 = () => {
     });
   };
 
-  const handleInputChange = (field: keyof Vacataire, value: string) => {
+  const handleInputChange = (field: keyof Contractuel, value: string) => {
     if (editingItem) {
       setEditingItem({ ...editingItem, [field]: value });
     }
@@ -199,6 +202,7 @@ const Reference2 = () => {
     { key: "dateDeb", label: "Date Deb", width: "w-[85px]" },
     { key: "dateFin", label: "Date Fin", width: "w-[85px]" },
     { key: "referencesReglementaires", label: "Références réglementaires", width: "w-[180px]", truncate: true },
+    { key: "droitPublicPrive", label: "Droit public / Droit privé", width: "w-[150px]" },
     { key: "casUtilisation", label: "Cas d'utilisation", width: "w-[250px]", truncate: true },
     { key: "permanentTemporaire", label: "Permanent / temporaire", width: "w-[130px]" },
     { key: "regleDurees", label: "Règle de durées", width: "w-[180px]", truncate: true },
@@ -222,118 +226,122 @@ const Reference2 = () => {
     { key: "libelleCISIRH", label: "Libellé CISIRH", width: "w-[180px]", truncate: true },
   ];
 
-  const renderExpandedContent = (row: Vacataire) => (
-    <div className="grid grid-cols-2 gap-4 text-xs">
+  const renderExpandedContent = (row: Contractuel) => (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0 text-xs">
       <div>
-        <p className="font-semibold text-foreground mb-1">Code Siham:</p>
+        <p className="font-semibold text-foreground">Code Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Catégorie Siham:</p>
+        <p className="font-semibold text-foreground">Catégorie Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.categorieSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé court Siham:</p>
+        <p className="font-semibold text-foreground">Libellé court Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé long Siham:</p>
+        <p className="font-semibold text-foreground">Libellé long Siham:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Date Deb:</p>
+        <p className="font-semibold text-foreground">Date Deb:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDeb}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Date Fin:</p>
+        <p className="font-semibold text-foreground">Date Fin:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFin}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
+        <p className="font-semibold text-foreground">Références réglementaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
+        <p className="font-semibold text-foreground">Droit public / Droit privé:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.droitPublicPrive}</p>
+      </div>
+      <div>
+        <p className="font-semibold text-foreground">Cas d'utilisation:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Permanent / temporaire:</p>
+        <p className="font-semibold text-foreground">Permanent / temporaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.permanentTemporaire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Règle de durées:</p>
+        <p className="font-semibold text-foreground">Règle de durées:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Type de contrat:</p>
+        <p className="font-semibold text-foreground">Type de contrat:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.typeContrat}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Cat. FP:</p>
+        <p className="font-semibold text-foreground">Cat. FP:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.catFP}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Sous catégorie:</p>
+        <p className="font-semibold text-foreground">Sous catégorie:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Obligations statutaires d'enseignement:</p>
+        <p className="font-semibold text-foreground">Obligations statutaires d'enseignement:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.obligationsStatutairesEnseignement}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
+        <p className="font-semibold text-foreground">Bibliothèque des actes:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Informations complémentaires:</p>
+        <p className="font-semibold text-foreground">Informations complémentaires:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Mode de gestion / rémunération:</p>
+        <p className="font-semibold text-foreground">Mode de gestion / rémunération:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Grade TG:</p>
+        <p className="font-semibold text-foreground">Grade TG:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Pseudo grade:</p>
+        <p className="font-semibold text-foreground">Pseudo grade:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.pseudoGrade}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Echelon:</p>
+        <p className="font-semibold text-foreground">Echelon:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.echelon}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Indice brut ou majoré forcé:</p>
+        <p className="font-semibold text-foreground">Indice brut ou majoré forcé:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.indiceBrutMajoreForce}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Situation statutaire:</p>
+        <p className="font-semibold text-foreground">Situation statutaire:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.situationStatutaire}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Régime Sécurité sociale:</p>
+        <p className="font-semibold text-foreground">Régime Sécurité sociale:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeSecuriteSociale}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Régime retraite:</p>
+        <p className="font-semibold text-foreground">Régime retraite:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeRetraite}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Code et Libellé Harpège:</p>
+        <p className="font-semibold text-foreground">Code et Libellé Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">RG pour RDD depuis Harpège:</p>
+        <p className="font-semibold text-foreground">RG pour RDD depuis Harpège:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Code CISIRH:</p>
+        <p className="font-semibold text-foreground">Code CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
+        <p className="font-semibold text-foreground">Libellé CISIRH:</p>
         <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
       </div>
     </div>
@@ -342,7 +350,7 @@ const Reference2 = () => {
   return (
     <>
       <DataTableWithPagination
-        title="Vacataires"
+        title="Statuts Contractuels"
         data={data}
         columns={columns}
         searchFields={["codeSiham", "categorieSiham", "libelleCourtSiham", "libelleLongSiham", "codeCISIRH", "libelleCISIRH"]}
@@ -391,6 +399,10 @@ const Reference2 = () => {
               <div className="space-y-2">
                 <Label htmlFor="referencesReglementaires" className="text-xs">Références réglementaires</Label>
                 <Input id="referencesReglementaires" value={editingItem.referencesReglementaires} onChange={(e) => handleInputChange("referencesReglementaires", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="droitPublicPrive" className="text-xs">Droit public / Droit privé</Label>
+                <Input id="droitPublicPrive" value={editingItem.droitPublicPrive} onChange={(e) => handleInputChange("droitPublicPrive", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
