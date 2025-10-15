@@ -12,7 +12,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Edit, Trash2 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Search, Edit, Trash2, ChevronDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import * as XLSX from "xlsx";
 
@@ -55,6 +61,9 @@ const Reference2 = () => {
   const [editingItem, setEditingItem] = useState<Vacataire | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
   const { toast } = useToast();
 
   useEffect(() => {
@@ -170,13 +179,23 @@ const Reference2 = () => {
     }
   };
 
+  // Pagination
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(Math.max(1, Math.min(page, totalPages)));
+  };
+
   return (
     <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
       <Card className="overflow-hidden shadow-lg">
         <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3">
           <h2 className="text-xl font-bold text-foreground">Vacataires</h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            {data.length} entrées
+            {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
           </p>
         </div>
 
@@ -249,70 +268,162 @@ const Reference2 = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredData.length === 0 ? (
+                {paginatedData.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={29} className="h-20 text-center text-sm text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredData.map((row, index) => {
+                  paginatedData.map((row, index) => {
                     const originalIndex = data.findIndex(item => item.codeSiham === row.codeSiham && item.libelleLongSiham === row.libelleLongSiham);
+                    const rowId = `${row.codeSiham}-${index}`;
+                    const isExpanded = expandedRow === rowId;
+                    
                     return (
-                      <TableRow key={index} className="hover:bg-muted/30 transition-colors">
-                        <TableCell className="sticky left-0 z-10 bg-background px-2 py-1.5">
-                          <div className="flex gap-1">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-7 w-7 p-0"
-                              onClick={() => handleEdit(row, originalIndex)}
-                            >
-                              <Edit className="h-3.5 w-3.5" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-7 w-7 p-0 text-destructive hover:text-destructive"
-                              onClick={() => handleDelete(originalIndex)}
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                        <TableCell className="bg-background font-medium px-2 py-1.5 text-xs">
-                          {row.codeSiham}
-                        </TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.categorieSiham}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.libelleCourtSiham}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleLongSiham}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.dateDeb}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.dateFin}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.referencesReglementaires}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.casUtilisation}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.permanentTemporaire}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.regleDurees}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.typeContrat}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.catFP}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.sousCategorie}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">
-                          {row.obligationsStatutairesEnseignement}
-                        </TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.bibliothequeActes}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.infosComplementaires}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.modeGestionRemuneration}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.gradeTG}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.pseudoGrade}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.echelon}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.indiceBrutMajoreForce}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.situationStatutaire}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.regimeSecuriteSociale}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.regimeRetraite}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.codeLibelleHarpege}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.rgPourRDD}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-xs">{row.codeCISIRH}</TableCell>
-                        <TableCell className="whitespace-pre-wrap px-2 py-1.5 text-xs">{row.libelleCISIRH}</TableCell>
-                      </TableRow>
+                      <>
+                        <TableRow 
+                          key={index} 
+                          className="hover:bg-muted/30 transition-colors cursor-pointer"
+                          onClick={() => setExpandedRow(isExpanded ? null : rowId)}
+                        >
+                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-1.5">
+                            <div className="flex gap-1">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleEdit(row, originalIndex);
+                                }}
+                              >
+                                <Edit className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(originalIndex);
+                                }}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                              >
+                                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                              </Button>
+                            </div>
+                          </TableCell>
+                          <TableCell className="bg-background font-medium px-2 py-1.5 text-xs">
+                            {row.codeSiham}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.categorieSiham}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.libelleCourtSiham}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[200px] truncate">
+                            {row.libelleLongSiham}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.dateDeb}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.dateFin}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[180px] truncate">
+                            {row.referencesReglementaires}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[250px] truncate">
+                            {row.casUtilisation}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.permanentTemporaire}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[180px] truncate">
+                            {row.regleDurees}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.typeContrat}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.catFP}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.sousCategorie}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[200px] truncate">
+                            {row.obligationsStatutairesEnseignement}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[160px] truncate">
+                            {row.bibliothequeActes}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[250px] truncate">
+                            {row.infosComplementaires}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[200px] truncate">
+                            {row.modeGestionRemuneration}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.gradeTG}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.pseudoGrade}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.echelon}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.indiceBrutMajoreForce}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.situationStatutaire}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.regimeSecuriteSociale}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.regimeRetraite}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[160px] truncate">
+                            {row.codeLibelleHarpege}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[160px] truncate">
+                            {row.rgPourRDD}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs">{row.codeCISIRH}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-xs max-w-[180px] truncate">
+                            {row.libelleCISIRH}
+                          </TableCell>
+                        </TableRow>
+                        {isExpanded && (
+                          <TableRow className="bg-muted/20">
+                            <TableCell colSpan={29} className="p-0">
+                              <div className="p-4 animate-accordion-down">
+                                <div className="grid grid-cols-2 gap-4 text-xs">
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Libellé long:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Règle de durées:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Informations complémentaires:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Mode de gestion / rémunération:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Code et Libellé Harpège:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">RG pour RDD depuis Harpège:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
+                                    <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </>
                     );
                   })
                 )}
@@ -320,6 +431,78 @@ const Reference2 = () => {
             </Table>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {!loading && filteredData.length > 0 && (
+          <div className="border-t bg-muted/20 px-4 py-3 flex items-center justify-between">
+            <div className="text-xs text-muted-foreground">
+              Affichage de {startIndex + 1} à {Math.min(endIndex, filteredData.length)} sur {filteredData.length} entrées
+            </div>
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => goToPage(1)}
+                disabled={currentPage === 1}
+                className="h-8 text-xs"
+              >
+                Première
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="h-8 text-xs"
+              >
+                Précédent
+              </Button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+                  return (
+                    <Button
+                      key={pageNum}
+                      size="sm"
+                      variant={currentPage === pageNum ? "default" : "outline"}
+                      onClick={() => goToPage(pageNum)}
+                      className="h-8 w-8 text-xs p-0"
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                })}
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="h-8 text-xs"
+              >
+                Suivant
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => goToPage(totalPages)}
+                disabled={currentPage === totalPages}
+                className="h-8 text-xs"
+              >
+                Dernière
+              </Button>
+            </div>
+          </div>
+        )}
       </Card>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
