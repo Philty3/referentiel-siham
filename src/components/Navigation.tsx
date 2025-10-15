@@ -7,6 +7,7 @@ const navItems = [
   { name: "Vacataires", path: "/ref2" },
   { name: "Positions", path: "/ref3" },
   { name: "Corps", path: "/ref4" },
+  { name: "Grades", path: "/grades" },
 ];
 
 export const Navigation = () => {
