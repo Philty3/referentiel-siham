@@ -1,0 +1,1228 @@
+Code Siham;Catégorie Siham;Libellé court Siham;Libellé long Siham;Date Deb;Date Fin;Références réglementaires;Droit public / Droit privé;Cas d'utilisation;Permanent / temporaire;Règle de durées;Type de contrat;Cat. FP;Sous catégorie;Obligations statutaires d'enseignement;Bibliothèque des actes;Informations complémentaires à saisir dans Siham;Mode de gestion / Mode de rémunération;Grade TG;Pseudo grade;Echelon;Indice brut ou majoré forcé;Situation statutaire;Régime Sécurité sociale;Régime retraite;"Code et Libellé
+Harpège";"RG pour RDD
+depuis Harpège";"Code
+CISIRH";Libellé CISIRH;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2039;Contractuel;Ctr type CNRS Hist;Contractuel type CNRS - Historique;;;"Décret 68-986
+Décret 59-1405";Droit public;"Ce statut historique a été utilisé par la reprise des données lorsque dans Harpège l'agent a un segment de carrière dans la population ""CC - Personnel contractuel de type CNRS"", il ne doit plus être utilisé";Permanent;Non applicable;CDI;"A
+B
+C";Biatss;Non concerné;Utiliser l'avenant adéquat en fonction du cas de gestion: changement d'indice, d'affectation…;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;0000 - Grade générique;00;oui;;;;"Dans Harpège il ne s'agit pas d'un contractuel mais d'un agent avec une carrière dans la population ""CC - Contractuel type CNRS""";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2040;Contractuel;Ctr ASU Hist;Contractuel ASU - Historique;;;;Droit public;"Ce statut historique est utilisé par la reprise de données lorsque dans Harpège l'agent a un segment de carrière dans la population ""CA - Personnel contractuel de l'ASU"", il ne doit plus être utilisé";Permanent;Non applicable;CDI;"A
+B
+C";Biatss;Non concerné;Utiliser l'avenant adéquat en fonction du cas de gestion: changement d'indice, d'affectation…;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;0000 - Grade générique;00;oui;;;;"Dans Harpège il ne s'agit pas d'un contractuel mais d'un agent avec une carrière dans la population ""CA - Agent contractuel de l'ASU""";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0101;Contractuel;Ctr sans corps tit;Absence corps de fonctionnaire;01/01/1900;;"Loi 84-16 article 4, 1°
+CGFP Article L332-2 1°";Droit public;"Ce statut peut être utilisé  :
+• en l'absence de corps de fonctionnaires de l'Etat susceptibles d'assurer les fonctions correspondantes (cf CGFP)
+• pour les post-doctorants qui ne sont pas régis par le décret 2021-1450 mis en oeuvre par la LPR. Ce sont des chercheurs titulaires d'une thèse de doctorat (équivalent français du PHD) qui sont engagés en CDD dans une unité de recherche. 
+";Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD suivi d'un CDI
+CDI direct
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;"CO101_41 - contractuel en l'absence de fonctionnaire- rémunération indiciée
+
+CO101_41F - contractuel en l'absence de fonctionnaire-rémunération forfaitaire";"Le cas échéant, cocher la case ""Agent post-doctorant"" de l'écran Carrière détaillée";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;"
+CDD: 3G-Contract.84-16 Article 4 1°
+
+          ----------
+CDD: 3G-Contract.84-16 Article 4 1°
+
+          ----------
+CDI: 3V-Contract.84-16 Article 4 1°";"
+si CDD inférieur à 12 mois : 
+12-Non titulaires-Non permanents temporaires
+          ----------
+si CDD supérieur ou égal à 1 an : 
+10-Non titulaires permanents
+          ----------
+si CDI : 
+10-Non titulaires permanents";"
+10-IRCANTEC temps complet
+
+          ----------
+10-IRCANTEC temps complet
+
+          ----------
+10-IRCANTEC temps complet";"CD : Contrat à durée indéterminée
+C3 : CDD 3 ans renouvelable
+CI : CDI (historique)
+DD : Contractuel post-doctorant
+HS-VR : Valorisation de la recherche 
+              (transco personnalisée)
+41 : Absence corps de fonctionnaire";Si l'équivalent grade du contrat n'est pas de catégorie A;C0101;Contractuel en l'absence de corps de fonctionnaire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0102;Contractuel;Ctr fonct particul;Fonctions/besoins particuliers;01/01/1900;;"Loi 84-16 article 4, 2°
+CGFP Article L332-2 2°";Droit public;"Ce statut peut être utilisé :
+• lorsque la nature des fonctions ou les besoins des services le justifient, notamment pour des fonctions nécessitant des compétences techniques spécialisées ou nouvelles ou lorsque l'autorité de recrutement n'est pas en mesure de pourvoir l'emploi par un fonctionnaire de l'Etat présentant l'expertise ou l'expérience professionnelle adaptée aux missions à accomplir à l'issue du délai prévu par la procédure mentionnée à l'article L. 311-2 du CGFP ;
+• pour les post-doctorants qui ne sont pas régis par le décret 2021-1450 mis en oeuvre par la LPR. Ce sont des chercheurs titulaires d'une thèse de doctorat (équivalent français du PHD) qui sont engagés en CDD dans une unité de recherche. 
+• pour les ""doctorants"" dont le recrutement ne se fonde pas sur le décret 2009-464 car la source du financement est différente et le recrutement peut être d’une durée inférieure à 3 ans.
+";Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD
+CDI direct
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;"CO102_42 - contractuel sur fonctions ou besoins particuliers -rémunération indiciée
+CO102_42F - contractuel sur fonctions ou besoins particuliers -rémunération forfaitaire
+CO102_CREC - CONTRAT DE RECRUTEMENT (recherche)";"Le cas échéant, cocher la case ""Agent post-doctorant"" de l'écran Carrière détaillée
+
+Les ""doctorants"" sont identifiables par la saisie de la fonction ""Sans mission complémentaire"" dans l'écran Carrière / Situation-Affectation / Affectations / Fonctions";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Si CDD, renseigner avec ""0500810000 - CONTR BIATOSS CDD A""
+
+Si CDI, modifier en : ""0500780000 - CONTR BIATOSS CDI A""";Choisir le grade correspondant au niveau de l'agent;00;oui;"CDD: 3H-Contract.84-16 Article 4 2°
+
+CDI: 3W-Contract.84-16 Article 4 2°";"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"CD : Contrat à durée indéterminée
+C3 : CDD 3 ans renouvelable
+CI : CDI (historique)
+DD : Contractuel post-doctorant
+HS-VR : Valorisation de la recherche
+              (transco personnalisée)";Si l'équivalent grade du contrat est  de catégorie A;C0102;Contractuel sur fonctions ou besoins particuliers;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0103;Contractuel;Ctr emploi vacant;Remplacement momentané;01/01/1900;13/03/2012;"Loi 84-16 article 3, alinéa 8
+Loi 2012-347 art 37 --> date de fin de valeur au 13/03/2012";Droit public;"Assurer le remplacement de fonctionnaires autorisés à exercer leurs fonctions à temps partiel, ou indisponibles en raison d'un congé de maladie, d'un congé de maternité, d'un congé parental, d'un congé de présence parentale, de l'accomplissement du service civil ou national, du rappel ou du maintien sous les drapeaux ou de leur participation à des activités dans le cadre d'une d'une réserve opérationnelle, sanitaire ou de sécurité civile.
+Les contrats de travail qui débutent au-delà du 13/03/2012 sont basés sur le statut C0135 qui lui succède.";;;CDD;"A
+B
+C";Null;;;;;0500010000 - AGENT CONTRACTUEL;***;***;***;;;;Pas de contrat Harpège transcodé sur ce statut CISIRH;;C0103;Contractuel recruté en remplacement momentané d'un fonctionnaire ou pour pourvoir temporairement un emploi vacant;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0135;Contractuel;Ctr remplacement;Remplacement momentané d'un fonctionnaire;14/03/2012;;"Loi 84-16 article 6 quater
+L 2012-347 A 37(M)
+CGFP Article L332-6";Droit public;"Ce code a succédé au ""C0103-Remplacement momentané""
+Ce statut est utilisé pour le remplacement momentané d'un fonctionnaire ou d'un agent contractuel qui est :
+•  autorisé à exercer ses fonctions à temps partiel
+• indisponible en raison d'un congé régulièrement accordé en application du CGFP.
+Le contrat est renouvelable jusqu'à la date de retour de l'agent public à remplacer.";Temporaire;;"CDD
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;CO103_3 - contractuel recruté en remplacement d'un fonc. pour pourvoir un emploi vacant -rémunération indiciée;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;3L-Contract.84-16 Article 6 quater;"12-Non titulaires-Non permanents temporaires
+10-Non titulaires permanents";10-IRCANTEC temps complet;"SZ : Remplacement momentané
+fonct. ou contrac";***;C0135;Contractuel recruté en remplacement momentané d'un fonctionnaire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0136;Contractuel;Ctr emploi vacant;Pourvoir temporairement un emploi vacant;14/03/2012;;"Loi 84-16 article 6 quinquies
+L2012-347 A 37(M)
+CGFP Article L332-7
+";Droit public;"Ce statut est utilisé afin de garantir la continuité du service et de faire face à une vacance temporaire d'emploi dans l'attente du recrutement d'un fonctionnaire. La vacance doit avoir donné lieu aux formalités prévues à l'article L.311-2 du CGFP qui dit: ""Sans préjudice des obligations spéciales imposées en matière de publicité par la législation sur les emplois réservés, les créations ou vacances d'emplois relevant du présent code sont portées sans délai à la connaissance des agents publics et des autorités compétentes dans un espace numérique commun aux employeurs publics mentionnés à l'article L. 2. Les modalités d'application de cette publicité sont fixées par décret.""
+CDD d'1 an maximum qui peut être prolongé, dans la limite de 2 ans, si la procédure de recrutement n'a pu aboutir.";Temporaire;;"CDD
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;CO103_AR3F - contractuel recruté en remplacement d'un fonc. pour pourvoir un emploi vacant -rémunération forfaitaire;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;3M-Contract.84-16 Article 6 quinquies;"12-Non titulaires-Non permanents temporaires
+10-Non titulaires permanents";10-IRCANTEC temps complet;SY : Vacance temporaire d'emploi;***;C0136;Contractuel recruté pour pourvoir temporairement un emploi vacant;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0104;Contractuel;Ctr tps incomplet;Emploi à temps incomplet;01/01/1900;13/03/2012;Loi 84-16 article 6;Droit public;"Statut utilisé jusqu'au 13/03/2012 pour les contrats de travail relatifs à l'exercice de fonctions correspondant à un besoin permanent, impliquant un service à temps incomplet, d'une durée n'excédant pas 70% d'un service à temps complet.
+
+Les contrats de travail qui débutent au-delà du 13/03/2012 sont basés sur les statuts C2059 et C2060 qui lui succèdent pour distinguer les Biatss des EC";;;"CDD
+CDI";"A
+B
+C";Null;;"CO104_61 - contractuel à temps incomplet-rémunération indiciée
+CO104_61F - contractuel à temps incomplet-rémunération forfaitaire";;***;0500010000 - AGENT CONTRACTUEL;***;***;***;***;***;***;TI : Temps incomplet;***;C0104;Contractuel à temps incomplet;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2059;Contractuel;Besoin <70% BIATSS;"Besoin permanent service <ou=70%
+BIATSS";13/03/2012;;"Loi 84-16 article 6
+CGFP Article L332-3";Droit public;"Ce code a succédé au ""C0104-Emploi à temps incomplet"". Il est utilisé pour recruter des contractuels dont les fonctions de BIATSS répondent à un besoin permanent dans le cadre d'un service à temps incomplet d'une durée n'excédant pas 70 % 
+La circulaire du 22/07/2013 relative au recours au contrat dans la FPE a été prise à la suite de la création des articles 6 quater et 6 quinquies dans la loi n° 84-16. Elle explicite les modalités de recrutement et indique notamment: ""En application de l'article 6 de la loi du 11 janvier 1984, le recours à un agent contractuel est autorisé pour pourvoir un besoin permanent à temps incomplet, qui ne peut dépasser 70 % d'un temps complet, depuis l'adoption de la loi n° 2001-2 du 3 janvier 2001 relative à la résorption de l'emploi précaire. Ce cas de recours est autorisé pour les fonctions permanentes relevant des catégories hiérarchiques A, B et C. En conséquence, le recrutement d'un agent contractuel pour répondre à un besoin à temps incomplet supérieur à 70 % n'est jamais possible, y compris sur le fondement de l'article 4 de cette même loi qui est réservé aux emplois à temps complet (CE n° 338856 du 26 mars 2012). Seules les fonctions impliquant, par nature, un service à temps incomplet peuvent justifier le recours à un agent contractuel sur le fondement de l'article 6 de la loi du 11 janvier 1984 (CE n° 207509 du 30 septembre 2002). Chaque administration doit donc veiller, compte tenu des caractéristiques mêmes de l'emploi à pourvoir ainsi que des conditions d'organisation du temps de travail, à distinguer, d'une part, ceux des emplois qui exigent un temps complet et, d'autre part, ceux qui répondent à une logique de temps incomplet, plafonné en tout état de cause à 70 % d'un temps complet. Les contrats conclus pour ce type de besoin le sont dans des conditions de durée inchangées par rapport à la législation et la réglementation antérieurement applicables, c’est-à-dire soit par CDI (article 6 de la loi du 11/01/1984), soit par CDD de 3 ans, renouvelable dans la limite de 6 ans (article 6 bis de la loi du 11 /01/1984)""
+";Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD
+CDI
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Biatss;Non concerné;"C2059 - CDDI pour contractuel CDD à temps incomplet-rémunération indiciée
+C2059 - CDDF pour contractuel CDD à temps incomplet-rémunération forfaitaire
+C2059 - CDI pour contractuel CDI à temps incomplet-rémunération indiciée
+C2059 - SAUV pour contractuel CDI à temps incomplet-rémunération indiciée";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;"CDD: 3K-Contract.84-16 Article 6
+
+CDI: 3Y-Contract.84-16 Article 6";"12-Non titulaires-Non permanents temporaires
+";10-IRCANTEC temps complet;"TI : Temps incomplet
+SX : Besoin permanent <ou= 70% temps complet
+
++ équivalent grade correspondant à un personnel BIATSS";***;C0104;Contractuel à temps incomplet;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2060;Contractuel;Besoin <70% Ens-Ch;"Besoin permanent service <ou=70%
+Ens-Ch";13/03/2012;;"Loi 84-16 article 6
+CGFP Article L332-3";Droit public;"Ce code a succédé au ""C0104-Emploi à temps incomplet"". Il est utilisé pour recruter des contractuels dont les fonctions de BIATSS répondent à un besoin permanent dans le cadre d'un service à temps incomplet d'une durée n'excédant pas 70 % 
+La circulaire du 22/07/2013 relative au recours au contrat dans la FPE a été prise à la suite de la création des articles 6 quater et 6 quinquies dans la loi n° 84-16. Elle explicite les modalités de recrutement et indique notamment: ""En application de l'article 6 de la loi du 11 janvier 1984, le recours à un agent contractuel est autorisé pour pourvoir un besoin permanent à temps incomplet, qui ne peut dépasser 70 % d'un temps complet, depuis l'adoption de la loi n° 2001-2 du 3 janvier 2001 relative à la résorption de l'emploi précaire. Ce cas de recours est autorisé pour les fonctions permanentes relevant des catégories hiérarchiques A, B et C. En conséquence, le recrutement d'un agent contractuel pour répondre à un besoin à temps incomplet supérieur à 70 % n'est jamais possible, y compris sur le fondement de l'article 4 de cette même loi qui est réservé aux emplois à temps complet (CE n° 338856 du 26 mars 2012). Seules les fonctions impliquant, par nature, un service à temps incomplet peuvent justifier le recours à un agent contractuel sur le fondement de l'article 6 de la loi du 11 janvier 1984 (CE n° 207509 du 30 septembre 2002). Chaque administration doit donc veiller, compte tenu des caractéristiques mêmes de l'emploi à pourvoir ainsi que des conditions d'organisation du temps de travail, à distinguer, d'une part, ceux des emplois qui exigent un temps complet et, d'autre part, ceux qui répondent à une logique de temps incomplet, plafonné en tout état de cause à 70 % d'un temps complet. Les contrats conclus pour ce type de besoin le sont dans des conditions de durée inchangées par rapport à la législation et la réglementation antérieurement applicables, c’est-à-dire soit par CDI (article 6 de la loi du 11/01/1984), soit par CDD de 3 ans, renouvelable dans la limite de 6 ans (article 6 bis de la loi du 11 /01/1984)""
+";Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD
+CDI
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Enseignant-Chercheur-EC;En fonction de la quotité de recrutement;"C2059 - CDDI pour contractuel CDD à temps incomplet-rémunération indiciée
+C2059 - CDDF pour contractuel CDD à temps incomplet-rémunération forfaitaire
+C2059 - CDI pour contractuel CDI à temps incomplet-rémunération indiciée
+C2059 - SAUV pour contractuel CDI à temps incomplet-rémunération indiciée";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;"CDD: 3K-Contract.84-16 Article 6
+
+CDI: 3Y-Contract.84-16 Article 6";"12-Non titulaires-Non permanents temporaires
+";10-IRCANTEC temps complet;"TI : Temps incomplet
+SX : Besoin permanent <ou= 70% temps complet
+
++ équivalent grade correspondant à un personnel enseignant chercheur";***;C0104;Contractuel à temps incomplet;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0106;Contractuel;BOE;Bénéficiaire de l'obligation d'emploi;01/01/1900;;"Loi 84-16 article 27
+Décret 95-979
+CGFP Articles L352-4";Droit public;"Si leur handicap est jugé compatible avec l'emploi postulé, les personnes en situation de handicap mentionnées au 1er alinéa de l'article L.131-8  du CGFP peuvent être recrutées sur ce statut pendant une période correspondant à la durée de stage prévue par le statut particulier du corps dans lequel elles ont vocation à être titularisées. Le contrat peut être renouvelé pour une durée qui ne peut excéder celle fixée initialement.
+Cf. art. 5 du décret : rémunération équivalente à celle des stagiaires issus du concours externe (traitement + primes et indemnités)
+";Permanent;"Durée initiale du contrat : 1 an maximum
+Renouvelable dans la limite de 2 ans max pour contrat + avenants";CDD;"A
+B
+C";Mixte;Non concerné;CO106_BOE;"Lors de la titularisation : utiliser le mode d’accès au corps ""AC114 - Titularisation (contrat vocation titu)"" et se référer aux notes :
+· DAF C3 2014 n°0060 du 8 juillet 2014 pour les modalités de régularisation rétroactive des cotisations de pension civile
+· DAF C3 2014 n°0131 du 1er décembre 2014 pour les modalités de régularisation rétroactive des cotisations de pension civile (précisions)";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"0501150000 - ANT PERM A+ ART. 27
+0501290000 - ANT PERM A ART.27
+0501430000 - ANT PERM B ART.27
+0501580000 - ANT PERM C ART.27
+";Choisir le grade correspondant au niveau de l'agent;00;oui;3Z-Contract.84-16 Article 27;10-Non titulaires permanents;10-IRCANTEC temps complet;HA : Bénéficiaire de l'obligation d'emploi;***;C0106;Contractuel handicapé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0109;Contractuel;PACTE;PACTE;01/01/1900;;"Loi 84-16 article 22 bis
+CGFP Articles L326-10";Droit public;"Il s'agit du Parcours d'accès aux carrières territoriales, hospitalières et de l'état qui concerne les jeunes de 28 ans au plus, sortis du système éducatif sans diplôme / sans qualification professionnelle reconnue / avec un niveau de qualification inférieur à celui attesté par un diplôme de fin de 2nd cycle long. Ce contrat a pour objet de leur permettre d'acquérir, par une formation en alternance avec leur activité professionnelle, une qualification en rapport avec l'emploi dans lequel ils sont recrutés ou, le cas échéant, le titre ou le diplôme requis pour l'accès au corps ou au cadre d'emplois dont relève cet emploi. 
+Le recrutement des bénéficiaires de ces dispositions a lieu à l'issue d'une procédure de sélection à laquelle sont associés les organismes publics concourant au service public de l'emploi.";Permanent;"Durée max du contrat : 1 an renouvelable
+Durée max totale:2 ans";CDD;;Biatss;Non concerné;Pas de modèle car il s'agit d'un CERFA;"Lors de la titularisation : utiliser le mode d’accès au corps ""AC114 - Titularisation (contrat vocation titu)"" et se référer aux notes :
+· DAF C3 2014 n°0060 du 8 juillet 2014 pour les modalités de régularisation rétroactive des cotisations de pension civile
+· DAF C3 2014 n°0131 du 1er décembre 2014 pour les modalités de régularisation rétroactive des cotisations de pension civile (précisions)";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500500000 - PACTE;Choisir le grade correspondant au niveau de l'agent;00;oui;28-PACTE;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;PE : Parcours d'accès aux carrières de la FP;***;C0109;Contractuel PACTE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0110;Contractuel;Ctr EP-Etat & AAI;EPA et institutions spécialisées;01/01/1900;31/12/2014;"Loi 84-16 article 3, 2° et 3°
+Décret 84-38 & Décret 84-455";;"Hors périmètre Siham, jusqu'à fin 2014 ce statut peut être utile  pour renseigner l'historique du parcours professionnel de l'agent au sein d'EPA et d'institutions administratives autorisés à déroger à la règle selon laquelle les emplois permanents doivent être occupés par des fonctionnaires
+Inactivation en cours DM 158984";Permanent;;"CDD
+CDI";;;;;;;;;;;;;;Pas de contrat Harpège transcodé sur ce statut CISIRH;;C0110;Contractuel EPA et institutions spécialisées;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0111;Contractuel;Ctr serv étranger;Service à l'étranger;01/01/1900;;"Loi 84-16 article 4, 2°
+Décret 69-697";;Hors périmètre Siham, ce statut est utile  pour renseigner l'historique du parcours professionnel de l'agent contractuel de l'Etat de nationalité française, en service à l'étranger au sein d'un EPA;;;"CDD
+CDI";"A
+B
+C";;;;;;;;;;;;;Pas de contrat Harpège transcodé sur ce statut CISIRH;;C0111;Contractuel en service à l'étranger;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0112;Contractuel;"Avant le 13/03/2012 : 
+ANT occasionnel 
+***
+A compter du 14/03/2012: 
+Accroiss temp activ";"Avant le 13/03/2012 :
+ANT : besoin occasionnel
+***
+A compter du 14/03/2012 :
+Accroissement temporaire d'activité";01/01/1900;;"Jusqu'au 13/03/2012 :
+Loi 84-16 Art. 6, Al 2 
+***
+A compter du 14/03/2012 : 
+Loi 84-16 Art. 6 sexies
+Loi 2012-347 Art. 37
+***
+A compter du 21/03/2014 :
+D. 2014-364
+***
+A compter du 01/03/2022 :
+CGFP Article L332-22 et Décret 86-83 Art. 7";Droit public;"Recrutement  autorisé sur des fonctions correspondant à un besoin occasionnel lorsque les fonctions ne peuvent être assurées par des fonctionnaires titulaires. Le contrat saisonnier se caractérise par l’exécution de tâches appelées à se répéter chaque année à la même période pour faire face à de fortes variations saisonnières générant un besoin ponctuel de main-d’œuvre indépendantes de la volonté de l’employeur.
+
+Jusqu'au 20/03/2014 : La durée totale du contrat et de ses renouvellements éventuels ne peut excéder 10 mois, au cours d'une période de 12 mois consécutifs 
+
+A compter du 21/03/2014 : La durée totale du contrat et de ses renouvellements éventuels ne peut excéder 12 mois au cours d'une période de 18 mois consécutifs
+
+A compter du 01/03/2022 : Modification de la règle de durée maximum du contrat";Temporaire;"Durée maximale du contrat = 12 mois
+Renouvelable dans la limite de sa durée maximale au cours d'une période de 18 mois consécutifs";"CDD
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Biatss;Non concerné;"CO112_62 - besoin occasionnel-rémunération indiciée
+CO112_62F - besoin occasionnel-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;3N-Contract.84-16 Article 6 sexies;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;"CB : CDD BIBLI (10 mois)
+CP : CDD PAOSS (10 mois)
+CR : CDD RF (10 mois)
+SW : Accroissement temporaire d'activité";***;C0112;Agent non titulaire : besoin occasionnel ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0113;Contractuel;"Avant le 13/03/2012 :
+ANT saisonnier
+***
+A compter du 14/03/2012 :
+Accroiss sais activ";"Avant le 13/03/2012 :
+ANT : besoin saisonnier
+
+A cpter du 14/03/2012 :
+Accroissement saisonnier d’activité";01/01/1900;;"Jusqu'au 13/03/2012 :
+Loi 84-16 Art. 6, Al 2
+***
+A compter du 14/03/2012 : 
+Loi 84-16 Art. 6 sexies
+Loi 2012-347 Art. 37
+
+***
+A compter du 01/03/2022
+CGFP Article L332-22 et Décret 86-83 Art. 7";Droit public;"Recrutement  autorisé sur des fonctions correspondant à un besoin saisonnier lorsque  les fonctions ne peuvent être assurées par des fonctionnaires titulaires. Le contrat saisonnier se caractérise par l’exécution de tâches appelées à se répéter chaque année à la même période pour faire face à de fortes variations saisonnières générant un besoin ponctuel de main-d’œuvre indépendantes de la volonté de l’employeur.
+
+Jusqu'au 28/02/2022 la durée maximale est de 10 mois sur une période de 12 mois consécutifs.
+
+A compter du 01/03/2022 : Modification de la règle de durée maximum du contrat";Temporaire;"Durée maximale du contrat = 6 mois
+Renouvelable dans la limite de sa durée maximale au cours d'une période de 12 mois consécutifs";"CDD
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Biatss;Non concerné;"CO113_62 - besoin saisonnier-rémunération indiciée
+CO113_62F - besoin saisonnier-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;3N-Contract.84-16 Article 6 sexies;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;SV : Accroissement saisonnier d'activité;***;C0113;Agent non titulaire : besoin saisonnier;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0141;Contractuel;Ctrl EP-état;Contractuel des établissements publics;08/08/2019;;"Loi 84-16 article 3, 2° 
+Loi 2019-828 art 18 (LTFP)
+1° de l'article L332-1 DU CGFP";Droit public;"Les emplois des établissements publics de l'Etat, sous réserve des dispositions du code de la recherche pour les agents publics qui y sont soumis, peuvent être pourvus par des agents contractuels
+En cours de création DM 158984";Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;Non disponible actuellement;;"Différents couples possibles :
+MG01 / MR01
+MG07 / MR01 à MR06 et MR08
+MG08 / MR01 à MR06 et MR08";"Différents grades TG possibles :
+0500780000 - CONTR BIATOSS CDI A
+0500790000 - CONTR BIATOSS CDI B
+0500800000 : CONTR BIATOSS CDI C
+0500810000 : CONTR BIATOSS CDD A
+0500820000 : CONTR BIATOSS CDD B
+0500830000 : CONTR BIATOSS CDD C
+0500840000 : ENS CHERCHEURS CDI A
+0500850000 : ENS CHERCHEURS CDD A
+0500860000 : CONT CHERCHEUR CDI A
+0500870000 : CONT CHERCHEUR CDD A
+0500880000 : CONTR ENSEIGN. CDI A
+0500890000 : CONTR ENSEIGN. CDD A
+";0000 - Grade générique;00;oui;"si CDD: 3B-Contractuel CDD article 3 al. 2
+si CDI: 3Q-Contractuel CDI article 3 al. 2";"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;;;C0141;Contractuel des établissements publics spécialisés;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0147;Contractuel;Sans format°statut;Ctr sur emploi sans formation statutaire;01/01/2020;;"Loi 84-16 article 4, 3°
+CGFP 3° de l'articles L332-2
+Recrutement: Décret 2019-1414 ";Droit public;Ce statut mis en œuvre par l'article 18 de la LTFP permet le recrutement d'un contractuel sur un emploi permanent de l'état lorsque ce dernier ne nécessite pas une formation statutaire donnant lieu à titularisation du fonctionnaire.;Permanent;"Durée initiale du contrat : 3 ans maximum
+Renouvelable dans la limite de 6 ans max pour contrat + avenants";"CDD
+CDI
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Mixte;Non concerné;En cours de création;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Différents grades TG possibles :
+0500780000 - CONTR BIATOSS CDI A
+0500790000 - CONTR BIATOSS CDI B
+0500800000 : CONTR BIATOSS CDI C
+0500810000 : CONTR BIATOSS CDD A
+0500820000 : CONTR BIATOSS CDD B
+0500830000 : CONTR BIATOSS CDD C
+0500840000 : ENS CHERCHEURS CDI A
+0500850000 : ENS CHERCHEURS CDD A
+0500860000 : CONT CHERCHEUR CDI A
+0500870000 : CONT CHERCHEUR CDD A
+0500880000 : CONTR ENSEIGN. CDI A
+0500890000 : CONTR ENSEIGN. CDD A
+";0000 - Grade générique;00;oui;"si CDD: 4J-Contractuel CDD art. 4 al. 3
+si CDI: 4K-Contractuel CDI art. 4 al. 3";"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;;;C0147;Contractuel recruté lorsque l’emploi ne nécessite pas une formation statutaire donnant lieu à titularisation du fonctionnaire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0148;Contractuel;Emploi Dir. Etat ;Contractuel sur emploi de direction de l'Etat;01/01/2020;;"Loi 84-16 article 3, 1°bis
+Décret 2019-1594";Droit public;"L'article 16 de la LTFP prévoit l'ouverture des emplois de direction de l'Etat aux personnes n'ayant pas la qualité de fonctionnaires; cependant, ces emplois ne sont pas ouverts dans les établissement de l'ESR.
+Hors périmètre Siham, ce statut ne doit être utilisé que pour l'historique du parcours professionnel de l'agent.";;;;;;;;;;;;;;4G - Contractuel CDD emploi de direction article 3 alinéa 1 bis loi n°84-16 du 11 janvier 1984;;;;;C0148;Contractuel sur emploi de direction;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0115;Contractuel;Contr. nommé gouv;Nommé par décision gouvernement;01/01/1900;;"Loi 84-16 article 3, 1°
+Décret 85-779";Droit public;Hors périmètre Siham, ce statut est utile  pour renseigner l'historique du parcours professionnel de l'agent lorsqu'il a été nommé par décision du Gouvernement sur un emploi supérieur. Au MEN : Sans préjudice de l'application des textes en vigueur fixant les conditions de leur nomination, recteurs d'académie.;Permanent;;CDD;A;;;;;;0500010000 - AGENT CONTRACTUEL;;;;;;;Pas de contrat Harpège transcodé sur ce statut CISIRH;;C0115;Contractuel nommé par décision du gouvernement;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0116;Contractuel;Assistant éducat°;Assistant d'éducation;01/01/1900;;"Loi 84-16 article 3, 6°
+Décret 2003-484";Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent.;;;CDD;;;;;;;1550010000 - ASSISTANT EDUCATION;;;;;;;AS : Assistant d'éducation;;C0116;Assistant d'éducation ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0117;Contractuel;Maître d'internat;Maître d'internat;01/01/1900;;"Loi 84-16 article 3, 6°
+Décret du 11 mai 1937";Droit public;Hors périmètre Siham, ce statut ne doit être utilisé que pour l'historique du parcours professionnel de l'agent.;;;CDD;;;;;;;0627010000 - MAITRE D INTERNAT;;;;;;;MI : Maître d'internat;;C0117;Maître d'internat;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0118;Contractuel;Surveillant extern;Surveillant d'externat;01/01/1900;;"Loi 84-16 article 3, 6°
+Décret du 27 octobre 1938";Droit public;Hors périmètre Siham, ce statut ne doit être utilisé que pour l'historique du parcours professionnel de l'agent.;;;CDD;;;;;;;0628010000 - SURVEILLANT EXTERNAT;;;;;;;SE : Surveillant d'externat;;C0118;Surveillant d'externat;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2006;Contractuel;assoc PR;Associé professeur;01/01/1900;;"Code Education L952-1
+Loi 84-16 article 5
+Décrets 85-733 et 91-267
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités françaises ou étrangères justifiant :
+• soit d'une expérience professionnelle directement en rapport avec la spécialité enseignée autre qu'une activité d'enseignement, d'au moins 9 ans dans les 11 ans qui précèdent le 1er janvier de l'année du recrutement pour un professeur des universités associé. 
+• soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET exercer des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf";Temporaire;"La durée initiale ne peut être inférieure à 6 mois, ni supérieure à 3 ans.
+Renouvelable par période de 3 ans
+Durée totale maximum de 6 ans";CDD;A;Enseignant-Chercheur-EC;"128h de cours ou 192h de TD ou toute autre
+combinaison équivalente";"Nomination prononcée par décret
+PU_C019R - nomination en qualité de professeur des universités associé (renouvellement)
+";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Dans le tablind, nous avons un grade TG pour chaque pseudo-grades possible:
+- ""0652010000 - PROF.ASSOCIE 2C.UNIV""
+- ""0652020000 - PROF.ASSOCIE 1C.UNIV""
+- ""0652030000 - PROF.ASSOCIE CE.UNIV""
+et sans distinction de la modalité de service.
+En l'absence d'une pratique avérée sur les sites, il n'est pas mis en place une transcodification par défaut.";"3001 - Prof universités 2C
+3002 - Prof universités 1C
+3005 - Prof universités CE";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;AF : Associé professeur;;C0134;Professeur et enseignant assimilé associés des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2007;Contractuel;assoc PR mt;Associé professeur mi-tps;01/01/1900;;"Code Education L952-1
+Loi 84-16 article 5
+Décrets 85-733 et 91-267
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités françaises ou étrangères justifiant :
+• soit d'une expérience professionnelle en rapport avec la spécialité enseignée d'au moins 9 ans dans les 11 ans qui précèdent le 1er janvier de l'année du recrutement
+• soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET exercer des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf";Temporaire;"La durée initiale est de 3 ans.
+Renouvelable par périodes inférieures ou égales à 3 ans
+Renouvellement illimité";CDD;A;Enseignant-Chercheur-EC;égales à la moitié des obligations du temps plein, soit 64h de cours ou 96h de TD ou toute autre combinaison équivalente;"Nomination prononcée par décret
+PU_C019TPR - nomination en qualité de professeur des universités associé à temps partiel (renouvellement)";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0652040000 - PROFESSEUR ASSOCIE UNIV.TEMPS PARTIEL     ;"3001 - Prof universités 2C
+3002 - Prof universités 1C
+3005 - Prof universités CE";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MA : Associé professeur à mi-temps;;C0134;Professeur et enseignant assimilé associés des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2068;Contractuel;Associé réfugié PR;Professeur associé ayant la qualité de réfugié des établissements de l'ESR;01/01/1900;;"Décret 85-733 articles 9-1 et 9-2
+Décret 91-267 articles 2, 4 et 9
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités ayant la qualité de réfugié politique et justifiant, soit d'une expérience professionnelle directement en rapport avec la spécialité enseignée autre qu'une activité d'enseignement, d'au moins 9 ans dans les 11 ans qui précèdent le 1er janvier de l'année du recrutement, soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET et avoir exercé des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf
+En cours de création DM 158984";Temporaire;"La durée initiale ne peut être inférieure à 6 mois, ni supérieure à 3 ans.
+Renouvelable par période d'1 an de façon illimité";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"Nomination prononcée par décret
+PU_C019R - nomination en qualité de professeur des universités associé (renouvellement)
+";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Dans le tablind, nous avons un grade TG pour chaque pseudo-grades possible:
+- ""0652010000 - PROF.ASSOCIE 2C.UNIV""
+- ""0652020000 - PROF.ASSOCIE 1C.UNIV""
+- ""0652030000 - PROF.ASSOCIE CE.UNIV""
+et sans distinction de la modalité de service.
+En l'absence d'une pratique avérée sur les sites, il n'est pas mis en place une transcodification par défaut.";"3001 - Prof universités 2C
+3002 - Prof universités 1C
+3005 - Prof universités CE";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;AF : Associé professeur;;C0138;Enseignant associé réfugié;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2008;Contractuel;assoc MCF;Associé MCF;01/01/1900;;"Code Education L952-1
+Loi 84-16 article 5
+Décrets 85-733 et 91-267
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités françaises ou étrangères justifiant :
+• soit d'une expérience professionnelle en rapport avec la spécialité enseignée d'au moins 7 ans dans les 9 ans qui précèdent le 1er janvier de l'année du recrutement
+• soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET exercer des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf
+";Temporaire;"La durée initiale ne peut être inférieure à 6 mois, ni supérieure à 3 ans.
+Renouvelable par période de 3 ans
+Durée totale maximum de 6 ans";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"MCF_C019 - nomination en qualité de maître de conférence associé
+MCF_C019R -nomination en qualité de maître de conférence associé (renouvellement)";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015010000 - MAITRE CONF.ASSOCIE UNIVERSITES TPS COMP     ;"3014 - MCF Cl normale
+3013 - MCF Hors classe";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;AM : Associé maître de conférence;;C0137;Maître de conférences et enseignant assimilé associés des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2009;Contractuel;assoc MCF mt;Associé MCF mi-tps;01/01/1900;;"Code Education L952-1
+Loi 84-16 article 5
+Décrets 85-733 et 91-267
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités françaises ou étrangères justifiant :
+• soit d'une expérience professionnelle en rapport avec la spécialité enseignée d'au moins 7 ans dans les 9 ans qui précèdent le 1er janvier de l'année du recrutement
+• soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET exercer des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf
+";Temporaire;"La durée initiale est de 3 ans.
+Renouvelable par périodes inférieures ou égales à 3 ans
+Renouvellement illimité";CDD;A;Enseignant-Chercheur-EC;égales à la moitié des obligations du temps plein, soit 64h de cours ou 96h de TD ou toute autre combinaison équivalente;"MCF_C019TP - nomination en qualité de maître de conférence associé à temps partiel
+MCF_C19TPR - nomination en qualité de maître de conférence associé à temps partiel (renouvellement)";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015020000 - MAITRE CONFER. ASSOCIE UNIV.TPS.PARTIEL;"3014 - MCF Cl normale
+3013 - MCF Hors classe";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MC : Associé maître de conf. à mi-temps;;C0137;Maître de conférences et enseignant assimilé associés des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2069;Contractuel;Associé réfugiéMCF;Maître de conférence associé ayant la qualité de réfugié des établissements de l'ESR;01/01/1900;;"Décret 85-733 articles 9-1 et 9-2
+Décret 91-267 articles 2, 4 et 9
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Personnalités ayant la qualité de réfugié politique et justifiant, soit d'une expérience professionnelle directement en rapport avec la spécialité enseignée autre qu'une activité d'enseignement, d'au moins 7 ans dans les 9 ans qui précèdent le 1er janvier de l'année du recrutement, soit d'un des diplômes mentionnés au 1° de l'article 23 du décret du 6 juin 1984 ou équivalents ET et avoir exercé des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche
+Cf fiche DGRH: https://www.galaxie.enseignementsup-recherche.gouv.fr/ensup/deconcentration/associes_mai2022.pdf
+En cours de création DM 158984";Temporaire;"La durée initiale ne peut être inférieure à 6 mois, ni supérieure à 3 ans.
+Renouvelable par période d'1 an de façon illimité";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"MCF_C019 - nomination en qualité de maître de conférence associé
+MCF_C019R -nomination en qualité de maître de conférence associé (renouvellement)";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015010000 - MAITRE CONF.ASSOCIE UNIVERSITES TPS COMP     ;"3014 - MCF Cl normale
+3013 - MCF Hors classe";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;AM : Associé maître de conférence;;C0138;Enseignant associé réfugié;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2010;Contractuel;assoc ASS;Associé assistant tps plein;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités ne remplissant pas les conditions statutaires pour être recrutées en qualité d'AHU peuvent être recrutées pour participer aux activités d'enseignement et de recherche en qualité d'assistant associé des universités. Elles ne peuvent exercer que des fonctions à plein temps et doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline.;Temporaire;"La durée initiale ne peut être inférieure à 6 mois, ni supérieure à 1 an.
+La durée maximum du contrat et de ses renouvellements est de 4 ans (cf limite de durées prévue au décret 2021-1645 pour les emplois correspondants)";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"HU_119_AHA - nomination d'un assistant associé des universités D.91-966 du 20/09/1991- Médecine
+HU_119_AHR - nomination d'un assistant associé des universités D.91-966 du 20/09/1991- Médecine Renouvellement
+HU_119_AOA -  nomination d'un assistant associé des universités D.91-966 du 20/09/1991- Odontologie
+HU_119_AOR - nomination d'un assistant associé des universités D.91-966 du 20/09/1991- Odontologie Renouvellement";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Divers grades TG sont actuellement utilisés par les universités.
+Décision : la transco est faite sur le grade TG utilisé le plus fréquemment :
+0650010000 - ASSISTANT ASS.UNIV.";3051 - Assistant de l'enseignement supérieur;00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;OT : Associé Assistant Temps Plein;;C0137;Maître de conférences et enseignant assimilé associés des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2011;Contractuel;assoc ASS mt;Associé assistant mi-tps;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Attention: Dès sa version initiale, l'article 1 du décret 91-966, a précisé que les assistants associés ne peuvent exercer que des fonctions à temps plein. Ce statut spécifique à un service à mi-temps n'est donc pas réglementaire et n'aurait jamais dû être créé dans Siham. 
+Inactivation en cours DM 158984";;;CDD;A;Enseignant-Chercheur-EC;;;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";Décision : pas de transcodification préparamétrée, chaque utilisateur sélectionne le grade TG qui lui convient.;3051 - Assistant de l'enseignement supérieur;00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;OM : Associé Assistant Mi-Temps;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2012;Contractuel;assoc MA;Associé maître assistant;01/01/1900;30/09/1986;"D. 69-543 abrogé par le décret 85-733
+Circ. 72-43 du 03/02/1972";Droit public;Ce statut est utile pour l'historique de carrière. Le décret 69-543 qui régissait les maîtres-assistants associé a été abrogé par le décret 85-733;;;CDD;A;Enseignant-Chercheur-EC;;;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";Décision : pas de transcodification préparamétrée, chaque utilisateur sélectionne le grade TG qui lui convient.;"3021 - Maître assistant 2C
+3022 - Maître assistant 1C";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MS : Associé Maître Assistant;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2013;Contractuel;assoc chef clin;Associé chef clinique tps plein;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités ne remplissant pas les conditions statutaires pour être recrutées en qualité de CCU-AH peuvent être recrutées pour participer aux activités d'enseignement et de recherche en qualité de chef de clinique associé des universités. Elles ne peuvent exercer que des fonctions à plein temps et doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline.;Temporaire;"La durée du contrat initial ne peut être inférieure à 6 mois ni supérieure à 1 an.
+La durée maximum du contrat et de ses renouvellements est de 4 ans (cf limite de durées prévue au décret 2021-1645 pour les emplois correspondants)";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"HU_119_CUA - nomination d'un chef de clinique associé des universités D.91-966 du 20/09/1991- Médecine
+HU_119_CUR - nomination d'un chef de clinique associé des universités D.91-966 du 20/09/1991- Médecine Renouvellement";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";Décision : pas de transcodification préparamétrée, chaque utilisateur sélectionne le grade TG qui lui convient.;Le pseudo grade saisi dans les informations carrière est utilisé pour  les listes électorales;00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;CT : Associé Chef de Clin. Temps Plein;;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2014;Contractuel;assoc chef clin mt;Associé chef clinique mi-tps;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;"Attention: Dès sa version initiale, l'article 1 du décret 91-966, a précisé que les chefs de clinique associés ne peuvent exercer que des fonctions à temps plein. Ce statut spécifique à un service à mi-temps n'est donc pas réglementaire et n'aurait jamais dû être créé dans Siham.
+Inactivation en cours DM 158984";Temporaire;;CDD;A;Enseignant-Chercheur-EC;;;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";Décision : pas de transcodification préparamétrée, chaque utilisateur sélectionne le grade TG qui lui convient.;Le pseudo grade saisi dans les informations carrière est utilisé pour  les listes électorales;00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;CM : Associé Chef de Clin. Mi-Temps;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2015;Contractuel;assoc prof HU tp;Associé prof hosp-U tps plein;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de professeur des universités-praticien hospitalier, peuvent être recrutées en qualité de professeur associé des universités. Elles doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline. Ce statut est utilisé pour celles qui exercent leurs fonctions à plein temps. ;Temporaire;"La durée du contrat initial ne peut être inférieure à 6 mois ni supérieure à 5 ans.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0652020000 - PROF.ASSOCIE UNIV.1ERE CLASSE TPS.PLEIN;"3011 - PR Praticien hosp 2C
+3012 - PR Praticien hosp 1C
+3015 - PR Praticien hosp CE";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;PT : Associé Prof. Hosp-univ. Temps Plein;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2016;Contractuel;assoc prof HU mt;Associé prof hosp-U mi-tps;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de professeur des universités-praticien hospitalier, peuvent être recrutées en qualité de professeur associé des universités. Elles doivent justifier, depuis au moins 3 ans, d'une activité professionnelle principale effective, autre qu'une activité d'enseignement, en rapport avec la discipline concernée. Ce statut est utilisé pour celles qui exercent leurs fonctions à mi-temps. ;Temporaire;"La durée du contrat initial ne peut être inférieure à 6 mois ni supérieure à 5 ans.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;égales à la moitié des obligations du temps plein, soit 64h de cours ou 96h de TD ou toute autre combinaison équivalente;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0652040000 - PROFESSEUR ASSOCIE UNIV.TEMPS PARTIEL;"3011 - PR Praticien hosp 2C
+3012 - PR Praticien hosp 1C
+3015 - PR Praticien hosp CE";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;PM : Associé Prof. Hosp-univ. Mi-Temps;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2017;Contractuel;assoc MCF HU tp;Associé MCF hosp-U tps plein;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772
+Arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de MCF des universités-praticien hospitalier, peuvent être recrutées en qualité de MCF associé. Elles doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline. Ce statut est utilisé pour celles qui exercent leurs fonctions à plein temps. ;Temporaire;"La durée initiale du contrat ne peut être inférieure à 6 mois ni supérieure à 1 an.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015010000 - MAITRE CONF.ASSOCIE UNIVERSITES TPS COMP;"3111 - MCF Praticien hosp 2C
+3112 - MCF Praticien hosp 1C
+3113 - MCF Praticien hosp HC";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MT : Associé Maît.Conf. Hosp-univ.Temps Plein;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2018;Contractuel;assoc MCF HU mt;Associé MCF hosp-U mi-tps;01/01/1900;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772
+Arrêté MENH0752968A";Droit public;Dans les CHU, des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de MCF des universités-praticien hospitalier, peuvent être recrutées en qualité de MCF associé. Elles doivent justifier, depuis au moins 3 ans, d'une activité professionnelle principale effective, autre qu'une activité d'enseignement, en rapport avec la discipline concernée. Ce statut est utilisé pour celles qui exercent leurs fonctions à mi-temps. ;Temporaire;La durée maximale du contrat initial est de 3 ans. Il est renouvelable 1 fois pour la même durée.;CDD;A;Enseignant-Chercheur-EC;égales à la moitié des obligations du temps plein, soit 64h de cours ou 96h de TD ou toute autre combinaison équivalente;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015020000 - MAITRE CONFER. ASSOCIE UNIV.TPS.PARTIEL;"3111 - MCF Praticien hosp 2C
+3112 - MCF Praticien hosp 1C
+3113 - MCF Praticien hosp HC";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MM : Associé Maît.Conf.Hosp-univ. Mi-Temps;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2029;Contractuel;Chef clin méd géné;Chef clinique univ méd générale;;;"Loi 84-16 article 3, 4°
+2° de l'article L332-1 du CGFP
+Décret 2008-744
+Rémunération: Arrêté du 21 octobre 2010 ESRH1018813A";Droit public;"Les universités peuvent faire appel à des chefs de clinique des universités de médecine générale pour exercer :
+- des fonctions d'enseignement et de recherche dans les UFR de médecine ou dans les départements qui assurent les formations médicales. 
+- des fonctions de soins exercées en médecine générale et ambulatoire
+Ils participent aux tâches de gestion, au contrôle des connaissances, aux jurys d'examen et de concours et à des actions de coopération internationale.
+
+Ce code est également utilisé pour les ""AUMG - Assistants universitaires de Médecine générale"". Une convention est passée entre l'université et l'ARS qui finance ces postes partagés entre Université et structure de soins: centre de santé, maison de santé, cabinet de ville à exercice regroupé…";Temporaire;"La durée du contrat initial est de 2 ans avec possibilité de renouvellements d'1 an.
+La durée maximum du contrat et de ses renouvellements ne peut en aucun cas excéder 8 ans dans une ou plusieurs universités.";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"HU_600_CG - nomination d'un chef de clinique des universités de médecine générale D.2008-744 du 28/07/2008 - Médecine générale
+HU_600_CGR - nomination d'un chef de clinique des universités de médecine générale D.2008-744 du 28/07/2008 - Médecine générale Renouvellement";;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0650020000 - CHEF CLINIQUE ASS.TP;0000 - Grade générique;"00
+ou
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;10-IRCANTEC temps complet;CG : Chef clinique des univ. de Méd. Générale;***;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2064;Contractuel;assoc MCF MG tp;Associé MCF Médecine générale Temps plein;;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de MCF des universités-praticien hospitalier, peuvent être recrutées en qualité de MCF associé. Elles doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline. Ce statut est utilisé pour celles qui exercent leurs fonctions à plein temps. Pour le recrutement des enseignants associés de médecine générale, la proposition du conseil de l'UFR doit être précédée de l'avis de la commission de coordination et d'évaluation du 3ème cycle de médecine générale;Temporaire;"La durée initiale du contrat ne peut être inférieure à 6 mois ni supérieure à 1 an.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;l'article 4 du décret 91-966 prévoit qu'elles sont fixées par un arrêté mais celui-ci n'est pas paru à ce jour;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015010000 - MAITRE CONF.ASSOCIE UNIVERSITES TPS COMP;"MG11 - MCF Médecine générale 2 cl
+MG12 - MCF Médecine générale 1 cl
+MG13 - MCF Médecine générale H cl";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;***;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2065;Contractuel;assoc MCF MG mt;Associé MCF Médecine générale Mi-temps;;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de MCF des universités-praticien hospitalier, peuvent être recrutées en qualité de MCF associé. Elles doivent avoir effectué des travaux et publications relatifs à la discipline au titre de laquelle ils sont recrutés et justifier d'une expérience professionnelle en rapport avec cette discipline. Ce statut est utilisé pour celles qui exercent leurs fonctions à plein temps. Pour le recrutement des enseignants associés de médecine générale, la proposition du conseil de l'UFR doit être précédée de l'avis de la commission de coordination et d'évaluation du 3ème cycle de médecine générale;Temporaire;"La durée maximale du contrat initial est de 3 ans.
+Il est renouvelable 1 fois pour la même durée.";CDD;A;Enseignant-Chercheur-EC;l'article 4 du décret 91-966 prévoit qu'elles sont fixées par un arrêté mais celui-ci n'est pas paru à ce jour;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0015020000 - MAITRE CONFER. ASSOCIE UNIV.TPS.PARTIEL;"MG11 - MCF Médecine générale 2 cl
+MG12 - MCF Médecine générale 1 cl
+MG13 - MCF Médecine générale H cl";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;***;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2066;Contractuel;Associé PR MG tp;Associé Professeur Médecine générale Temps plein;;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de professeur des universités-praticien hospitalier, peuvent être recrutées en qualité de professeur associé des universités. Elles doivent justifier, depuis au moins 3 ans, d'une activité professionnelle principale effective, autre qu'une activité d'enseignement, en rapport avec la discipline concernée. Ce statut est utilisé pour celles qui exercent leurs fonctions à temps plein. Pour le recrutement des enseignants associés de médecine générale, la proposition du conseil de l'UFR doit être précédée de l'avis de la commission de coordination et d'évaluation du 3ème cycle de médecine générale;Temporaire;"La durée du contrat initial ne peut être inférieure à 6 mois ni supérieure à 5 ans.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;l'article 4 du décret 91-966 prévoit qu'elles sont fixées par un arrêté mais celui-ci n'est pas paru à ce jour;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0652020000 - PROF.ASSOCIE UNIV.1ERE CLASSE TPS.PLEIN;"MG01 - PROFESSEUR UNIV MED GENERALE 2E CL. 
+MG02 - PROFESSEUR UNIV MED GENERALE 1E CL. 
+MG03 - PROFESSEUR UNIV MED GENERALE Cl Exc";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;***;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2067;Contractuel;Associé PR MG mt;Associé Professeur Médecine générale Mi-temps;;;"Code Education 952-1
+Loi 84-16 article 5
+Décret 91-966
+Rémunération: Décret 2007-772 et arrêté MENH0752968A";Droit public;Des personnalités françaises et étrangères, ne remplissant pas les conditions pour être recrutées en qualité de professeur des universités-praticien hospitalier, peuvent être recrutées en qualité de professeur associé des universités. Elles doivent justifier, depuis au moins 3 ans, d'une activité professionnelle principale effective, autre qu'une activité d'enseignement, en rapport avec la discipline concernée. Ce statut est utilisé pour celles qui exercent leurs fonctions à mi-temps. Pour le recrutement des enseignants associés de médecine générale, la proposition du conseil de l'UFR doit être précédée de l'avis de la commission de coordination et d'évaluation du 3ème cycle de médecine générale;Temporaire;"La durée du contrat initial ne peut être inférieure à 6 mois ni supérieure à 5 ans.
+Le contrat est renouvelable mais dans le respect de la durée maximum de 5 ans.";CDD;A;Enseignant-Chercheur-EC;l'article 4 du décret 91-966 prévoit qu'elles sont fixées par un arrêté mais celui-ci n'est pas paru à ce jour;Les ministres chargés de l'enseignement supérieur et de la santé procèdent aux nominations.;"Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0652040000 - PROFESSEUR ASSOCIE UNIV.TEMPS PARTIEL;"MG01 - PROFESSEUR UNIV MED GENERALE 2E CL. 
+MG02 - PROFESSEUR UNIV MED GENERALE 1E CL. 
+MG03 - PROFESSEUR UNIV MED GENERALE Cl Exc";00;oui;3J-Contract.84-16 Article 5;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;***;***;C0119;Enseignant associé des établissements d'enseignement supérieur (EPES) et EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0120;Contractuel;Enseign. sup invit;Enseignant  invité des établiss. (EPES) et EP;01/01/1900;;"Code Education L952-1
+Loi 84-16 art 5
+Décrets 85-733 et 91-267
+Rémunération: Décret 2007-772 et arrêté MENH0752968A
+";Droit public;"Les enseignants invités sont des personnalités de nationalité française ou étrangère qui exercent des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche. Ils sont recrutés par arrêté du président après avis du conseil académique en formation restreinte.
+Il s'agit d'enseignants non permanents recrutés pour leur expertise et qui exercent des fonctions à temps plein ou à mi-temps.";Temporaire;"Durée du contrat initial : 1 semaine minimum par année universitaire
+Renouvellement pour chaque année universitaire : 1 semaine minimum et 6 mois maximum";CDD;A;Enseignant-Chercheur-EC;;"HU_120_VIT - nomination d'un enseignant invité Médecine
+HU_12_VITO - nomination d'un enseignant invité Odontologie";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération
+
+Dans le cas d'un non-résident, indice de rémunération à 0 car rémunération par voie indemnitaire code 0002";"La transcodification entre les 2 grades suivants s'effectue sur la base du pseudo grade saisi en GA :
+1674010000 - PROFESSEUR INVITE MCF
+1674020000 - PROFESSEUR INVITE PR";"Le pseudo grade saisi dans les informations carrière est utilisé pour :
+> la préliquidation de la paye
+> les listes électorales";00;oui;3J-Contract.84-16 Article 5;"12-Non titulaires-Non permanents temporaires
+---
+22 dans le cas d'un non-résident";"10-IRCANTEC temps complet
+---
+00- non cotisant dans le cas d'un non-résident";"P1 : PR/MCF(Méd.Odon) Invité Tps pl. 6mois
+P2 : PR/MCF(Méd.Odont) Invité Tps pl./2-3ans
+M1 : PR/MCF(Méd.Odont) Invité Mi-temps 1an
+M2 : PR/MCF(Méd.Odont) Invité Mi-temps/2-3ans
+IN : Invité sur 1 an
+I3 : Invité contrat triennal";***;C0120;Enseignant  invité des établissements d'enseignement supérieur (EPES) et EP de recherche ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0121;Contractuel;AERC              ;Assistant enseignement & recherche EPES-AGRI;01/01/1900;31/12/2014;"Loi 84-16 article 4 et 6 
+Décret 91-374";Droit public;Hors périmètre Siham, ce statut est utilisé pour renseigner l'historique du parcours professionnel de l'agent au sein d'EPES du ministère de l'agriculture;;;;;;;;;;;;;;;;;;;C0121;Assistant enseignement & recherche EPES-AGRI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2042;Contractuel;Lecteur Tit perso;Lecteur langue étrangère à titre personnel;01/01/1900;;"Décret 87-754
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"La langue étrangère du candidat recruté par le président de l'université doit être sa langue maternelle ou une langue pratiquée à son égal. Le candidat doit justifier d'une année d'études accomplie avec succès après l'obtention d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de licence. Son service annuel en présence des étudiants est de 300 h de travaux pratiques. Son service peut comporter des travaux dirigés pour 100h maximum (1h00  de TD = 1h30 de TP).
+C'est la durée des fonctions qui le distingue d'un lecteur recruté dans le cadre d'un programme bilatéral
+";Temporaire;"Durée du contrat initial : 1 an
+Renouvelable 1 fois à titre exceptionnel pour une même période";CDD;A;Enseignant-Chercheur-EC;"300h de TP
+TD limités à 100h/an";CO123_LECP - LECTEUR DE LANGUE ETRANGERE A titre personnel;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0633010000 - LECTEUR LANGUE ETR.;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;LT : Lecteur (à titre personnel);***;C0123 ;Lecteur et maître de langue étrangère (à titre personnel);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2043;Contractuel;Maître Tit perso;Maître langue étrangère à titre personnel;01/01/1900;;"Décret 87-754
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"La langue étrangère du candidats  recruté par le président de l'université doit être sa langue maternelle ou une langue pratiquée à son égal. Le candidat doit justifier d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de master. Son service annuel en présence des étudiants est de 288 h de travaux pratiques ou 192 heures de travaux dirigés ou combinaison équivalente. Son service peut comporter, à titre exceptionnel, des cours si les besoins du service le justifient. (1h00  de TD = 1h30 de TP et 1h00 de cours = 1h30 de TD). Il assure également les tâches liées à son activité d'enseignement (contrôle des connaissances, examens) qui ne donnent pas lieu à rémunération supplémentaire ou réduction des obligations de service.
+C'est la durée des fonctions qui le distingue d'un Maître de langue recruté dans le cadre d'un programme bilatéral";Temporaire;"Durée du contrat initial : 1 an
+Renouvelable 1 fois à titre exceptionnel pour une même période";CDD;A;Enseignant-Chercheur-EC;"288h de TP
+ou
+192h de TD";CO123_MLEE - MAITRE DE LANGUE ETRANGERE A titre personnel;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0632010000 - MAITRE LANGUE ETRAN.;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MP : Maître langue étrang. (à titre person.);***;C0123 ;Lecteur et maître de langue étrangère (à titre personnel);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2044;Contractuel;Répétiteur INALCO;Répétiteur langue étrangère INALCO;01/01/1900;;"Décret 87-755
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"Le candidat est recruté par contrat par le président de l'INALCO, après avis du conseil scientifique et parmi les candidats originaires du groupe géolinguistique auquel appartient la langue au titre de laquelle il se présente. Cette langue doit être sa langue maternelle ou une autre langue pratiquée à son égal. Le candidat doit justifier d'une année d'études accomplie avec succès après l'obtention d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de licence
+Son service annuel en présence des étudiants de 256 h de travaux pratiques ou de travaux dirigés (1h00  de cours = 1h30 de TP et TD). Il assure également les tâches liées à son activité d'enseignement (contrôle des connaissances, examens) qui ne donnent pas lieu à rémunération supplémentaire ou réduction des obligations de service.";Temporaire;"Durée du contrat initial: 1, 2 ou 3 ans
+Renouvelable 1 fois pour une même période";CDD;A;Enseignant-Chercheur-EC;256h de TP ou de TD;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0624010000 - REPETITEUR INLCO;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;RP : Répétiteur langue étrangère de l'INALCO;***;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2045;Contractuel;Maitre Lang INALCO;Maître langue étrangère INALCO;01/01/1900;;"Décret 87-755
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"Le candidat est recruté par contrat par le président de l'INALCO, après avis du conseil scientifique et parmi les candidats originaires du groupe géolinguistique auquel appartient la langue au titre de laquelle il se présente. Cette langue doit être sa langue maternelle ou une autre langue pratiquée à son égal. Le candidat doit justifier d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de master. 
+Son service annuel en présence des étudiants de 256 h de travaux pratiques ou de travaux dirigés. Il peut comporter, à titre exceptionnel, des cours si les besoins du service le justifient (1h00  de cours = 1h30 de TP et TD). Il assure également les tâches liées à son activité d'enseignement (contrôle des connaissances, examens) qui ne donnent pas lieu à rémunération supplémentaire ou réduction des obligations de service.";Temporaire;"Durée du contrat initial : 1, 2 ou 3 ans
+Renouvelable 1 fois pour une même période";CDD;A;Enseignant-Chercheur-EC;256h de TP ou de TD;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0632010000 -  - MAITRE LANGUE ETRAN.;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;ML : Maître de langue étrangère de l'INALCO;***;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2046;Contractuel;Lecteur prg échang;Lecteur langue étr - progr bilatéral échange;01/01/1900;;"Décret 87-754
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"Le candidat, recruté par le président de l'université, est proposé par son pays d'origine dans le cadre d'un programme bilatéral d'échanges établi sur une base de réciprocité. La langue étrangère du candidat doit être sa langue maternelle ou une langue pratiquée à son égal. Il  doit justifier d'une année d'études accomplie avec succès après l'obtention d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de licence. Son service annuel en présence des étudiants est de 300 h de travaux pratiques. Son service peut comporter des travaux dirigés pour 100h maximum (1h00  de TD = 1h30 de TP).
+C'est la durée des fonctions qui le distingue d'un lecteur recruté à titre personnel
+";Temporaire;"Durée du contrat initial: 1, 2 ou 3 ans
+Renouvelable 1 fois pour une même période";CDD;A;Enseignant-Chercheur-EC;"300h de TP
+TD limités à 100h/an";CO123_LPGB - LECTEUR DE LANGUE ETRANGERE;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0633010000 - LECTEUR LANGUE ETR.;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;LB : Lecteur (programme bilatéral d'échange);***;C0129 ;Lecteur et maître de langue étrangère  (programme bilatéral d'échange);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2047;Contractuel;Maître lang échang;Maître langue étr - prog bilatéral échange;01/01/1900;;"Décret 87-754
+Rémunération: Arrêté du 30/10/1987:
+RESP8700832A";Droit public;"Le candidat, recruté par le président de l'université, est proposé par son pays d'origine dans le cadre d'un programme bilatéral d'échanges établi sur une base de réciprocité. La langue étrangère du candidat doit être sa langue maternelle ou une langue pratiquée à son égal. Il doit justifier d'un titre ou d'un diplôme français ou étranger d'un niveau équivalent à celui du diplôme national de master. Son service annuel en présence des étudiants est de 288 h de travaux pratiques ou 192 heures de travaux dirigés ou combinaison équivalente. Son service peut comporter, à titre exceptionnel, des cours si les besoins du service le justifient. (1h00  de TD = 1h30 de TP et 1h00 de cours = 1h30 de TD). Il assure également les tâches liées à son activité d'enseignement (contrôle des connaissances, examens) qui ne donnent pas lieu à rémunération supplémentaire ou réduction des obligations de service.
+C'est la durée des fonctions qui le distingue d'un Maître de langue recruté à titre personnel";Temporaire;"Durée du contrat initial : 1, 2 ou 3 ans
+Renouvelable 1 fois pour une même période";CDD;A;Enseignant-Chercheur-EC;"288h de TP
+ou
+192h de TD";CO123_MLEP - MAITRE DE LANGUE ETRANGERE Cadre d'un programme bilatéral;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0632010000 -  MAITRE LANGUE ETRAN.;0000 - Grade générique;00;oui;3K-Contract.84-16 Article 6;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;MB : Maitre langue étrang.(prog. bilat. éch.);***;C0129 ;Lecteur et maître de langue étrangère  (programme bilatéral d'échange);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0130;Contractuel;Prof techno;Prof contractuel disc techno & prof -MEN;01/01/1900;; Décret 81-535;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que professeur contractuel dans les disciplines technologiques et professionnelles;;;;;;;;;;;;;;;;;;;C0130;Professeur contractuel dans les disciplines technologiques et professionnelles (Education nationale);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0131;Contractuel;Prof hors techno;Prof contractuel hors disc techno & prof -MEN;01/01/1900;; Décret 81-535;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que professeur contractuel hors disciplines technologiques et professionnelles;;;;;;;;;;;;;;;;;;;C0131;Professeur contractuel hors disciplines technologiques et professionnelles (Education nationale);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0301;Contractuel;ATER;ATER;01/01/1900;;"Code Éducation L 951-2
+Décret 88-654";Droit public;"Les candidats, recrutés par le président après avis du conseil académique en formation restreinte, doivent remplir une des conditions suivantes dont va découler la durée de leur engagement :
+1° Les fonctionnaires titulaires et stagiaires de catégorie A de l'Etat, des collectivités territoriales ou d'un établissement public en dépendant, inscrits en vue de la préparation du doctorat ou d'une habilitation à diriger des recherches ou s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+2° Les allocataires d'enseignement et de recherche ayant cessé d'exercer leurs fonctions depuis moins d'un an, titulaires d'un doctorat et s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+3° Les enseignants ou chercheurs de nationalité étrangère ayant exercé des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche pendant au moins 2 ans, titulaires d'un doctorat ;
+4° Les moniteurs recrutés dans le cadre du monitorat d'initiation à l'enseignement supérieur, titulaires d'un doctorat et s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+5° Les étudiants n'ayant pas achevé leur doctorat ; en ce cas, le directeur de thèse doit attester que la thèse peut être soutenue dans un délai d'un an ;
+6° Les titulaires d'un doctorat ou d'une habilitation à diriger des recherches s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur.
+
+Ils assurent annuellement 128h de cours ou 192h de TD ou 288h de TP ou combinaison équivalente. Ils assurent les tâches liées à leur activité d'enseignement (contrôle des connaissances, examens) qui ne donnent lieu ni à rémunération supplémentaire ni à réduction des obligations de service. Aucune charge d'enseignement complémentaire ne peut leur être confiée.";Temporaire;"Engagement en application du 1° :
+Durée du contrat initial : 3 ans maximum
+Renouvelable 1 fois pour une durée d'1 an (sous condition)
+Durée totale du contrat : 4 ans maximum
+Engagement en application du 3° :
+Durée du contrat initial : 3 ans maximum
+Renouvelable 1 fois pour une durée d'1 an
+Durée totale du contrat : 4 ans maximum
+Engagement en application du 5 ou du 6° :
+Durée du contrat initial : 1 an maximum
+Renouvelable 1 fois pour une durée d'1 an
+Durée totale du contrat : 2 ans maximum";CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou 288h de TP ou toute combinaison équivalente;"CO301_21 - ATER D88-654-art 2-1
+CO301_22 - ATER D88-654-art 2-2
+CO301_23 - ATER D88-654-art 2-3
+CO301_24 - ATER D88-654-art 2-4
+CO301_25 - ATER D88-654-art 2-5
+CO301_26 - ATER D88-654-art 2-6";"La condition de recrutement est renseignée dans le champ ""Mode d'accès au statut""  (Remarque: les 2° et 4° ne sont plus d'actualité)";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"La valeur renseignée par défaut: ""1058010000 - ATER TPLEIN N TITULA"" est modifiable par le gestionnaire.
+Si l'agent a par ailleurs une carrière de titulaire, il faudra renseigner la valeur: ""1058030000 - ATER TEMPS PLEIN TITULAIRE""";0000 - Grade générique;00;oui;"3J-Contract.84-16 Article 5
+
+Si l'agent est détaché sur contrat d'ATER : A6/M6/P6";"10-Non titulaires permanents
+Si l'agent a par ailleurs une carrière de titulaire, renseigner la valeur:
+01-Titulaires-A plein traitement";"10-IRCANTEC temps complet
+
+Si l'agent est détaché sur contrat d'ATER : 00-Non cotisant";AT : ATER;;C0301;ATER                                         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2001;Contractuel;ATER mi-temps;ATER mi-temps;01/01/1900;;"Code Éducation L 951-2
+Décret 88-654";Droit public;"Les candidats, recrutés par le président après avis du conseil académique en formation restreinte, doivent remplir une des conditions suivantes dont va découler la durée de leur engagement :
+1° Les fonctionnaires titulaires et stagiaires de catégorie A de l'Etat, des collectivités territoriales ou d'un établissement public en dépendant, inscrits en vue de la préparation du doctorat ou d'une habilitation à diriger des recherches ou s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+2° Les allocataires d'enseignement et de recherche ayant cessé d'exercer leurs fonctions depuis moins d'un an, titulaires d'un doctorat et s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+3° Les enseignants ou chercheurs de nationalité étrangère ayant exercé des fonctions d'enseignement ou de recherche dans un établissement étranger d'enseignement supérieur ou de recherche pendant au moins 2 ans, titulaires d'un doctorat ;
+4° Les moniteurs recrutés dans le cadre du monitorat d'initiation à l'enseignement supérieur, titulaires d'un doctorat et s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur ;
+5° Les étudiants n'ayant pas achevé leur doctorat ; en ce cas, le directeur de thèse doit attester que la thèse peut être soutenue dans un délai d'un an ;
+6° Les titulaires d'un doctorat ou d'une habilitation à diriger des recherches s'engageant à se présenter à un concours de recrutement de l'enseignement supérieur.
+
+Pour les ATER à temps partiel, le service d'enseignement ne peut être inférieur à 64h de cours, 96h de TD ou 144h de TP ou combinaison équivalente. Ils assurent les tâches liées à leur activité d'enseignement (contrôle des connaissances, examens) qui ne donnent lieu ni à rémunération supplémentaire ni à réduction des obligations de service. Aucune charge d'enseignement complémentaire ne peut leur être confiée.
+
+
+
+";Temporaire;"Engagement en application du 1° :
+Durée du contrat initial : 3 ans maximum
+Renouvelable 1 fois pour une durée d'1 an (sous condition)
+Durée totale du contrat : 4 ans maximum
+Engagement en application du 3° :
+Durée du contrat initial : 3 ans maximum
+Renouvelable 1 fois pour une durée d'1 an
+Durée totale du contrat : 4 ans maximum
+Engagement en application du 5 ou du 6° :
+Durée du contrat initial : 1 an maximum
+Renouvelable 1 fois pour une durée d'1 an
+Durée totale du contrat : 2 ans maximum";CDD;A;Enseignant-Chercheur-EC;64h de cours, 96h de TD ou 144h de TP ou toute combinaison équivalente;"CO301_21TP - ATER TP D88-654-art 2-1
+CO301_22TP - ATER TP D88-654-art 2-2
+CO301_23TP - ATER TP D88-654-art 2-3
+CO301_24TP - ATER TP D88-654-art 2-4
+CO301_25TP - ATER TP D88-654-art 2-5
+CO301_26TP - ATER TP D88-654-art 2-6
+CO301_27TP - ATER TP D88-654-art 12-1";"La condition de recrutement est renseignée dans le champ ""Mode d'accès au statut""  (Remarque: les 2° et 4° ne sont plus d'actualité)
+
+Saisir une modalité de service ""TIATR-mi-tps rémunéré sur base indice à tps plein""
+Ne pas saisir de mouvement 03, c'est le code grade qui atteste du temps partiel : ces agents sont rémunérés à 100% de l'INM lié au grade ";"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"La valeur renseignée par défaut: ""1058020000 - ATER. NON TITULAI TP"" est modifiable par le gestionnaire.
+Si l'agent a par ailleurs une carrière de titulaire, il faudra renseigner la valeur: ""1058040000 - ATER TEMPS PARTIEL TITULAIRE""";0000 - Grade générique;00;oui;"3J-Contract.84-16 Article 5
+
+Si l'agent est détaché sur contrat d'ATER : A6/M6/P6";"10-Non titulaires permanents
+Si l'agent a par ailleurs une carrière de titulaire, renseigner la valeur:
+01-Titulaires-A plein traitement";"10-IRCANTEC temps complet
+
+Si l'agent est détaché sur contrat d'ATER : 00-Non cotisant";AX : ATER mi temps;;C0301;ATER                                         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0302;Contractuel;ADS;Adjoint de sécurité;01/01/1900;;Loi 95-73 article 36;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent lorsqu'il a exercé des missions d'adjoints de sécurité auprès des fonctionnaires des services actifs de la police nationale (cf art 36);;;;;;;;;;;;;;;;;;;C0302;Adjoint de sécurité (autre qu'emploi aidé);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0303;Contractuel;Prof associé EPLE;Professeur associé des EPLE                  ;01/01/1900;;"Code Education L 932-2
+Décret 2007-322";Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel en tant que professeur associé des EPLE;;;;;;;;;;;;;;;;;;;C0303;Professeur associé des EPLE;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0304;Contractuel;Allocataire rech;Allocataire de recherche;01/01/1900;25/04/2009;Code Recherche L412-2;Droit public;"Ce statut est utile pour renseigner l'historique du parcours professionnel en tant qu'allocataire de recherche. 
+En application du décret 2009-464, ce statut disparait du fait de la mise en place des statuts suivants :
+- C0322, Doctorant EPES ou EP recherche
+- C2053, Doctorant EPES/EP recherche sans enseignement";;;CDD;A;Null;;;;;1577010000 - ALLOCATAIRE RECHERCHE      ;;;;;;;"AA : Allocataire de recherche
+AL : Allocataire Moniteur Normalien
+AN : AMN 12 mois reconductible
+AR : Alloc. d'Ens. et recherche";;C0304;Allocataire de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0306;Contractuel;Ctr besoin SAIC;Contractuel recruté pour besoins d'un SAIC;01/01/1900;;"Loi 84-16
+Code Éducation L123-5
+Décret 2002-1347";Droit public;"Agents non titulaires de droit public recrutés pour participer au fonctionnement et aux activités d'un service d'activités industrielles et commerciales (SAIC) qui par nature, assure des prestations de services, exploite des brevets et licences et commercialise les produits de ses activités
+Le contrat doit bien préciser les obligations et les droits de l'agent.
+Les dispositions du décret 86-83 s'applique à l'exception des articles 1, 4, 5, 6, 7, 8, 28 et 29 qui concernent notamment les mentions à porter au contrat de travail, le délai de prévenance en cas de non reconduction, les limites de durée, et dans le cas où l'agent vient d'une entité privée transférée dans le public: les droits à formation et à congés.";Permanent;Les CDD sont renouvelables dans la limite d'une durée totale maximale de 3 ans.;"CDD
+CDI";"A
+B
+C";Biatss;Non concerné;"CO306_SAIC - SAIC-rémunération indiciée
+CO306_SAIF - SAIC-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Plusieurs grades possibles :
+0501220000 - permanent adm cat A
+0500790000 - BIATOSS CDI Cat B
+0500800000 - BIATOSS CDI Cat C
+>>> pas de transcodification";Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;"CS : CDI SAIC
+S3 : CDD 3 ans SAIC
+YA : SAIC permanent adm cat A
+YB : SAIC BIATOSS CDI Cat B
+YC : SAIC BIATOSS CDI Cat C";;C0306;ANT recruté pour les besoins d'un SAIC d'EPES;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0307;Contractuel;ANT recherche;Chercheur dans adm, EP rech ou EPES;01/01/1900;;Code Recherche L431-1 & L431-2;Droit public;"Peuvent être recrutés temporairement, à temps complet ou à temps partiel ::
+a) Les chercheurs, ingénieurs et techniciens de recherche français appartenant au personnel d'une entreprise publique ou privée, française ou étrangère, ou d'un EPIC français ou d'un organisme de recherche étranger ;
+b) Les chercheurs, ingénieurs ou techniciens de recherche non titulaires qui relèvent d'un établissement public n'ayant pas le caractère industriel et commercial ou d'un service de recherche de l'Etat ;
+c) Les chercheurs, ingénieurs et techniciens de recherche de nationalité étrangère ;
+d) Les docteurs en médecine ou en pharmacie ou en odontologie ayant terminé leur internat de spécialité et n'ayant pas la qualité de fonctionnaire titulaire.";Temporaire;"Durée du contrat initial : 3 ans
+Renouvelable 1 fois
+Durée totale du contrat : 6 ans maximum";"CDD
+CDI";"A
+B
+C";Mixte;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;;;C0307;Chercheur recruté ANT dans service de recherche, administration, EP de recherche ou EPES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0309;Contractuel;Berkanien drt publ;Berkanien de droit public;01/01/1900;;Loi 2000-321 article 34, 1;Droit public;"Les agents contractuels de l'Etat et de ses établissements publics à caractère administratif, en fonction à la date de publication de la présente loi et qui n'ont pas été recrutés en application des articles 3, 4, 6 et 27 de la loi 84-16 portant dispositions statutaires relatives à la FPE, bénéficient d'un CDI lorsqu'ils assurent des fonctions du niveau de la catégorie C concourant à l'entretien ou au gardiennage de services administratifs
+Ces fonctions peuvent être exercées à temps incomplet.";Permanent;CDI : pas de durée maximum;CDI;C;Biatss;Non concerné;Utiliser l'avenant adéquat en fonction du cas de gestion: changement d'indice, d'affectation…;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;;;C0309;Berkanien de droit public;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0311;Contractuel;Volontaire civil;Volontaire civil               ;01/01/1900;30/06/2010;Code du service national L122-1 et suivants;Droit public;"Hors périmètre Siham, ce statut est utile  pour renseigner l'historique du parcours  de l'agent en tant que volontaire civil
+Inactivation en cours DM 158984";;;;;;;;;;;;;;;;;;;C0311;Volontaire civil;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2048;Contractuel;Ctr BIATSS LRU;Contractuel BIATSS LRU;01/01/1900;;Code Éducation  L762-4, L762-5, L954-1 à L954-3 1°;Droit public;"Agent contractuel recruté par le président pour occuper des fonctions techniques ou administratives correspondant à des emplois de catégorie A ;";Temporaire;pas de durée maximum;"CDD
+CDI";A;Biatss;Non concerné;"CO313_LDD1 - Fonctions techniques ou administratives-CDD-rémunération indiciée
+CO313_LDDF - Fonctions techniques ou administratives-CDD-rémunération forfaitaire
+CO313_LRI1 - Fonctions techniques ou administratives-CDI-rémunération indiciée
+CO313_LRIF - Fonctions techniques ou administratives-CDI-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"0500810000 - CONTR BIATS CDD A
+0500780000 - CONTR BIATS CDI A";Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"Z2 : Contractuel BIATOSS catA en CDD
+Z1 : Contractuel BIATOSS catA en CDI";;C0313;Contractuel recruté directement par un EPSCP aux compétences élargies;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2049;Contractuel;Ctr Ens-Ch LRU;Contractuel Enseignant Chercheur LRU;01/01/1900;;Code Éducation  L762-4, L762-5, L954-1 à L954-3 2°;Droit public;Agent contractuel recruté par la président  après avis du comité de sélection pour assurer des fonctions d'enseignement et de recherche;Temporaire;pas de durée maximum;"CDD
+CDI";A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"CO313_LRC2 - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération indiciée
+CO313_LRCF - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération forfaitaire
+CO313_LRI2 - Fonctions d'enseignement et/ou de recherche-CDI-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Plusieurs grades possibles :
+0500840000 -ENS CHERCH CDI A
+0500850000 -ENS CHERCH CDD A
+>>> pas de transcodification";Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"EI : Enseignant chercheur en CDI
+ED : Enseignant chercheur en CDD";;C0313;Contractuel recruté directement par un EPSCP aux compétences élargies;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2050;Contractuel;Ctr Cherch LRU;Contractuel Chercheur LRU;01/01/1900;;Code Éducation  L762-4, L762-5, L954-1 à L954-3 2°;Droit public;Agent contractuel recruté par la président  après avis du comité de sélection pour assurer des fonctions de recherche;Temporaire;pas de durée maximum;"CDD
+CDI";A;Enseignant-Chercheur-EC;Non concerné;"CO313_LRC2 - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération indiciée
+CO313_LRCF - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération forfaitaire
+CO313_LRI2 - Fonctions d'enseignement et/ou de recherche-CDI-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Plusieurs grades possibles :
+0500860000 -CONT CHERCH CDI A
+0500870000 -CONT CHERCH CDD A
+>>> pas de transcodification";Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"HI : Chercheur en CDI
+HD : Chercheur en CDD";;C0313;Contractuel recruté directement par un EPSCP aux compétences élargies;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2051;Contractuel;Ctr Enseig LRU;Contractuel Enseignant LRU;01/01/1900;;Code Éducation  L762-4, L762-5, L954-1 à L954-3 2°;Droit public;Agent contractuel recruté par la président  après avis du comité de sélection pour assurer des fonctions d'enseignement;Temporaire;pas de durée maximum;"CDD
+CDI";A;Enseignant-Chercheur-EC;?;"CO313_LRC2 - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération indiciée
+CO313_LRCF - Fonctions d'enseignement et/ou de recherche-CDD-Rémunération forfaitaire
+CO313_LRI2 - Fonctions d'enseignement et/ou de recherche-CDI-rémunération forfaitaire";;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";"Plusieurs grades possibles :
+0500880000 -CONTR ENS CDI A
+0500890000 -CONTR ENS CDD A
+>>> pas de transcodification";Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"GI : Enseignant en CDI
+GD : Enseignant en CDD";;C0313;Contractuel recruté directement par un EPSCP aux compétences élargies;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0314;Contractuel;Ministre du culte;Ministre du culte (Alsace Moselle);01/01/1900;;"Loi du 15/11/1909 
+Décret 2007-1445";Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que ministre du culte en Alsace Moselle;;;;;;;;;;;;;;;;;;;C0314;Ministre du culte (Alsace Moselle);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0315;Contractuel;Autre ANT emp part;Autres ANT sur emploi particulier;01/01/1900;;;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'ANT sur emploi particulier;;;;;;;;;;;;;;;;;;;C0315;Autre ANT sur emploi particulier;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0316;Contractuel;ANT transf act pri;Ctr recruté suite transfert activités privées;01/01/1900;;"Code du travail L1224-3
+Décret 86-83 article 28-1";Droit public;"Lorsque l'activité d'une entité économique employant des salariés de droit privé est, par transfert de cette entité, reprise par une personne publique dans le cadre d'un service public administratif, il appartient à cette personne publique de proposer à ces salariés un contrat de droit public, CDD ou CDI selon la nature du contrat dont ils sont titulaires. Les services accomplis pour le précédent employeur sont pris en compte pour l'ouverture des droits à formation et à congés. Sauf disposition légale ou conditions générales de rémunération et d'emploi des agents non titulaires de la personne publique contraires, le contrat qu'elle propose reprend les clauses substantielles du contrat dont les salariés sont titulaires, en particulier celles qui concernent la rémunération.
+Dans le cas où il y a une période transitoire pendant laquelle l'établissement n'a pas encore proposé un contrat de droit public à l'agent, celui-ci doit être enregistré sous le statut C1002-Contrat de droit privé autre.";Permanent;"Pas de règle spécifique à ce statut
+Durée du contrat initial : 3 ans maximum
+Renouvelable pour 3 ans maximum
+Durée totale : 6 ans maximum";"CDD
+CDI";"A
+B
+C";Mixte;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500010000 - AGENT CONTRACTUEL;0000 - Grade générique;00;non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;;;C0316;Contractuel recruté suite à transfert d'activités privées;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0318;Contractuel;ANT EPA inst spé;Contractuel autres EPA et Institutions spéc;;;Selon EPA ou institution;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que contractuel d'autres EPA et Institutions spécialisées;;;;;;;;;;;;;;;;;;;C0318;Contractuel autres EPA et Institutions spécialisées (AAI par assimilation et API);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0319;Contractuel;Assistant justice;Assistant de justice;;;"Loi 95-125
+Décret 96-513";Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'assistant de justice;;;;;;;;;;;;;;;;;;;C0319;Assistant de justice;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0320;Contractuel;Maître auxiliaire;Maître auxiliaire;;;"Ordonnance 4 février 1959
+Décret 62-379";Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que maître auxiliaire;;;;;;;;;;;;;;;;;MX : Maitre Auxiliaire;;C0320;Maître auxiliaire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0321;Contractuel;ANT ctr asso école;Contractuel recruté s/ctr d'assoc à l'école;;;Code Éducation L911-7;Droit public;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel pour un contrat d'association à l'école;;;;;;;;;;;;;;;;;;;C0321;ANT contrat d'association à l'école;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0338;Contractuel;contrat post doctoral;contrat post doctoral;;;Décret n°2021-1450 du 4 novembre 2021 relatif au contrat post doctoral de droit public prévu par l'article L. 412-4 du code de la recherche;Droit public;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0337;Contractuel;contrat de mission scientifique ;contrat de mission scientifique ;;;Décret n°2021-1449 du 4 novembre 2021 relatif au contrat de mission scientifique prévu par l'article L. 431-6 du code de la recherche;Droit public;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0322;Contractuel;Doctorant avec ens;Doctorant EPES/EP recherche avec enseignement;;;"Code Recherche L412-2
+Décret 2009-464
+Circulaire DGESIP du 24/06/2009
+Rémunération: Arrêté du 29/08/2016
+NOR : MENH1619655A";Droit public;"Les doctorants contractuels sont des étudiants inscrits en vue de la préparation d'un doctorat. Ils sont recrutés par le président, sur proposition du directeur de l'école doctorale, après avis du directeur de thèse et du directeur de l'unité ou équipe de recherche concernée. Ce statut est à utiliser pour identifier les doctorants contractuels qui effectuent une mission d'enseignement. Pour les élections professionnelles, ils sont donc rattachés au collège B.
+Remarque: Longtemps après avoir créé le code statut C0322, le CISIRH a modifié son libellé pour préciser qu'il correspond aux doctorants du ministère de la Culture, puis il a créé le code C0333 pour les doctorants du MESRI. Le C0322 étant utilisé par les EPSCP depuis sa création, il a été conservé.
+Mise en qualité des libellés en cours DM 158984";Temporaire;"Durée du contrat initial : 3 ans maximum
+2 prolongations possibles pour une durée maximale d'1 an chacun
+1 prolongation supplémentaire d'1an max si le doctorant est BOE
+1 prolongation supplémentaire d'1an max si le doctorant a pris 1 année de césure
+Des prorogations d'une durée égale aux congés maternité, maladie... pour une durée totale maximum d'1 an
+Durée totale du contrat  : 6 ans maximum";CDD;A;Enseignant-Chercheur-EC;Au maximum, 1/3 du service annuel de référence des EC;CO322_DCCE - DOCTORANT CONTRACTUEL AVEC MISSION D'ENSEIGNEMENT;Les missions complémentaires du doctorant peuvent être renseignées dans l'écran: Carrière / Situation affectation / Affectations / Fonctions;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500900000 - CONTRACT. DOCTORANT ;0000 - Grade générique;00;non;"3H-Contract.84-16 Article 4 2°
+3K-Contract.84-16 Article 6
+3L-Contract.84-16 Article 6 quater
+3M-Contract.84-16 Article 6 quinquies
+3N-Contract.84-16 Article 6 sexies";10-Non titulaires permanents;10-IRCANTEC temps complet;"DO : Contractuel doctorant
+DC : Doctorant conseil";;C0333;Doctorant contractuel en EPES ou EP de recherche du MESRI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2053;Contractuel;Doctorant sans ens;Doctorant EPES/EP recherche sans enseignement;;;"Code Recherche L412-2
+Décret 2009-464
+Circulaire DGESIP du 24/06/2009
+Rémunération: Arrêté du 29/08/2016
+NOR : MENH1619655A";Droit public;Les doctorants contractuels sont des étudiants inscrits en vue de la préparation d'un doctorat. Ils sont recrutés par le président, sur proposition du directeur de l'école doctorale, après avis du directeur de thèse et du directeur de l'unité ou équipe de recherche concernée. Ce statut est à utiliser pour identifier les doctorants contractuels qui n'effectuent pas de mission d'enseignement. Pour les élections professionnelles, ils sont donc rattachés au collège des usagers.;Temporaire;"Durée du contrat initial : 3 ans maximum
+2 prolongations possibles pour une durée maximale d'1 an chacun
+1 prolongation supplémentaire d'1an max si le doctorant est BOE
+1 prolongation supplémentaire d'1an max si le doctorant a pris 1 année de césure
+Des prorogations d'une durée égale aux congés maternité, maladie... pour une durée totale maximum d'1 an
+Durée totale du contrat  : 6 ans maximum";CDD;A;Enseignant-Chercheur-EC;Non concerné;CO322_DCCO - DOCTORANT CONTRACTUEL SANS MISSION D'ENSEIGNEMENT;Les missions complémentaires du doctorant peuvent être renseignées dans l'écran: Carrière / Situation affectation / Affectations / Fonctions;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500900000 - CONTRACT. DOCTORANT ;0000 - Grade générique;00;non;"3H-Contract.84-16 Article 4 2°
+3K-Contract.84-16 Article 6
+3L-Contract.84-16 Article 6 quater
+3M-Contract.84-16 Article 6 quinquies
+3N-Contract.84-16 Article 6 sexies";10-Non titulaires permanents;10-IRCANTEC temps complet;"DN : Contractuel doctorant sans enseignement
+DC : Doctorant conseil";;C0333;Doctorant contractuel en EPES ou EP de recherche du MESRI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2002;Contractuel;Moniteur;Moniteur;;25/04/2009;"Décret 89-794 & Décret 2009-464
+Décret 92-1229";Droit public;"Ce statut est utile pour renseigner l'historique du parcours de l'agent en tant que moniteur. En application du décret 2009-464, ce statut disparait du fait de la mise en place des statuts ""C0322-Doctorant EPES ou EP recherche"" et ""C2053-Doctorant EPES/EP recherche sans enseignement""";;;CDD;A;;;;;;0500010000 - AGENT CONTRACTUEL;;;;;;;"MO : Moniteur
+MH : Moniteur en pharmacie";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2003;Contractuel;Allocat & Moniteur;Allocataire et Moniteur;;25/04/2009;Décret 85-402;Droit public;"En application du décret 2009-464, ce statut disparait du fait de la mise en place des statuts ""C0322-Doctorant EPES ou EP recherche"" et ""C2053-Doctorant EPES/EP recherche sans enseignement""
+Lorsque dans Harpège l'agent cumule, sur une période donnée, un contrat de type moniteur (MO ou MH) avec un contrat de type allocataire (AA, AL, AN ou AR) ces contrats sont repris sous le statut C2003.";;;CDD;A;;;;;;0500010000 - AGENT CONTRACTUEL;;;;;;;"2 contrats en parallèle : Allocataire + Moniteur
+AA ou AL ou AN ou AR
++
+MO ou MH";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2005;Contractuel;Etudiant stagiaire;Etudiant ens sup stagiaire rémunéré;;;"Décret 2014-1420 du 27 novembre 2014 relatif à l'encadrement des périodes de formation en milieu professionnel et des stages
+Code de l'éducation Articles  L124-1, L124-6 et suivant";Droit public;"Elève ou étudiant suivant une formation en vue d'obtenir un diplôme ou une certification et qui effectue son stage dans l'établissement dans le cadre de cette formation. Des missions conformes au projet pédagogique défini par son établissement d'enseignement et approuvées par l'organisme d'accueil lui sont confiées. La durée du stage est de 6 mois maximum par année universitaire. Ce statut doit être utilisé quand la gratification dépasse le plafond de 15% du plafond de la sécurité sociale. Dans ce cas, il est question d’une rémunération soumise à cotisations : l’étudiant stagiaire devient contractuel et la convention de stage est requalifiée en contrat de travail. Ce statut se distingue donc du HB004 utilisé pour les étudiants stagiaires qui percoivent ou non une gratification.
+Voir aussi le Guide de l'accueil des stagiaires dans la fonction publique de l'État accessible sur le site de la DGAFP";Temporaire;6 mois maximum au total;CDD;;Biatss;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500010000 - AGENT CONTRACTUEL;;;;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;ST : Etudiant enseignement sup stagiaire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0323;Contractuel;Etudiant ctr EPES;Etudiant EPES ou EP recherche;;;"Code Education L811-2 & D811-1 à 9
+Rémunération: art D811-5";Droit public;"Les étudiants peuvent être recrutés par le président pour exercer les activités suivantes :
+- Accueil des étudiants
+- Assistance et accompagnement des étudiants handicapés
+- Tutorat
+- Soutien informatique et aide à l'utilisation des nouvelles technologies
+- Appui aux personnels des bibliothèques et des autres services
+- Animations culturelles, artistiques, scientifiques, sportives et sociales ; actions dans le domaine de la promotion de la santé et du développement durable
+- Aide à l'insertion professionnelle
+- Promotion de l'offre de formation
+Un guide complet de gestion de ces personnels est disponible sur le site de l'Amue";Temporaire;Les contrats sont conclus pour une période maximale de 12 mois entre le 1er septembre et le 31 août;CDD;;Biatss;Non concerné;Modèle simple : CO323_ETUD - CONTRAT DE RECRUTEMENT D'ETUDIANT;;"Taux horaires
+Nombre d'heures";0500910000 - CONTRACTUEL ETUDIANT;;;;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;ET : Contractuel étudiant;;C0323;Etudiant contractuel en EPES ou EP de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2037;Contractuel;Prof 2nd degré;Professeur 2nd degré;;;"Décret 92-131
+Obligation service: Décret 93-461
+Rémunération: Arrêté du 29/08/1989 (MENF8902002A)";Droit public;Lorsque des emplois de professeur de second degré dans les établissements d'enseignement supérieur n'ont pu être pourvus par des professeurs titulaires de l'enseignement du second degré, des professeurs contractuels peuvent être recrutés à titre temporaire dans la limite du nombre des emplois vacants;Temporaire;Durée maximale de 3 ans, renouvelable par reconduction expresse;"CDD
+ou
+CDI";A;Enseignant-Chercheur-EC;"384h TD ou TP
+1h Cours = 1h30 TD";CO102_42EN - ENSEIGNANT DU SECOND DEGRE (décret n°92-131 du 5/02/1992);;"MR01 - Indice brut
+Indice de rémunération";Plusieurs grades possibles, pas de transco possible;0000 - Grade générique;00;oui;"CDD: 3H-Contract.84-16 Article 4 2°
+
+CDI: 3W-Contract.84-16 Article 4 2°";"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;"PC : Prof. contractuel 2nd degré fonction.
+PN : Prof. contractuel 2nd degré non fonct.";***;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0331;Contractuel;Volont serv civiqu;Volontaire de service civique;14/05/2010;;"L.2010-241 Art. 8
+Code du service national L120-1 et suivants
+Décret 2010-485";Droit public;"Le service civique concerne les jeunes de 16 à 25 ans. C'est un engagement volontaire d’une durée de 6 à 12 mois pour accomplir une mission d’intérêt général dans les domaines d’intervention reconnus prioritaires pour la Nation: culture et loisirs, développement international et action humanitaire, éducation pour tous, environnement, intervention d’urgence, mémoire et citoyenneté, santé, solidarité, sport. Le service minimum est de 24 heures hebdomadaires.
+L'indemnité mensuelle comprise entre 8,07 % et 54,04 % de la rémunération afférente à l'IB 244 est prise en charge par l'Agence du service civique (cf. article L120-1 du code du service national).
+En métropole, cette compétence relève de l'Agence de services et de paiement (ASP) et non directement des services de l'Etat. En revanche, il existe une exception pour les collectivités d'outre-mer où les volontaires du service civique peuvent être indemnisés par les services de l'Etat. La DGFIP a confirmé que seuls sont pris en charge via la paie sans ordonnancement préalable (PSOP) les volontaires du service civique en poste outre-mer.
+Cependant les EPSCP, même s'ils ne gèrent pas et ne payent pas les volontaires de service civique, ont besoin de les identifier dans leur SIRH. C'est pourquoi dans Siham le libellé de ce statut ne mentionne pas outre-mer.";Non concerné;12 mois maximum;CDD;;Biatss;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0499130000 - Volontaire service civique;;;non;29-Volontaire du service civique;79-Volontaire de service civique;00-Non cotisant;IQ : Volontaire de service civique;;C0331;Volontaire de service civique outre-mer;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2063;Contractuel;Ctr form continue;Contractuel formation continue;;;"Code de l'éducation L953-3-1
+Loi 2016-1088 art. 84
+Cir. DGRH C1-2 n°2016-0168";Droit public;Agents contractuels recrutés par les EPSCP dans le cadre de leur mission de formation continue pour occuper des fonctions techniques ou administratives. Ils sont employés à temps complet ou incomplet en fonction des besoins du service.;Temporaire;"Durée du contrat initial : 3 ans
+Renouvelable
+Durée totale du contrat : 6 ans maximum";"CDD
+CDI
+CDIsation possible au-delà de 6 ans";"A
+B
+C";Biatss;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;;"CDD: 3K-Contract.84-16 Article 6
+
+CDI: 3Y-Contract.84-16 Article 6";"CDD: 12-Non titulaires-Non permanents temporaires
+
+CDI: 10-Non titulaires permanents";10-IRCANTEC temps complet;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0335;Contractuel;Contrat de projet;Contractuel recruté sur contrat de projet;29/02/2020;;"Loi 84-16 art.7 bis
+Décret 86-83 titre 1er bis";Droit public;Ce statut mis en oeuvre par la loi de transformation de la fonction publique 2019-828, permet le recrutement d'un agent pour mener à bien un projet ou une opération identifié au sein d'une administration de l'Etat ou d'un établissement public de l'Etat par un contrat à durée déterminée dont l'échéance est la réalisation du projet ou de l'opération;Temporaire;Durée limitée à celle de la réalisation projet de recherche: contrôle intellectuel;CDD;"A
+B
+C";Mixte;Non concerné;En cours de création;;"Plusieurs possibilités :
+Si MG01 alors saisir une MR01
+SI MG07 alors saisir une des MR suivantes: 01, 02, 03, 04, 05, 06, 08
+SI MG08 alors saisir une des MR suivantes: 01, 02, 03, 04, 05, 06, 08";0500010000 - AGENT CONTRACTUEL;0000 - Grade générique;00;;4H-Contractuel CDD article 7 bis projet;12-Non titulaires-Non permanents temporaires;10-IRCANTEC temps complet;;;C0335;Contractuel recruté sur contrat de projet;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0337;Contractuel;CDI mission scient;CDI recruté contrat mission scientifique;07/11/2021;;"Code de la recherche L.431-6
+Décret 2021-1449";Droit public;Agent recruté par contrat de droit public pour contribuer à un projet/opération de recherche. Le contrat prend fin avec la réalisation de l'opération de recherche, après un délai de prévenance de 3 mois.;Temporaire;Durée limitée à celle de la réalisation de l'opération de recherche: contrôle intellectuel;CDI;"A
+B
+C";Mixte;Non concerné;à demander au DCSI;;?;0500980000 - CONTR. MISS. SCIENT.;0000 - Grade générique;;;"4P - CDI mission scient
+Dans l'attente de la création dans PAY-PAYSAGE : utilisation du CSTAT22";"12-Non titulaires-Non permanents temporaires
+";10-IRCANTEC temps complet;;;C0337;Contractuel recruté sur contrat de mission scientifique;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0338;Contractuel;Contr post-doc CR;Contrat post-doctoral droit public code rech;07/11/2021;;"Code de la recherche L.412-4
+Décret 2021-1450";Droit public;"Jeunes docteurs recrutés dans le cadre d'une opération de recherche, au plus tard 3 ans après l'obtention du diplôme de doctorat.
+Objet : mise en œuvre d'un contrat de transition professionnelle permettant de fournir au jeune chercheur une expérience professionnelle complémentaire au doctorat lui permettant d'approfondir sa pratique de la recherche, de faciliter sa transition professionnelle vers des postes pérennes en recherche publique ou privée et de prendre, le cas échéant, des responsabilités scientifiques";Temporaire;Durée limitée à celle de la réalisation de l'objet du contrat: contrôle intellectuel;CDI;A;Enseignant-Chercheur-EC;Non concerné;à demander au DCSI;;;05009900000 - C.POST DOC.DR.PUB.CR;;;;"4M - CDD Post-Doc Publi
+Dans l'attente de la création dans PAY-PAYSAGE : utilisation du CSTAT22";"12-Non titulaires-Non permanents temporaires
+";10-IRCANTEC temps complet;;;C0338;Contractuel recruté sur contrat post doctoral;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0339;Contractuel;CPJ Dir recherche;CPJ emploi tit. corps direct. Recher;20/12/2021;;"Article L.422-3 - Code de la recherche
+Décret 2021-1710
+Arrêté du 6 janvier 2022 relatif à la rémunération des agents bénéficiaires du contrat de « Chaire de professeur junior »
+Arrêté du 22 février 2022 relatif aux modalités de candidature au recrutement par voie de contrat de chaire de professeur junior";Droit public;Afin de répondre à un besoin spécifique lié à sa stratégie scientifique ou à son attractivité internationale, dans des domaines de recherche pour lesquels il justifie de cette nécessité, un établissement public de l'ESR peut être autorisé, par arrêté du ministre chargé de la recherche, à recruter en qualité d'agent contractuel de droit public des personnes titulaires d'un doctorat ou d'un diplôme équivalent en vue de leur titularisation dans un corps de directeur de recherche;Permanent;Non concerné;CDD;A;Enseignant-Chercheur-EC;Non concerné;;;rémunération forfaitaire avec un minimum mensuel  fixé à 3 443,50€ brut;"1823010000 - CPJ DIR. RECHERCHE
+
+";;;;"4N - CDD CPJ Dir Rech
+Dans l'attente de la création dans PAY-PAYSAGE : utilisation du CSTAT22";"10-Non titulaires permanents
+
+";10-IRCANTEC temps complet;;;C0339;Contractuel CDD emploi donnant lieu à titularisation dans un corps de directeur de recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0340;Contractuel;CPJ Prof universit;CPJ emploi tit. corps professeur;20/12/2021;;"L.952-6-2 - Code de l’éducation
+Décret 2021-1710
+Arrêté du 6 janvier 2022 relatif à la rémunération des agents bénéficiaires du contrat de « Chaire de professeur junior »
+Arrêté du 22 février 2022 relatif aux modalités de candidature au recrutement par voie de contrat de chaire de professeur junior";Droit public;Afin de répondre à un besoin spécifique lié à sa stratégie scientifique ou à son attractivité internationale, dans des domaines de recherche pour lesquels il justifie de cette nécessité, un établissement public de l'ESR peut être autorisé, par arrêté du ministre chargé de l'enseignement supérieur, à recruter en qualité d'agent contractuel de droit public des personnes titulaires d'un doctorat ou d'un diplôme équivalent en vue de leur titularisation dans le corps de professeur d'université ou assimilés;Permanent;Non concerné;CDD;A;Enseignant-Chercheur-EC;128h de cours ou 192h de TD ou toute autre combinaison équivalente;"CO340_CPJ
+CO340_CPJR";;rémunération forfaitaire avec un minimum mensuel  fixé à 3 443,50€ brut;1823020000 - CPJ PROFESSEUR;;;;"4L - CDD CPJ Professeur
+Dans l'attente de la création dans PAY-PAYSAGE : utilisation du CSTAT22";10-Non titulaires permanents;10-IRCANTEC temps complet;;;C0340;Contractuel CDD emploi donnant lieu à titularisation dans un corps de professeur;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2061;Contractuel;CDI Sauvadet BIATS;Cédéisé Sauvadet BIATSS;14/03/2012;;Loi 2012-347 art.8, 9 et 37;Droit public;Ce statut peut être utilisé pour les agents contractuels cédéisés en application de la loi Sauvadet pour effectuer des fonctions administratives et/ou techniques;Permanent;Non concerné;CDI;"A
+B
+C";Biatss;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;10-IRCANTEC temps complet;CD : Contrat à durée indéterminée;"LL_MODE_ACCES = Loi n° 2012-347 du 12 mars 2012
+et
+équivalent grade correspondant à un personnel BIATSS";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2062;Contractuel;CDI Sauvadet Ens-C;Cédéisé Sauvadet Ens-Ch;14/03/2012;;Loi 2012-347 art. 8, 9 et 37;Droit public;Ce statut peut être utilisé pour les agents contractuels cédéisés en application de la loi Sauvadet pour effectuer des fonctions d'enseignement et/ou de recherche;Permanent;Non concerné;CDI;"A
+B
+C";Enseignant-Chercheur-EC;Non concerné;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR01 - Indice brut
+Indice de rémunération";0500010000 - AGENT CONTRACTUEL;Choisir le grade correspondant au niveau de l'agent;00;oui;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;10-IRCANTEC temps complet;CD : Contrat à durée indéterminée;"LL_MODE_ACCES = Loi n° 2012-347 du 12 mars 2012
+et
+équivalent grade correspondant à un personnel enseignant chercheur";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0404;Contractuel;Ens priv s/ctr ass;Enseig privé s/ctr assoc titre déf;;;"Code Éducation L442-5
+Code Éducation R 914-44 et al. ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant contractuel d'établissement privé sous contrat d’association à titre définitif";;;;;;;;;;;;;;;;;;;C0404;Enseignant contractuel d'établissement privé sous contrat d’association à titre définitif;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0405;Contractuel;Ens ag/priv s/c sp;Enseig agréé privé s/ctr simple titre déf;;;"Code Éducation L442-5
+Code Éducation R 914-53 et al. ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant agréé établissement privé sous contrat simple à titre définitif ";;;;;;;;;;;;;;;;;;;C0405;Enseignant agréé établ. privé sous contrat simple à titre définitif;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0406;Contractuel;Maître dél ctr ass;Maître délégué étab privé s/ctr d'assoc;;;"Code Éducation L442-5
+Code Éducation R914-45 et al.  ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que maître délégué établissement privé sous contrat d’association ";;;;;;;;;;;;;;;;;;;C0406;Maître délégué établ. privé sous contrat d’association ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0407;Contractuel;Maître dél ctr sim;Maître délégué étab privé s/ctr simple;;;"Code Éducation L442-5
+Code Éducation R914-54 et al.  ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que maître délégué établissement privé sous contrat simple ";;;;;;;;;;;;;;;;;;;C0407;Maître délégué établ. privé sous contrat simple;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0408;Contractuel;Ens priv c ass pro;Enseig privé s/ctr assoc titre prov;;;"Code Éducation L442-5
+Code Éducation R 914-44 et al. ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant contractuel d'établissement privé sous contrat d’association à titre provisoire";;;;;;;;;;;;;;;;;;;C0408;Enseignant contractuel établ. privé sous contrat d’association à titre provisoire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0409;Contractuel;Ens ag/priv sp pro;Enseig agréé privé s/ctr simpl titre prov;;;"Code Éducation L442-5
+Code Éducation R 914-53 et al. ";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant agréé établissement privé sous contrat simple à titre provisoire ";;;;;;;;;;;;;;;;;;;C0409;Enseignant agréé établ. privé sous contrat simple à titre provisoire;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0410;Contractuel;Ens agri pri c déf;Enseig agricole privé s/ctr titre déf;;;"Code rural L 813-8
+D89-406";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant contractuel de l'enseignement agricole privé sous contrat définitif";;;;;;;;;;;;;;;;;;;C0410;Enseignant contractuel de l'enseignement agricole privé sous contrat définitif;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0411;Contractuel;Ens agri pri c pro;Enseig agricole privé s/ctr titre prov;;;"Code rural L 813-8
+D89-406";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" est utile pour renseigner l'historique du parcours professionnel de l'agent en tant qu'enseignant contractuel de l'enseignement agricole privé sous contrat non définitif";;;;;;;;;;;;;;;;;;;C0411;Enseignant contractuel de l'enseignement agricole privé sous contrat non définitif;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0501;Contractuel;Adj sécurité;Adjoint de sécurité (emploi aidé de droit public);;;"Loi 95-73 article 36
+Décret 2000-800";Droit public;"Hors périmètre Siham, ce statut de ""Maître du privé"" ne doit être utilisé que pour l'historique du parcours professionnel de l'agent.";;;;;;;;;;;;;;;;;;;C0501;Adjoint de sécurité (en emploi aidé);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2022;Contractuel;Assistant bio;Assistant biologie;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 60-1030 art. 43
+Décret 84-135";Droit public;Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ». Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.;Temporaire;;CDD;A;Enseignant-Chercheur-EC;;Modèle d'acte non disponible actuellement;;"1ère solution préconisée par l'Amue :
+MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""
+
+2ème solution si le site souhaite renseigner
+les informations ""Carrière"" :
+MG07 : GA assimilée et Paye non assimilée";0621010000 - ASSISTANT HOPITAUX;"1ère solution :
+0000 - Grade générique
+
+2ème solution :
+4726 - ASSIST. DES UNIV. - ASSIST. DES HOPITAUX";"1ère solution :
+00
+
+2ème solution :
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;AB : Assistant Biologie;;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2023;Contractuel;Attaché chef clin;Attaché chef clinique;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 63-1192 ";Droit public;"A titre provisoire, les facultés et les écoles nationales de médecine pourront dans les conditions définies au présent décret recruter des attachés de faculté ou école nationale, chefs de clinique, et des attachés de faculté ou école nationale, assistants de sciences fondamentales. Les agents ainsi recrutés sont nommés sur les postes de chef de clinique et d'assistant inscrits au budget de l'Education nationale dans la mesure où les postes hospitaliers correspondants ne sont pas en nombre suffisant pour permettre, les recrutements nécessaires sur des emplois comportant la double fonction hospitalière et universitaire définie par le décret susvisé du 24 septembre 1960.
+Pour la préliquidation, ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ».  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0621010000 - ASSISTANT HOPITAUX;0000 - Grade générique;00;non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;AC : Attaché-Chef de Clinique;;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2024;Contractuel;Assistant HU CSERD;Assistant hosp-U des CSERD;;15/12/2021;"Loi 84-16 Article 3 4°
+Décrets 84-135 & 90-92
+Obligations service: Arrêté du 21/12/1960
+Rémunération: Arrêté du 26/08/2010";Droit public;"Production d'un arrêté et non d'un contrat
+Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire »  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;fixées par tableau de service;"HU_600_AO - nomination d'un assistant hospitalier universitaire D.90-92 du 24/01/1990 - Odontologie
+HU_600_AOR - nomination d'un assistant hospitalier universitaire D.90-92 du 24/01/1990 - Odontologie Renouvellement";;"1ère solution préconisée par l'Amue :
+MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""
+
+2ème solution si le site souhaite renseigner
+les informations ""Carrière"" :
+MG07 : GA assimilée et Paye non assimilée";0621010000 - ASSISTANT HOPITAUX;"1ère solution :
+0000 - Grade générique
+
+2ème solution :
+4728 - ASSISTANT ODONTOLOGISTE";"1ère solution :
+00
+
+2ème solution :
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;AO : Assistant hospitalier univ. des CSERD;;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2025;Contractuel;Assistant HU méd;Assistant hosp-U médecine;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 84-135 Tit II Chap I
+Obligations service: Arrêté du 21/12/1960
+Rémunération: Arrêté du 26/08/2010";Droit public;"Production d'un arrêté et non d'un contrat
+Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ».  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;fixées par tableau de service;"HU_600_AH - nomination d'un assistant hospitalier universitaire D.84-135 du 24/02/1984 - Médecine
+HU_600_AHR - nomination d'un assistant hospitalier universitaire D.84-135 du 24/02/1984 - Médecine Renouvellement";;"1ère solution préconisée par l'Amue :
+MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""
+
+2ème solution si le site souhaite renseigner
+les informations ""Carrière"" :
+MG07 : GA assimilée et Paye non assimilée";0621010000 - ASSISTANT HOPITAUX;"1ère solution :
+0000 - Grade générique
+
+2ème solution :
+4726 - ASSIST. DES UNIV. - ASSIST. DES HOPITAUX";"1ère solution :
+00
+
+2ème solution :
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;AH : Assistant hospitalier univ. (Médecine);;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2026;Contractuel;Assistant HU pharm;Assistant hosp-U pharmacie;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 84-135
+Obligations service: Arrêté du 21/12/1960
+Rémunération: Arrêté du 26/08/2010";Droit public;"Production d'un arrêté et non d'un contrat
+Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ».  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;fixées par tableau de service;"HU_600_AT - nomination d'un assistant hospitalier universitaire D.84-135 du 24/02/1984 - Disciplines pharmaceutiques
+HU_600_ATR - nomination d'un assistant hospitalier universitaire D.84-135 du 24/02/1984 - Disciplines pharmaceutiques Renouvellement";;"Renseigner :
+MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0621010000 - ASSISTANT HOPITAUX;"1ère solution :
+0000 - Grade générique
+
+2ème solution :
+4726 - ASSIST. DES UNIV. - ASSIST. DES HOPITAUX";"1ère solution :
+00
+
+2ème solution :
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;AI : Assistant hospitalier univ. (Pharmacie);;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0604;Contractuel;AHU;Assistant hospitalier universitaire;16/12/2021;;"Loi 84-16 Article 3 4°
+CGFP 2° de l'article L332-1
+Code de l'éducation art. L.952-21
+Décret 2021-1645 Art. 1, 81 et 87 à 96
+Rémunération: Arrêté du 13/12/2021 ESRH2117828A";Droit public;"Des médecins, chirurgiens-dentistes ou pharmaciens, peuvent être nommés AHU par arrêté, s'ils sont titulaires soit d'un diplôme d'études spécialisées, soit d'un titre admis en dispense; et s'ils remplissent les conditions d'exercice de leur profession. exercent leurs fonctions dans les disciplines médicales,  biologiques et mixtes et dans les disciplines pharmaceutiques. Les disciplines qu'ils exercent peuvent être différentes pour leurs fonctions universitaires et pour leurs fonctions hospitalières.
+
+Pour la préliquidation ils sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code indemnité : « 2385 - REM. UNIVERSITAIRE NON TITULAIRE ». Il s’agit d’une rémunération principale. Ces indemnités sont soumises aux cotisations salariales et patronales et à l’impôt sur le revenu. Elle sont pérennes et mensuelles. Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;"Contrat initial de 2 ans
+2 renouvellements possibles pour une durée d'1 an chacun.
+Prolongation possible en cas de congé maternité, adoption, paternité ou congé de maladie rémunéré afin d'atteindre la durée de 2 ans nécessaire au titre d'ancien AHU
+La durée totale des fonctions en tant que PHU, CCU-AH et AHU ne peut excéder 8 ans
+Les durées sur le statut C2026 doivent être prises en compte durant la période transitoire";CDD;A;Enseignant-Chercheur-EC;"fixées par tableau de service
+Cf. D.2021-1645 art 6 : 11 demi-journées hebdomadaires. Le travail de nuit compte double. Si l’activité médicale est organisée en temps continu, l’obligation de service est calculée en heures";"HU_600_AO - nomination d'un assistant hospitalier universitaire 
+HU_600_AOR - nomination d'un assistant hospitalier universitaire - Renouvellement";;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0621010000 - ASSISTANT HOPITAUX;"1ère solution :
+0000 - Grade générique
+
+2ème solution :
+4726 - ASSIST. DES UNIV. - ASSIST. DES HOPITAUX";"1ère solution :
+00
+
+2ème solution :
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;"10-IRCANTEC Temps complet
+16-IRCANTEC Temps partiel - tranche B";AI : Assistant hospitalier univ. (Pharmacie);;C0604;AHU;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2027;Contractuel;Chef clin assistHU;Chef clinique univ assistant hosp;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 84-135 Tit II Chap I
+Obligations service: Arrêté du 21/12/1960
+Rémunération: Arrêté du 26/08/2010";Droit public;"Production d'un arrêté et non d'un contrat
+Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ».  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;fixées par tableau de service;"HU_600_CU - nomination d'un chef de clinique des universités-assistant des hôpitaux D.84-135 du 24/02/1984 - Médecine
+HU_600_CUR - nomination d'un chef de clinique des universités-assistant des hôpitaux D.84-135 du 24/02/1984 - Médecine Renouvellement";;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0650020000 - CHEF CLINIQUE ASS.TP;0000 - Grade générique;"00
+ou
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;CU : Chef clinique univ. Assistants hôpitaux;***;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0603;Contractuel;CCU-AH;Chef de clinique des univ.-Assistant des hôpitaux;16/12/2021;;"Loi 84-16 Article 3 4°
+CGFP 2° de l'article L332-1
+Code de l'éducation art. L.952-21
+Décret 2021-1645 Art. 1, 81 et 87 à 96
+Rémunération: Arrêté du 13/12/2021 ESRH2117828A";Droit public;"Des médecins, chirurgiens-dentistes ou pharmaciens, peuvent être nommés CCU-AH par arrêté, s'ils sont titulaires soit d'un diplôme d'études spécialisées, soit d'un titre admis en dispense; et s'ils remplissent les conditions d'exercice de leur profession. exercent leurs fonctions dans les disciplines médicales,  biologiques et mixtes et dans les disciplines pharmaceutiques. Les disciplines qu'ils exercent peuvent être différentes pour leurs fonctions universitaires et pour leurs fonctions hospitalières.
+
+Pour la préliquidation ils sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code indemnité : « 2385 - REM. UNIVERSITAIRE NON TITULAIRE ». Il s’agit d’une rémunération principale. Ces indemnités sont soumises aux cotisations salariales et patronales et à l’impôt sur le revenu. Elle sont pérennes et mensuelles. Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;"Contrat initial de 2 ans
+2 renouvellements possibles pour une durée d'1an chacun.
+Prolongation possible en cas de congé maternité, adoption, paternité ou congé de maladie rémunéré afin d'atteindre la durée de 2 ans nécessaire au titre d'ancien CCU-AH
+La durée totale des fonctions en tant que PHU, CCU-AH et AHU ne peut excéder 8 ans
+Les durées sur le statut C2027 doivent être prises en compte durant la période transitoire";CDD;A;Enseignant-Chercheur-EC;"fixées par tableau de service
+Cf. D.2021-1645 art 6 : 11 demi-journées hebdomadaires. Le travail de nuit compte double. Si l’activité médicale est organisée en temps continu, l’obligation de service est calculée en heures";"HU_600_CU - nomination d'un chef de clinique des universités-assistant des hôpitaux
+HU_600_CUR - nomination d'un chef de clinique des universités-assistant des hôpitaux - Renouvellement";;"MG07 - GA assimilée et Paye non assimilée
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0650020000 - CHEF CLINIQUE ASS.TP;0000 - Grade générique;"00
+ou
+01 à 02";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;"10-IRCANTEC Temps complet
+16-IRCANTEC Temps partiel - tranche B";CU : Chef clinique univ. Assistants hôpitaux;***;C0603;CCU-AH;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2028;Contractuel;Praticien HU;Praticien hospitalo-U;;15/12/2021;"Loi 84-16 Article 3 4°
+Décret 84-135 Tit II Chap II
+Obligations service: Arrêté du 21/12/1960
+Rémunération: Arrêté du 26/08/2010
+ESRH1021711A";Droit public;"Production d'un arrêté et non d'un contrat
+Pour la préliquidation ces HU sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code de l’indemnité : « 0682 traitement Hospitalo-U non titulaire ».  Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;;CDD;A;Enseignant-Chercheur-EC;fixées par tableau de service;HU_600_PU - nomination d'un praticien hospitalier universitaire D.84-35 du 24/02/1984;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0655010000 - PRATICIEN HOSP.UNIV.;0000 - Grade générique;"00
+ou
+01 à 08";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;81-Médecins à temps partiel;;PU : Praticien Hospitalo-Universitaire;***;C0600;Personnels hospitalo-universitaires;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0602;Contractuel;PHU;Praticien hospitalier universitaire;16/12/2021;;"Loi 84-16 Article 3, 4°
+CGFP 2° de l'article L332-1
+Code de l'éducation art. L.952-21
+Décret 2021-1645 Art. 1 et 81 à 86
+Rémunération: Arrêté du 13/12/2021 ESRH2117828A";Droit public;"Pour être nommés PHU à titre temporaire et exercer leurs fonctions dans les disciplines médicales, pharmaceutiques et odontologiques, les candidats doivent :
+a) Compter au moins 2 ans de services effectifs en qualité de CCU-AH ou AHU et exercer ces fonctions ou avoir cessé de les exercer depuis moins de 2 ans ;
+b) Etre inscrits sur la liste d'aptitude établie à l'issue du concours national de praticien hospitalier des établissements publics de santé
+c) Postuler à une nomination à titre permanent dans le corps des praticiens hospitaliers à temps plein
+
+Pour la préliquidation ils sont gérés par un mouvement indemnitaire 22 sur lequel est indiqué le code indemnité : « 2385 - REM. UNIVERSITAIRE NON TITULAIRE ». Il s’agit d’une rémunération principale. Ces indemnités sont soumises aux cotisations salariales et patronales et à l’impôt sur le revenu. Elle sont pérennes et mensuelles. Si des informations sont saisies dans la carrière, elles n'ont pas d'impact sur la préliquidation.";Temporaire;"
+La durée totale des fonctions en tant que PHU, CCU-AH et AHU ne peut excéder 8 ans
+
+Les durées sur les statuts C20256, C2027 et C2028 doivent être prises en compte durant la période transitoire";CDD;A;Enseignant-Chercheur-EC;"fixées par tableau de service
+Cf. D.2021-1645 art 6 : 11 demi-journées hebdomadaires. Le travail de nuit compte double. Si l’activité médicale est organisée en temps continu, l’obligation de service est calculée en heures";HU_600_PU - nomination d'un praticien hospitalier universitaire;;"MG07 - GA assimilée et Paye non assimilée
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0655010000 - PRATICIEN HOSP.UNIV.;0000 - Grade générique;"00
+ou
+01 à 13";non;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;"10-IRCANTEC Temps complet
+16-IRCANTEC Temps partiel - tranche B";PU : Praticien Hospitalo-Universitaire;***;C0602;PHU;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2031;Contractuel;Empl aidé drt priv;Emploi aidé de droit privé historique;;;;;Ce statut est utilisé pour renseigner l'historique du parcours d'un agent en tant que CES, CEC, emploi-jeune, TUC…;Non concerné;Non concerné;CDD;C;Null;Non concerné;;;;;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;;;;;"CE : CES
+CC : Contrat Emploi Consolidé
+EJ : Emploi-Jeune
+TU : Travaux d'utilité collective";;C0700;Agents en emplois aidés de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2032;Contractuel;Accompagn emploi;Accompagnement dans l'emploi;;;Décret 2005-243;Droit privé;Valeur détaillée du code CISIRH C0700;Non concerné;Non concerné;CDD;C;Biatss;;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500510000 - AGENT CONTRACTUEL;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;oui;30-Contrat d'accompagnement emploi;30-Personnel en CAE;10-IRCANTEC Temps complet;"CA : Contrat d'accompagnement dans l'emploi
+CZ : CAE (+de50ans / handicapés)";;C0700;Agents en emplois aidés de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2033;Contractuel;Contrat d'avenir;Contrat d'avenir;;31/12/2012;Décret 2005-242;Droit privé;Valeur détaillée du code CISIRH C0700 utile pour renseigner l'historique du parcours de l'agent avec sa période sur un contrat d'avenir;Non concerné;Non concerné;CDD;C;;;;;;0500520000 - CONTRACTUEL CA;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;;;;;"CV : Contrat d'avenir
+CY : Contrat d'avenir (+de50ans / handicapés)";;C0700;Agents en emplois aidés de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2034;Contractuel;CIA;Contrat d'insertion par l'activité;;;Décret 95-710;Droit privé;Valeur détaillée du code CISIRH C0700 réservée aux établissements recrutant des agents en emploi aidé dans les Départements d'Outre-Mer;Non concerné;Non concerné;CDD;C;Biatss;;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500160000 - C.E.C;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;oui;30-Contrat d'accompagnement emploi;30-Personnel en CAE;10-IRCANTEC Temps complet;CF : Contrat d'insertion par l'activité (spécifique DOM);;C0700;Agents en emplois aidés de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2035;Contractuel;CUI;Contrat Unique d'insertion;;;Décret 2009-1442;Droit privé;Valeur détaillée du code CISIRH C0700;Non concerné;Non concerné;"CDD
+CDI";C;Biatss;;"CO700_CCDD - CUI en CDD
+CO700_CCDI - CUI en CDI";;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500510000 - AGENT CONTRACTUEL;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;oui;30-Contrat d'accompagnement emploi;30-Personnel en CAE;10-IRCANTEC Temps complet;"CO : Contrat unique d'insertion en CDD
+CN : Contrat unique d'insertion en CDI";;C0700;Agents en emplois aidés de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2057;Contractuel;Ctr Emploi Avenir;Contrat emploi d'avenir en CDD;01/11/2012;01/01/2018;Loi 2012-1189 article 1;Droit privé;Correspond au code C0702 du CISIRH;Non concerné;Non concerné;CDD;C;Biatss;;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500510000 - AGENT CONTRACTUEL;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;oui;30-Contrat d'accompagnement emploi;30-Personnel en CAE;10-IRCANTEC Temps complet;EA : Contrat emploi d'avenir en CDD;;C0702;Emploi d'avenir;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2058;Contractuel;Ctr Emploi Av Prof;Contrat emploi d'avenir professeur;01/11/2012;01/01/2018;Loi 2012-1189 article 4;Droit privé;"Correspond au code C0703 du CISIRH.
+Ce statut est utile pour l'historique uniquement, puisque ces personnels sont recrutés au sein des EPLE";Non concerné;Non concerné;CDD;C;Null;;Modèle d'acte non disponible actuellement;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500510000 - AGENT CONTRACTUEL;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;oui;30-Contrat d'accompagnement emploi;30-Personnel en CAE;10-IRCANTEC Temps complet;EP : Contrat emploi d'avenir professeur;;C0703;Emploi d'avenir professeur;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0800;Contractuel;Apprenti;Apprenti               ;;;"Articles L.6227-1 à  L.6227-12 du code du travail
+Rémunération: Articles D.6222-26 et suivants";Droit privé;"Les personnes morales de droit public dont le personnel ne relève pas du droit privé peuvent conclure des contrats d'apprentissage. Les apprentis sont généralement âgés de 15 à 29 ans mais nombre de cas particuliers permettent de déroger à ses plancher/plafond. Ils préparent un diplôme associant une formation en entreprise (sous la responsabilité d’un maître d’apprentissage) et des enseignements dispensés dans un établissement d'enseignement, initialement les CFA mais aussi les IUT, les universités...
+Se référer au ""Précis de l'apprentissage"" édition septembre 2021 sur le site du ministère du travail, de l'emploi et de l'insertion";Non concerné;"Minimum 6 mois
+Maximum 3 ans mais dérogations possibles dans certains cas";CDD;"A
+B
+C";Biatss;Non concerné;Convention tripartite: employeur, futur apprenti (et éventuellement son représentant légal) et CFA annexée au contrat produit via la plateforme de saisie en ligne des contrats d'apprentissage pour les employeurs publics;;"MG08 - GA et Paye non assimilées
+MR07 - Pourcentage";0499040000 - APPRENTI;"Si cette information est renseignée, le témoin ""Durée à déduire du calcul des services publics"" est coché automatiquement dans Dossier individuel / Configuration / Congés ANT / Statut";;non;55-Apprenti;60-Apprenti;17-Apprenti;AP : Apprenti;;C0800;Apprentis;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C1001;Contractuel;EP dérog L83-634;Contrat de droit privé recruté dans EP;;;;Droit privé;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'ANT dans les EP ou institution autorisés à déroger à l'art 3 de la loi 83-634 par des dispositions législatives spécifiques (les universités n'y sont pas autorisées);;;;;;;;;;;;;;;;;;;C1001;ANT dans les EP ou institution autorisés à déroger à l'art 3 de la loi 83-634 par des dispositions législatives spécifiques;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C1002;Contractuel;Autre pers dr priv;Contrat de droit privé autre;;;"Code du travail L1224-3
+Décret 86-83 article 28-1";Droit privé;Ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent notamment dans le cas particulier de la reprise d'activités privées par un établissement public. Comme indiqué dans les commentaires du C0316, s'il existe une période transitoire pendant laquelle l'établissement n'a pas encore proposé un contrat de droit public à l'agent, alors l'agent est renseigné sous le C1002;Non concerné;;;;;Non concerné;;;;;;;;;;;;;C1002;Autre personnel de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C1003;Contractuel;Berkanien dr privé;Contrat de droit privé Berkanien;;;Loi 2000-321 article 34, I;Droit privé;"Les agents non titulaires de l'Etat et de ses établissements publics à caractère administratif, en fonction à la date de publication de la présente loi et qui n'ont pas été recrutés en application des articles 3, 4, 6 et 27 de la loi 84-16 bénéficient d'un CDI lorsqu'ils assurent : 
+- Soit des fonctions du niveau de la catégorie C concourant à l'entretien ou au gardiennage de services administratifs ; 
+- Soit des fonctions de même niveau concourant au fonctionnement de services administratifs de restauration, des hôtels ......  relevant du ministère chargé de la défense. 
+Les fonctions mentionnées ci-dessus peuvent être exercées à temps incomplet.
+Ils peuvent demander que le contrat de travail sur la base duquel ils ont été engagés soit un contrat de droit privé soumis aux dispositions du code du travail. Les intéressés disposent d'un délai d'un an à compter de la date de publication de la présente loi pour présenter leur demande. Le bénéfice des dispositions du présent paragraphe leur est reconnu à compter de la date de leur engagement initial. ";Non concerné;Non concerné;CDI;C;Biatss;Non concerné;;;"MG08 - GA et Paye non assimilées
+MR04 - Montant
+Montant brut dans ""Rém. du contrat""";0500010000 - AGENT CONTRACTUEL;;;;22-Non Titulaires recrutés sur d'autres fondements que la loi 84-16;10-Non titulaires permanents;10-IRCANTEC temps complet;;;C1003;Berkanien de droit privé;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C1004;Contractuel;Marin phare balise;Contrat de droit privé marin phares & balises;;;"Code du travail
+Code du travail maritime
+Décret 52-540";Droit privé;Hors périmètre Siham, ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que marin des phares et balises;;;;;;;;;;;;;;;;;;;C1004;Marin des phares et balises;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C1100;HPS;ANT drt local;Contrat de droit local       ;;;Loi 2000-321 article 34, V;Droit local;Hors périmètre Siham des universités pour lesquelles ce statut est utile pour renseigner l'historique du parcours professionnel de l'agent en tant que contractuel à l'étranger. Au sein de l'ESR, ce statut concerne spécifiquement les organismes de recherche (IRD, INRAE,etc...) qui ont des structures implantées à l'étranger. Ainsi, lorsque les nécessités du service le justifient, ces EPST peuvent, dans le respect des conventions internationales du travail, faire appel à des personnels contractuels recrutés sur place, sur des contrats de travail soumis au droit local, pour exercer des fonctions concourant au fonctionnement desdits services. ;Non concerné;Non concerné;Non concerné;;;Non concerné;;;;;;;;;;;;;C1100;Agents non titulaires de droit local;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+MIL41;Militaire;Appelés;Appelés (Historique seulement);;;;;"• Cas d'usage n°1 : 
+Ce statut est utilisé sur les périodes pour lesquelles une information de ""Service national"" est renseignée dans ""Décrire le parcours"".
+• Cas d'usage n°2 : 
+L'agent devient stagiaire alors qu'il réalise son service militaire, le découpage des périodes est le suivant : 
+1ère période - service militaire : 
+STATUT : MIL41 / POSITION : SER* / Aucune occurrence de grade ne doit être renseignée
+2ème période - service national + stage : 
+ STATUT : STAGI / POSITION : ACI01 / Occurrence de grade renseignée avec qualité statutaire ""S-Stagiaire"" / Aucune occurrence de Service National dans ""Décrire le parcours"" 
+• Cas d'usage n°3 : 
+L'agent est déjà Stagiaire ou Titulaire de la FP, lorsqu'il effectue son service national, le découpage des périodes est le suivant : 
+1ère période - avant le service national : 
+STATUT : STAGI ou TITU1 / POSITION : ACI01 par exemple / Renseigner une occurrence de grade (fermée la veille de son départ au SN)
+2ème période -  service national : 
+STATUT : MIL41 / POSITION : SER* / Ne pas renseigner d'occurrence de Service National dans ""Décrire le parcours"" ";Non concerné;Non concerné;Non concerné;;Null;Non concerné;;;;;;;;;;;;;MIL41;Appelés;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C2036;Contractuel;Reprise Harpège;Reprise données Harpège;;;Contractuel Reprise;;"Ce statut a été créé dans le contexte spécifique de la reprise des données d'Harpège dans Siham. Il permet la reprise dans Siham de 20 ""Types de contrat"" d'Harpège qui ne s'appuyaient pas sur un fondement juridique. Ainsi, le libellé du type de contrat renseigné dans Harpège est reporté dans le champ ""Commentaire"" de l'écran ""Contrats"" de Siham. Dans le cadre de la personnalisation, les sites peuvent modifier cette transcodification,";Non concerné;Non concerné;"CDD
+CDI";"A
+B
+C";Null;Non concerné;;;;0500010000 - AGENT CONTRACTUEL;;;;;;;"AD : Assistant Chirurgie Dentaire
+AE : Autre contrat Educ. Nat. Hors Ens. Sup.
+AU : Auxiliaire
+AZ : Assistant des facultés de Droit SC.éco
+DB : CDD BIBLI (10 mois dépassés)
+DP : CDD PAOSS (10 mois dépassés)
+DR : CDD RF (10 mois dépassés)
+EV : Emploi vacant ITARF (plus en vigueur)
+LC : Collaborateur Technique
+MQ : Moniteur travaux pratiques (historique)
+OB : Objecteur de conscience
+PA : Personnel administratif, technique INSA
+PI : Professeur ingénieur INSA
+SC : Suppléant type CNRS (plus en vigueur)
+TA : Attaché Assistant
+TT : Attaché Assistant Sciences fondament.
+UH : Assistant des Univ. Assistant Hôpitaux
+HS : Contrat HS sans sous-type de contrat
+HS-XX : Contrat HS avec sous-type de contrat local
+IS : Statuts antérieurs";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0339;Contractuel;CHAIRE PROF. JUNIOR-DIRECTEUR DE RECHERCHE;;;;Décret 2021-1710 relatif au contrat de chaire de professeur junior prévu par l'article L. 952-6-2 du code de l'éducation et par l'article L. 422-3 du code de la recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+C0340;Contractuel;CHAIRE PROF. JUNIOR - PROFESSEUR;;;;Décret 2021-1710 relatif au contrat de chaire de professeur junior prévu par l'article L. 952-6-2 du code de l'éducation et par l'article L. 422-3 du code de la recherche;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
