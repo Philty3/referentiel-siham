@@ -15,6 +15,7 @@ const navItems = [
   { name: "Congés/absences", path: "/conges" },
   { name: "Emplois", path: "/emplois" },
   { name: "Modalités de service", path: "/modalites" },
+  { name: "Diplômes", path: "/diplomes" },
 ];
 
 export const Navigation = () => {
