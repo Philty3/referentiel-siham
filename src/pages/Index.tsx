@@ -241,6 +241,7 @@ const Index = () => {
               onAdd={() => {}}
               renderExpandedContent={renderExpandedContent}
               hideAddButton={true}
+              hideSearchField={true}
             />
           </div>
         )}

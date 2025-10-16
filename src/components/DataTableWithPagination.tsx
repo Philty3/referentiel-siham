@@ -34,6 +34,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   renderExpandedContent: (item: T) => React.ReactNode;
   itemsPerPage?: number;
   hideAddButton?: boolean;
+  hideSearchField?: boolean;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -48,6 +49,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   renderExpandedContent,
   itemsPerPage = 20,
   hideAddButton = false,
+  hideSearchField = false,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -107,17 +109,19 @@ export function DataTableWithPagination<T extends Record<string, any>>({
           )}
         </div>
 
-        <div className="border-b bg-muted/20 p-3">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 h-9 text-sm"
-            />
+        {!hideSearchField && (
+          <div className="border-b bg-muted/20 p-3">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 h-9 text-sm"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="overflow-x-auto max-h-[calc(100vh-200px)]">
           {loading ? (
