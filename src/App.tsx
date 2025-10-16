@@ -12,6 +12,7 @@ import Reference4 from "./pages/Reference4";
 import Grades from "./pages/Grades";
 import Conges from "./pages/Conges";
 import Emplois from "./pages/Emplois";
+import Modalites from "./pages/Modalites";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/grades" element={<Grades />} />
             <Route path="/conges" element={<Conges />} />
             <Route path="/emplois" element={<Emplois />} />
+            <Route path="/modalites" element={<Modalites />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

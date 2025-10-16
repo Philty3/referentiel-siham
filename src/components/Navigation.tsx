@@ -14,6 +14,7 @@ const navItems = [
   { name: "Grades", path: "/grades" },
   { name: "Congés/absences", path: "/conges" },
   { name: "Emplois", path: "/emplois" },
+  { name: "Modalités de service", path: "/modalites" },
 ];
 
 export const Navigation = () => {
