@@ -1,10 +1,17 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X } from "lucide-react";
+import { Download, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import logoVideo from "@/assets/logo-video.mp4";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
@@ -117,28 +124,35 @@ export const Navigation = () => {
         
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-4">
-          <ul className="flex items-center gap-1">
-            {navItems.map((item, index) => (
-              <li 
-                key={item.path}
-                style={{ animationDelay: `${index * 50}ms` }}
-                className="animate-fade-in"
-              >
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 ${
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-md"
-                        : "text-foreground hover:bg-muted hover:shadow-sm"
-                    }`
-                  }
-                >
-                  {item.name}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="hover:bg-muted">
+                  Référentiels
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] gap-1 p-4">
+                    {navItems.map((item) => (
+                      <li key={item.path}>
+                        <NavLink
+                          to={item.path}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                              isActive
+                                ? "bg-primary text-primary-foreground shadow-sm"
+                                : "text-foreground hover:bg-muted"
+                            }`
+                          }
+                        >
+                          {item.name}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           
           <Button
             onClick={handleExport}
