@@ -3,7 +3,7 @@ import { Download, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import logoVideo from "@/assets/logo-video.mp4";
 
 const navItems = [
@@ -24,6 +24,8 @@ export const Navigation = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playbackRate, setPlaybackRate] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,6 +34,24 @@ export const Navigation = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (playbackRate > 0 && video.currentTime >= video.duration - 0.1) {
+        setPlaybackRate(-1);
+        video.playbackRate = -1;
+      } else if (playbackRate < 0 && video.currentTime <= 0.1) {
+        setPlaybackRate(1);
+        video.playbackRate = 1;
+      }
+    };
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+  }, [playbackRate]);
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -68,12 +88,12 @@ export const Navigation = () => {
         <div className="flex items-center gap-4 animate-fade-in">
           <div className="flex items-center gap-2">
             <video 
+              ref={videoRef}
               src={logoVideo}
               autoPlay
-              loop
               muted
               playsInline
-              className={`h-24 w-24 object-cover rounded transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
+              className={`h-14 w-14 object-cover rounded-full transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
             />
             <span className={`text-xl font-bold text-foreground transition-all duration-300 ${scrolled ? "text-lg" : ""}`}>
               Référentiel SIHAM
