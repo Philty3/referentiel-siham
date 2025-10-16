@@ -73,7 +73,7 @@ export const Navigation = () => {
               loop
               muted
               playsInline
-              className={`h-8 w-8 object-cover rounded transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
+              className={`h-16 w-16 object-cover rounded transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
             />
             <span className={`text-xl font-bold text-foreground transition-all duration-300 ${scrolled ? "text-lg" : ""}`}>
               Référentiel SIHAM
