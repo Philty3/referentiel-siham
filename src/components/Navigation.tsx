@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { FileSpreadsheet, Download, Menu, X } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
+import logoVideo from "@/assets/logo-video.mp4";
 
 const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
@@ -66,7 +67,14 @@ export const Navigation = () => {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 animate-fade-in">
           <div className="flex items-center gap-2">
-            <FileSpreadsheet className={`h-8 w-8 text-primary transition-transform duration-300 ${scrolled ? "scale-90" : ""}`} />
+            <video 
+              src={logoVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className={`h-8 w-8 object-cover rounded transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
+            />
             <span className={`text-xl font-bold text-foreground transition-all duration-300 ${scrolled ? "text-lg" : ""}`}>
               Référentiel SIHAM
             </span>
