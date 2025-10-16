@@ -3,20 +3,28 @@ import { FileSpreadsheet, Database, Search, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
 import { formatExcelDate } from "@/lib/dateValidator";
 
-interface SearchResult {
+interface Column {
+  key: string;
+  label: string;
+  width?: string;
+  truncate?: boolean;
+}
+
+interface SearchResultItem {
   source: string;
-  sourcePath: string;
-  data: any;
+  [key: string]: any;
 }
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState<{ [key: string]: any[] }>({});
+  const [allHeaders, setAllHeaders] = useState<{ [key: string]: string[] }>({});
 
   useEffect(() => {
     // Charger toutes les données au démarrage
@@ -34,6 +42,7 @@ const Index = () => {
       ];
 
       const loadedData: { [key: string]: any[] } = {};
+      const loadedHeaders: { [key: string]: string[] } = {};
 
       for (const source of dataSources) {
         try {
@@ -43,11 +52,18 @@ const Index = () => {
           if (source.type === "csv") {
             const text = new TextDecoder().decode(buffer);
             const lines = text.split("\n");
+            const headers = lines[0].split(";");
+            loadedHeaders[source.name] = headers;
+            
             const data = [];
             for (let i = 1; i < lines.length; i++) {
               const values = lines[i].split(";");
               if (values.length > 0 && values[0]) {
-                data.push({ code: values[0], raw: lines[i] });
+                const rowObj: any = { source: source.name };
+                headers.forEach((header, idx) => {
+                  rowObj[header] = values[idx] || "";
+                });
+                data.push(rowObj);
               }
             }
             loadedData[source.name] = data;
@@ -57,11 +73,18 @@ const Index = () => {
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
             
+            const headers = jsonData[0] as string[];
+            loadedHeaders[source.name] = headers.map(h => String(h));
+            
             const data = [];
             for (let i = 1; i < jsonData.length; i++) {
               const row = jsonData[i];
               if (row.length > 0 && row[0]) {
-                data.push({ code: String(row[0]), row: row });
+                const rowObj: any = { source: source.name };
+                headers.forEach((header, idx) => {
+                  rowObj[String(header)] = row[idx] ? String(row[idx]) : "";
+                });
+                data.push(rowObj);
               }
             }
             loadedData[source.name] = data;
@@ -72,6 +95,7 @@ const Index = () => {
       }
 
       setAllData(loadedData);
+      setAllHeaders(loadedHeaders);
     };
 
     loadAllData();
@@ -84,17 +108,18 @@ const Index = () => {
     }
 
     setIsSearching(true);
-    const results: SearchResult[] = [];
+    const results: SearchResultItem[] = [];
     const searchLower = searchTerm.toLowerCase().trim();
 
     Object.entries(allData).forEach(([sourceName, items]) => {
       items.forEach((item) => {
-        if (item.code && item.code.toLowerCase().includes(searchLower)) {
-          results.push({
-            source: sourceName,
-            sourcePath: getSourcePath(sourceName),
-            data: item,
-          });
+        // Rechercher dans toutes les valeurs de l'objet
+        const matchFound = Object.values(item).some((value) => 
+          String(value).toLowerCase().includes(searchLower)
+        );
+        
+        if (matchFound) {
+          results.push({ ...item, source: sourceName });
         }
       });
     });
@@ -103,19 +128,41 @@ const Index = () => {
     setIsSearching(false);
   };
 
-  const getSourcePath = (sourceName: string): string => {
-    const pathMap: { [key: string]: string } = {
-      "Statuts contractuels": "/ref1",
-      "Vacataires": "/ref2",
-      "Positions": "/ref3",
-      "Corps": "/ref4",
-      "Grades": "/grades",
-      "Congés/absences": "/conges",
-      "Emplois": "/emplois",
-      "Modalités de service": "/modalites",
-      "Diplômes": "/diplomes",
-    };
-    return pathMap[sourceName] || "/";
+  const getDisplayColumns = (): Column[] => {
+    const baseColumns: Column[] = [
+      { key: "source", label: "Source", width: "w-[150px]" },
+    ];
+    
+    // Ajouter les 4 premières colonnes disponibles
+    if (searchResults.length > 0) {
+      const firstResult = searchResults[0];
+      const keys = Object.keys(firstResult).filter(k => k !== "source");
+      keys.slice(0, 4).forEach(key => {
+        baseColumns.push({
+          key: key,
+          label: key.charAt(0).toUpperCase() + key.slice(1),
+          width: "w-[180px]",
+          truncate: true
+        });
+      });
+    }
+    
+    return baseColumns;
+  };
+
+  const renderExpandedContent = (row: SearchResultItem) => {
+    const keys = Object.keys(row).filter(k => k !== "source");
+    
+    return (
+      <div className="grid grid-cols-2 gap-4 text-xs">
+        {keys.map((key) => (
+          <div key={key}>
+            <p className="font-semibold text-foreground mb-1">{key}:</p>
+            <p className="text-muted-foreground whitespace-pre-wrap">{row[key]}</p>
+          </div>
+        ))}
+      </div>
+    );
   };
 
   const features = [
@@ -156,11 +203,11 @@ const Index = () => {
         {/* Search Section */}
         <div className="mb-12">
           <Card className="border-2 p-6">
-            <h2 className="mb-4 text-2xl font-bold text-foreground">Rechercher un code</h2>
-            <div className="flex gap-4">
+            <h2 className="mb-4 text-2xl font-bold text-foreground">Rechercher dans tous les référentiels</h2>
+            <div className="flex gap-4 mb-6">
               <Input
                 type="text"
-                placeholder="Entrez un code à rechercher..."
+                placeholder="Entrez un terme à rechercher (code, libellé, etc.)..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -172,44 +219,6 @@ const Index = () => {
               </Button>
             </div>
 
-            {/* Search Results */}
-            {searchResults.length > 0 && (
-              <div className="mt-6">
-                <h3 className="mb-4 text-lg font-semibold text-foreground">
-                  Résultats ({searchResults.length})
-                </h3>
-                <div className="space-y-4">
-                  {searchResults.map((result, index) => (
-                    <Card key={index} className="border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <span className="text-sm font-semibold text-primary">
-                          {result.source}
-                        </span>
-                        <a
-                          href={result.sourcePath}
-                          className="text-sm text-muted-foreground hover:text-primary hover:underline"
-                        >
-                          Voir la page →
-                        </a>
-                      </div>
-                      <div className="text-sm text-foreground">
-                        <span className="font-semibold">Code:</span> {result.data.code}
-                      </div>
-                      {result.data.row && (
-                        <div className="mt-2 text-xs text-muted-foreground">
-                          {result.data.row.slice(0, 5).map((cell: any, i: number) => (
-                            <div key={i}>
-                              <span className="font-semibold">Colonne {i + 1}:</span> {String(cell)}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {searchTerm && searchResults.length === 0 && !isSearching && (
               <div className="mt-6 text-center text-muted-foreground">
                 Aucun résultat trouvé pour "{searchTerm}"
@@ -217,6 +226,23 @@ const Index = () => {
             )}
           </Card>
         </div>
+
+        {/* Search Results */}
+        {searchResults.length > 0 && (
+          <div className="mb-12">
+            <DataTableWithPagination
+              title={`Résultats de recherche (${searchResults.length})`}
+              data={searchResults}
+              columns={getDisplayColumns()}
+              searchFields={[]}
+              loading={false}
+              onEdit={() => {}}
+              onDelete={() => {}}
+              onAdd={() => {}}
+              renderExpandedContent={renderExpandedContent}
+            />
+          </div>
+        )}
 
         {/* Features Grid */}
         <div className="grid gap-8 md:grid-cols-3">
