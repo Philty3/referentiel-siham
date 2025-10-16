@@ -240,6 +240,7 @@ const Index = () => {
               onDelete={() => {}}
               onAdd={() => {}}
               renderExpandedContent={renderExpandedContent}
+              hideAddButton={true}
             />
           </div>
         )}

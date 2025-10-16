@@ -33,6 +33,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   onAdd: () => void;
   renderExpandedContent: (item: T) => React.ReactNode;
   itemsPerPage?: number;
+  hideAddButton?: boolean;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -46,6 +47,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   onAdd,
   renderExpandedContent,
   itemsPerPage = 20,
+  hideAddButton = false,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,14 +95,16 @@ export function DataTableWithPagination<T extends Record<string, any>>({
               {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
             </p>
           </div>
-          <Button
-            onClick={onAdd}
-            size="sm"
-            className="h-9 gap-1.5"
-          >
-            <Plus className="h-4 w-4" />
-            Ajouter
-          </Button>
+          {!hideAddButton && (
+            <Button
+              onClick={onAdd}
+              size="sm"
+              className="h-9 gap-1.5"
+            >
+              <Plus className="h-4 w-4" />
+              Ajouter
+            </Button>
+          )}
         </div>
 
         <div className="border-b bg-muted/20 p-3">
