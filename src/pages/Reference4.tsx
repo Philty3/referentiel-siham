@@ -156,18 +156,7 @@ const Reference4 = () => {
     { key: "code", label: "Code", width: "w-[150px]" },
     { key: "libelle", label: "Libellé", width: "w-[180px]" },
     { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
-    { key: "libelleLongBis", label: "Libellé long (bis)", width: "w-[250px]" },
-    { key: "libelleCourtBis", label: "Libellé court (bis)", width: "w-[180px]" },
-    { key: "temExclusionInclusionReglem", label: "Tém exclusion/inclusion des réglem.", width: "w-[180px]" },
-    { key: "dateDebutValidite", label: "Date de début de validité", width: "w-[120px]" },
-    { key: "dateFinValidite", label: "Date de fin de validité", width: "w-[120px]" },
-    { key: "codeFiliere", label: "Code-Filière", width: "w-[100px]" },
-    { key: "filiere", label: "Filière", width: "w-[140px]" },
-    { key: "nombresGrades", label: "Nombres de grades", width: "w-[120px]" },
-    { key: "corpsExtinction", label: "Corps en extinction", width: "w-[120px]" },
-    { key: "codeCategorieStatutaire", label: "Code-Catégorie statutaire", width: "w-[140px]" },
-    { key: "categorieStatutaire", label: "Catégorie statutaire", width: "w-[140px]" },
-    { key: "serviceStatutaire", label: "Service Statutaire", width: "w-[140px]" },
+    { key: "filiere", label: "Filière", width: "w-[160px]" },
   ];
 
   const renderExpandedContent = (row: Corps) => (

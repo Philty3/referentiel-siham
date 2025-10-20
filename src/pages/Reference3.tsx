@@ -141,13 +141,7 @@ const Reference3 = () => {
     { key: "code", label: "Code", width: "w-[150px]" },
     { key: "libelleCourt", label: "Libellé court", width: "w-[180px]" },
     { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
-    { key: "libelleLongBis", label: "Libellé long (bis)", width: "w-[250px]" },
     { key: "positionStatutaire", label: "Position statutaire", width: "w-[160px]" },
-    { key: "temoinPositionEntreeSortie", label: "Témoin position entrée / sortie", width: "w-[150px]" },
-    { key: "temoinLienEnfantObligatoire", label: "Témoin lien enfant obligatoire", width: "w-[150px]" },
-    { key: "temExclusionInclusionReglem", label: "Tém exclusion/inclusion des réglem.", width: "w-[180px]" },
-    { key: "dateDebutValidite", label: "Date de début de validité", width: "w-[120px]" },
-    { key: "dateFinValidite", label: "Date de fin de validité", width: "w-[120px]" },
   ];
 
   const renderExpandedContent = (row: Position) => (

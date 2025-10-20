@@ -157,17 +157,6 @@ const Grades = () => {
     { key: "libelle", label: "Libellé", width: "w-[180px]" },
     { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
     { key: "categorieStatutaire", label: "Catégorie statutaire", width: "w-[160px]" },
-    { key: "codeFiliere", label: "Code-Filière", width: "w-[120px]" },
-    { key: "filiere", label: "Filière", width: "w-[160px]" },
-    { key: "codeCorpsCadreEmploi", label: "Code-Corps / Cadre d'emploi", width: "w-[180px]" },
-    { key: "corpsCadreEmploi", label: "Corps / Cadre d'emploi", width: "w-[220px]" },
-    { key: "codeGroupeHierarchique", label: "Code-Groupe hiérarchique", width: "w-[180px]" },
-    { key: "groupeHierarchique", label: "Groupe hiérarchique", width: "w-[200px]" },
-    { key: "ageLimiteDepartRetraite", label: "Age limite de départ en retraite", width: "w-[180px]" },
-    { key: "temExclusionInclusionReglem", label: "Tém exclusion/inclusion des réglem.", width: "w-[180px]" },
-    { key: "dateDebutValidite", label: "Date de début de validité", width: "w-[140px]" },
-    { key: "dateFinValidite", label: "Date de fin de validité", width: "w-[140px]" },
-    { key: "codeTresorerieGenerale", label: "Code trésorerie générale", width: "w-[150px]" },
   ];
 
   const renderExpandedContent = (row: Grade) => (
