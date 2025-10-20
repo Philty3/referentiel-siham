@@ -42,7 +42,8 @@ const Heberges = () => {
         
         for (let i = 1; i < jsonData.length; i++) {
           const row = jsonData[i] as any[];
-          if (row.length >= 11) {
+          // Vérifier qu'il y a au moins un code Siham
+          if (row && row[0]) {
             parsedData.push({
               codeSiham: String(row[0] || ""),
               libelleCourtSiham: String(row[1] || ""),
