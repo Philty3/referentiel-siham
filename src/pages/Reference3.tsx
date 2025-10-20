@@ -138,11 +138,11 @@ const Reference3 = () => {
   };
 
   const columns = [
-    { key: "code", label: "Code", width: "w-[120px]" },
-    { key: "libelleCourt", label: "Libellé court", width: "w-[140px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[200px]" },
-    { key: "libelleLongBis", label: "Libellé long (bis)", width: "w-[200px]", truncate: true },
-    { key: "positionStatutaire", label: "Position statutaire", width: "w-[140px]" },
+    { key: "code", label: "Code", width: "w-[150px]" },
+    { key: "libelleCourt", label: "Libellé court", width: "w-[180px]" },
+    { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
+    { key: "libelleLongBis", label: "Libellé long (bis)", width: "w-[250px]" },
+    { key: "positionStatutaire", label: "Position statutaire", width: "w-[160px]" },
     { key: "temoinPositionEntreeSortie", label: "Témoin position entrée / sortie", width: "w-[150px]" },
     { key: "temoinLienEnfantObligatoire", label: "Témoin lien enfant obligatoire", width: "w-[150px]" },
     { key: "temExclusionInclusionReglem", label: "Tém exclusion/inclusion des réglem.", width: "w-[180px]" },
