@@ -155,7 +155,7 @@ const Grades = () => {
   const columns = [
     { key: "code", label: "Code", width: "w-[90px]" },
     { key: "libelle", label: "Libellé", width: "w-[140px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[200px]", truncate: true },
+    { key: "libelleLong", label: "Libellé long", width: "w-[200px]" },
     { key: "categorieStatutaire", label: "Catégorie statutaire", width: "w-[140px]" },
     { key: "codeFiliere", label: "Code-Filière", width: "w-[100px]" },
     { key: "filiere", label: "Filière", width: "w-[140px]" },

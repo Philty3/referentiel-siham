@@ -127,7 +127,7 @@ const Conges = () => {
 
   const columns = [
     { key: "code", label: "Code", width: "w-[120px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[300px]", truncate: true },
+    { key: "libelleLong", label: "Libellé long", width: "w-[300px]" },
     { key: "libelleCourt", label: "Libellé court", width: "w-[180px]" },
     { key: "temExclusionInclusionReglem", label: "Tém exclusion/inclusion des réglem.", width: "w-[180px]" },
     { key: "dateDebutValidite", label: "Date de début de validité", width: "w-[140px]" },

@@ -143,7 +143,7 @@ const Modalites = () => {
   const columns = [
     { key: "code", label: "Code", width: "w-[90px]" },
     { key: "libelle", label: "Libellé", width: "w-[140px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[200px]", truncate: true },
+    { key: "libelleLong", label: "Libellé long", width: "w-[200px]" },
     { key: "libelleLongBis", label: "Libellé long (bis)", width: "w-[200px]", truncate: true },
   ];
 

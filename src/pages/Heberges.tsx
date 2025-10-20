@@ -136,7 +136,7 @@ const Heberges = () => {
   const columns = [
     { key: "codeSiham", label: "Code Siham", width: "w-[90px]" },
     { key: "libelleCourtSiham", label: "Libellé court Siham", width: "w-[140px]" },
-    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]", truncate: true },
+    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]" },
     { key: "sousCategorie", label: "Sous catégorie", width: "w-[120px]" },
   ];
 

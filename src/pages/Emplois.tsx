@@ -128,7 +128,7 @@ const Emplois = () => {
   const columns = [
     { key: "cle", label: "Clé", width: "w-[110px]" },
     { key: "emploi", label: "Emploi", width: "w-[120px]" },
-    { key: "libelleEmploi", label: "Libellé de l'emploi", width: "w-[250px]", truncate: true },
+    { key: "libelleEmploi", label: "Libellé de l'emploi", width: "w-[250px]" },
     { key: "dateEffet", label: "Date d'effet", width: "w-[100px]" },
     { key: "classificationEmploi", label: "Classification de l'emploi", width: "w-[180px]", truncate: true },
     { key: "codePlusUtiliser", label: "Code à ne plus utiliser au 1/01/17", width: "w-[200px]", truncate: true },

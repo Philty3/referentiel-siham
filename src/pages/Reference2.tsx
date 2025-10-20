@@ -195,7 +195,7 @@ const Reference2 = () => {
     { key: "codeSiham", label: "Code Siham", width: "w-[90px]" },
     { key: "categorieSiham", label: "Catégorie Siham", width: "w-[110px]" },
     { key: "libelleCourtSiham", label: "Libellé court Siham", width: "w-[140px]" },
-    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]", truncate: true },
+    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]" },
   ];
 
   const renderExpandedContent = (row: Vacataire) => (

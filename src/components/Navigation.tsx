@@ -33,7 +33,7 @@ export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
+  const [isReversing, setIsReversing] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,18 +48,24 @@ export const Navigation = () => {
     if (!video) return;
 
     const handleTimeUpdate = () => {
-      if (playbackRate > 0 && video.currentTime >= video.duration - 0.1) {
-        setPlaybackRate(-1);
-        video.playbackRate = -1;
-      } else if (playbackRate < 0 && video.currentTime <= 0.1) {
-        setPlaybackRate(1);
-        video.playbackRate = 1;
+      if (!isReversing && video.currentTime >= video.duration - 0.1) {
+        setIsReversing(true);
+        video.pause();
+        const reverseInterval = setInterval(() => {
+          if (video.currentTime <= 0.1) {
+            clearInterval(reverseInterval);
+            setIsReversing(false);
+            video.play();
+          } else {
+            video.currentTime = Math.max(0, video.currentTime - 0.033);
+          }
+        }, 33);
       }
     };
 
     video.addEventListener('timeupdate', handleTimeUpdate);
     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  }, [playbackRate]);
+  }, [isReversing]);
 
   const handleExport = async () => {
     setIsExporting(true);

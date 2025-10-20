@@ -128,7 +128,7 @@ const Etablissements = () => {
 
   const columns = [
     { key: "codeUAI", label: "Code UAI", width: "w-[100px]" },
-    { key: "nomEtablissement", label: "Nom", width: "w-[200px]", truncate: true },
+    { key: "nomEtablissement", label: "Nom", width: "w-[200px]" },
     { key: "typeEtablissement", label: "Type", width: "w-[150px]" },
     { key: "ville", label: "Ville", width: "w-[120px]" },
   ];

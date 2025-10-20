@@ -134,7 +134,7 @@ const Diplomes = () => {
   const columns = [
     { key: "code", label: "Code", width: "w-[90px]" },
     { key: "libelle", label: "Libellé", width: "w-[140px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[250px]", truncate: true },
+    { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
     { key: "echelleInternationale", label: "Echelle internationale", width: "w-[160px]" },
   ];
 
