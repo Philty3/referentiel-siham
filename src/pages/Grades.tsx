@@ -153,7 +153,7 @@ const Grades = () => {
   };
 
   const columns = [
-    { key: "code", label: "Code", width: "w-[90px]" },
+    { key: "code", label: "Code", width: "w-[120px]" },
     { key: "libelle", label: "Libellé", width: "w-[140px]" },
     { key: "libelleLong", label: "Libellé long", width: "w-[200px]" },
     { key: "categorieStatutaire", label: "Catégorie statutaire", width: "w-[140px]" },
