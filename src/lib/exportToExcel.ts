@@ -21,6 +21,12 @@ export const exportAllDataToExcel = async () => {
         dateFields: ["dateDeb", "dateFin"]
       },
       {
+        name: "Hébergés",
+        file: "/data/heberges.xlsx",
+        sheetName: "Hébergés",
+        dateFields: []
+      },
+      {
         name: "Positions",
         file: "/data/positions.xlsx",
         sheetName: "Positions",

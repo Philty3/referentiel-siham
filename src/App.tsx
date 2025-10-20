@@ -7,6 +7,7 @@ import { Navigation } from "./components/Navigation";
 import Index from "./pages/Index";
 import Reference1 from "./pages/Reference1";
 import Reference2 from "./pages/Reference2";
+import Heberges from "./pages/Heberges";
 import Reference3 from "./pages/Reference3";
 import Reference4 from "./pages/Reference4";
 import Grades from "./pages/Grades";
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/ref1" element={<Reference1 />} />
             <Route path="/ref2" element={<Reference2 />} />
+            <Route path="/heberges" element={<Heberges />} />
             <Route path="/ref3" element={<Reference3 />} />
             <Route path="/ref4" element={<Reference4 />} />
             <Route path="/grades" element={<Grades />} />
