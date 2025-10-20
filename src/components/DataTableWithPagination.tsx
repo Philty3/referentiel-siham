@@ -205,7 +205,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                     <TableHead
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
-                        colIndex === 0 ? 'font-bold' : 'font-semibold'
+                        colIndex === 0 ? 'sticky left-[160px] z-10 bg-muted/50 font-bold' : 'font-semibold'
                       } px-2 py-1 text-xs`}
                     >
                       {column.label}
@@ -286,7 +286,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                             <TableCell
                               key={column.key}
                               className={`px-2 py-0.5 text-xs ${
-                                colIndex === 0 ? 'font-medium whitespace-nowrap' : 'whitespace-normal break-words'
+                                colIndex === 0 ? 'sticky left-[160px] z-10 bg-background font-medium whitespace-nowrap' : 'whitespace-normal break-words'
                               } ${column.truncate ? 'max-w-xs truncate' : ''}`}
                             >
                               {row[column.key]}
