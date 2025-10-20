@@ -201,11 +201,11 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                   <TableHead className="sticky left-[60px] z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
                     Actions
                   </TableHead>
-                  {columns.map((column) => (
+                  {columns.map((column, colIndex) => (
                     <TableHead
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
-                        column.key === columns[0].key ? 'bg-muted/50 font-bold' : 'font-semibold'
+                        colIndex === 0 ? 'sticky left-[160px] z-10 bg-muted/50 font-bold' : 'font-semibold'
                       } px-2 py-1 text-xs`}
                     >
                       {column.label}
@@ -286,8 +286,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                             <TableCell
                               key={column.key}
                               className={`px-2 py-0.5 text-xs ${
-                                column.key === columns[0].key ? 'bg-background font-medium whitespace-nowrap' : ''
-                              } ${column.truncate ? 'max-w-xs truncate' : colIndex === 0 ? 'whitespace-nowrap' : 'whitespace-normal break-words'}`}
+                                colIndex === 0 ? 'sticky left-[160px] z-10 bg-background font-medium whitespace-nowrap' : 'whitespace-normal break-words'
+                              } ${column.truncate ? 'max-w-xs truncate' : ''}`}
                             >
                               {row[column.key]}
                             </TableCell>
