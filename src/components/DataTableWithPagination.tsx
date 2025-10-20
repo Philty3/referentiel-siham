@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, Edit, Trash2, ChevronDown, Plus } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Search, Edit, Trash2, ChevronDown, Plus, Star } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Column {
@@ -55,27 +56,78 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [showFavoritesFirst, setShowFavoritesFirst] = useState(false);
   const { toast } = useToast();
 
+  // Clé pour le localStorage basée sur le titre
+  const storageKey = `favorites-${title.toLowerCase().replace(/\s+/g, '-')}`;
+
+  // Charger les favoris depuis localStorage
   useEffect(() => {
-    setFilteredData(data);
-  }, [data]);
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      try {
+        setFavorites(new Set(JSON.parse(stored)));
+      } catch (e) {
+        console.error('Erreur lors du chargement des favoris:', e);
+      }
+    }
+  }, [storageKey]);
+
+  // Sauvegarder les favoris dans localStorage
+  const saveFavorites = (newFavorites: Set<string>) => {
+    localStorage.setItem(storageKey, JSON.stringify(Array.from(newFavorites)));
+    setFavorites(newFavorites);
+  };
+
+  // Générer un ID unique pour un item
+  const getItemId = (item: T, index: number) => {
+    // Utiliser les premières colonnes comme identifiant unique
+    const firstColumn = columns[0]?.key;
+    return `${item[firstColumn]}-${index}`;
+  };
+
+  // Toggle favori
+  const toggleFavorite = (itemId: string) => {
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(itemId)) {
+      newFavorites.delete(itemId);
+    } else {
+      newFavorites.add(itemId);
+    }
+    saveFavorites(newFavorites);
+  };
 
   useEffect(() => {
-    if (!searchTerm) {
-      setFilteredData(data);
-      setCurrentPage(1);
-      return;
+    let result = [...data];
+
+    // Filtrer par recherche
+    if (searchTerm) {
+      result = result.filter((item) =>
+        searchFields.some((field) =>
+          String(item[field]).toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
     }
 
-    const filtered = data.filter((item) =>
-      searchFields.some((field) =>
-        String(item[field]).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilteredData(filtered);
+    // Trier les favoris en premier si activé
+    if (showFavoritesFirst) {
+      result.sort((a, b) => {
+        const aId = getItemId(a, data.indexOf(a));
+        const bId = getItemId(b, data.indexOf(b));
+        const aIsFav = favorites.has(aId);
+        const bIsFav = favorites.has(bId);
+        
+        if (aIsFav && !bIsFav) return -1;
+        if (!aIsFav && bIsFav) return 1;
+        return 0;
+      });
+    }
+
+    setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, favorites]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -111,14 +163,25 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
         {!hideSearchField && (
           <div className="border-b bg-muted/20 p-3">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 h-9 text-sm"
-              />
+            <div className="flex gap-2 items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  placeholder="Rechercher..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-9 h-9 text-sm"
+                />
+              </div>
+              <Button
+                size="sm"
+                variant={showFavoritesFirst ? "default" : "outline"}
+                onClick={() => setShowFavoritesFirst(!showFavoritesFirst)}
+                className="h-9 gap-2 whitespace-nowrap"
+              >
+                <Star className={`h-4 w-4 ${showFavoritesFirst ? 'fill-current' : ''}`} />
+                Favoris en premier
+              </Button>
             </div>
           </div>
         )}
@@ -132,7 +195,10 @@ export function DataTableWithPagination<T extends Record<string, any>>({
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                  <TableHead className="sticky left-0 z-10 w-[60px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                    Fav.
+                  </TableHead>
+                  <TableHead className="sticky left-[60px] z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
                     Actions
                   </TableHead>
                   {columns.map((column) => (
@@ -150,7 +216,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
               <TableBody>
                 {paginatedData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={columns.length + 1} className="h-20 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={columns.length + 2} className="h-20 text-center text-sm text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
@@ -159,6 +225,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                     const originalIndex = data.findIndex(item => 
                       JSON.stringify(item) === JSON.stringify(row)
                     );
+                    const itemId = getItemId(row, originalIndex);
+                    const isFavorite = favorites.has(itemId);
                     const rowId = `${originalIndex}-${index}`;
                     const isExpanded = expandedRow === rowId;
 
@@ -170,6 +238,18 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
                         >
                           <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
+                            <div className="flex items-center justify-center">
+                              <Checkbox
+                                checked={isFavorite}
+                                onCheckedChange={(checked) => {
+                                  toggleFavorite(itemId);
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="h-4 w-4"
+                              />
+                            </div>
+                          </TableCell>
+                          <TableCell className="sticky left-[60px] z-10 bg-background px-2 py-0.5">
                             <div className="flex gap-0.5">
                               <Button
                                 size="sm"
@@ -215,7 +295,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                         </TableRow>
                         {isExpanded && (
                           <TableRow className="bg-muted/20">
-                            <TableCell colSpan={columns.length + 1} className="p-0">
+                            <TableCell colSpan={columns.length + 2} className="p-0">
                               <div className="p-4 animate-accordion-down">
                                 {renderExpandedContent(row)}
                               </div>
