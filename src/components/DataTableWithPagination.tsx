@@ -282,12 +282,12 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                               </Button>
                             </div>
                           </TableCell>
-                          {columns.map((column) => (
+                          {columns.map((column, colIndex) => (
                             <TableCell
                               key={column.key}
                               className={`px-2 py-0.5 text-xs ${
-                                column.key === columns[0].key ? 'bg-background font-medium' : ''
-                              } ${column.truncate ? 'max-w-xs truncate' : 'whitespace-normal break-words'}`}
+                                column.key === columns[0].key ? 'bg-background font-medium whitespace-nowrap' : ''
+                              } ${column.truncate ? 'max-w-xs truncate' : colIndex === 0 ? 'whitespace-nowrap' : 'whitespace-normal break-words'}`}
                             >
                               {row[column.key]}
                             </TableCell>
