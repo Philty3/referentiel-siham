@@ -7,99 +7,88 @@ import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
 
-interface Acte {
-  code: string;
-  libelle: string;
-  libelleComplementaire: string;
-  typeArreteDecision: string;
-  typePopulation: string;
-  numeroOrdre: string;
-  codeVisa: string;
-  visa: string;
-  typePopulation2: string;
-  numeroOrdre2: string;
-  codeArticle: string;
-  article: string;
-  processus: string;
-  octroiRenouvellement: string;
+interface Heberge {
+  codeSiham: string;
+  libelleCourtSiham: string;
+  libelleLongSiham: string;
+  referencesReglementaires: string;
+  casUtilisation: string;
+  bibliothequeActes: string;
+  sousCategorie: string;
+  infosComplementaires: string;
+  gradeTG: string;
+  codeCISIRH: string;
+  libelleCISIRH: string;
 }
 
 const Heberges = () => {
-  const [data, setData] = useState<Acte[]>([]);
+  const [data, setData] = useState<Heberge[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<Acte | null>(null);
+  const [editingItem, setEditingItem] = useState<Heberge | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await fetch("/data/actes.xlsx");
-        const buffer = await response.arrayBuffer();
+    fetch("/data/heberges.xlsx")
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => {
         const workbook = XLSX.read(buffer, { type: "array" });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         
-        const parsedData: Acte[] = [];
+        const parsedData: Heberge[] = [];
         
         for (let i = 1; i < jsonData.length; i++) {
           const row = jsonData[i] as any[];
-          if (row.length >= 14) {
+          // Vérifier qu'il y a au moins un code Siham
+          if (row && row[0]) {
             parsedData.push({
-              code: String(row[0] || ""),
-              libelle: String(row[1] || ""),
-              libelleComplementaire: String(row[2] || ""),
-              typeArreteDecision: String(row[3] || ""),
-              typePopulation: String(row[4] || ""),
-              numeroOrdre: String(row[5] || ""),
-              codeVisa: String(row[6] || ""),
-              visa: String(row[7] || ""),
-              typePopulation2: String(row[8] || ""),
-              numeroOrdre2: String(row[9] || ""),
-              codeArticle: String(row[10] || ""),
-              article: String(row[11] || ""),
-              processus: String(row[12] || ""),
-              octroiRenouvellement: String(row[13] || ""),
+              codeSiham: String(row[0] || ""),
+              libelleCourtSiham: String(row[1] || ""),
+              libelleLongSiham: String(row[2] || ""),
+              referencesReglementaires: String(row[3] || ""),
+              casUtilisation: String(row[4] || ""),
+              bibliothequeActes: String(row[5] || ""),
+              sousCategorie: String(row[6] || ""),
+              infosComplementaires: String(row[7] || ""),
+              gradeTG: String(row[8] || ""),
+              codeCISIRH: String(row[9] || ""),
+              libelleCISIRH: String(row[10] || ""),
             });
           }
         }
 
         setData(parsedData);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.error("Erreur lors du chargement des données:", error);
         setLoading(false);
-      }
-    };
-    
-    loadData();
+      });
   }, []);
 
   const handleAdd = () => {
-    const newItem: Acte = {
-      code: "",
-      libelle: "",
-      libelleComplementaire: "",
-      typeArreteDecision: "",
-      typePopulation: "",
-      numeroOrdre: "",
-      codeVisa: "",
-      visa: "",
-      typePopulation2: "",
-      numeroOrdre2: "",
-      codeArticle: "",
-      article: "",
-      processus: "",
-      octroiRenouvellement: "",
+    const newItem: Heberge = {
+      codeSiham: "",
+      libelleCourtSiham: "",
+      libelleLongSiham: "",
+      referencesReglementaires: "",
+      casUtilisation: "",
+      bibliothequeActes: "",
+      sousCategorie: "",
+      infosComplementaires: "",
+      gradeTG: "",
+      codeCISIRH: "",
+      libelleCISIRH: "",
     };
     setEditingItem(newItem);
     setEditingIndex(null);
     setIsDialogOpen(true);
   };
 
-  const handleEdit = (item: Acte, index: number) => {
+  const handleEdit = (item: Heberge, index: number) => {
     setEditingItem({ ...item });
     setEditingIndex(index);
     setIsDialogOpen(true);
@@ -138,76 +127,64 @@ const Heberges = () => {
     });
   };
 
-  const handleInputChange = (field: keyof Acte, value: string) => {
+  const handleInputChange = (field: keyof Heberge, value: string) => {
     if (editingItem) {
       setEditingItem({ ...editingItem, [field]: value });
     }
   };
 
   const columns = [
-    { key: "code", label: "Code", width: "w-[120px]" },
-    { key: "libelle", label: "Libellé", width: "w-[200px]" },
-    { key: "libelleComplementaire", label: "Libellé complémentaire", width: "w-[200px]" },
-    { key: "typeArreteDecision", label: "Type d'arrêté", width: "w-[120px]" },
+    { key: "codeSiham", label: "Code Siham", width: "w-[90px]" },
+    { key: "libelleCourtSiham", label: "Libellé court Siham", width: "w-[140px]" },
+    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]" },
+    { key: "sousCategorie", label: "Sous catégorie", width: "w-[120px]" },
   ];
 
-  const renderExpandedContent = (row: Acte) => (
+  const renderExpandedContent = (row: Heberge) => (
     <div className="grid grid-cols-2 gap-4 text-xs">
       <div>
-        <p className="font-semibold text-foreground mb-1">Code:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.code}</p>
+        <p className="font-semibold text-foreground mb-1">Code Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelle}</p>
+        <p className="font-semibold text-foreground mb-1">Libellé court Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Libellé complémentaire:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleComplementaire}</p>
+        <p className="font-semibold text-foreground mb-1">Libellé long Siham:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Type d'arrêté / décision:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.typeArreteDecision}</p>
+        <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Type de population:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.typePopulation}</p>
+        <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Numéro d'ordre:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.numeroOrdre}</p>
+        <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Code du visa:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeVisa}</p>
+        <p className="font-semibold text-foreground mb-1">Sous catégorie:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Visa:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.visa}</p>
+        <p className="font-semibold text-foreground mb-1">Informations complémentaires:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Type de population (2):</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.typePopulation2}</p>
+        <p className="font-semibold text-foreground mb-1">Grade TG:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Numéro d'ordre (2):</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.numeroOrdre2}</p>
+        <p className="font-semibold text-foreground mb-1">Code CISIRH:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
       </div>
       <div>
-        <p className="font-semibold text-foreground mb-1">Code de l'article:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeArticle}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Article:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.article}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Processus:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.processus}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Octroi/Renouvellement:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.octroiRenouvellement}</p>
+        <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
+        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
       </div>
     </div>
   );
@@ -218,7 +195,7 @@ const Heberges = () => {
         title="Hébergés"
         data={data}
         columns={columns}
-        searchFields={["code", "libelle", "libelleComplementaire", "typeArreteDecision", "processus"]}
+        searchFields={["codeSiham", "libelleCourtSiham", "libelleLongSiham", "sousCategorie", "codeCISIRH", "libelleCISIRH"]}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -235,67 +212,51 @@ const Heberges = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="code" className="text-xs">Code</Label>
-                  <Input id="code" value={editingItem.code} onChange={(e) => handleInputChange("code", e.target.value)} className="text-sm" />
+                  <Label htmlFor="codeSiham" className="text-xs">Code Siham</Label>
+                  <Input id="codeSiham" value={editingItem.codeSiham} onChange={(e) => handleInputChange("codeSiham", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="libelle" className="text-xs">Libellé</Label>
-                  <Input id="libelle" value={editingItem.libelle} onChange={(e) => handleInputChange("libelle", e.target.value)} className="text-sm" />
+                  <Label htmlFor="libelleCourtSiham" className="text-xs">Libellé court Siham</Label>
+                  <Input id="libelleCourtSiham" value={editingItem.libelleCourtSiham} onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)} className="text-sm" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="libelleComplementaire" className="text-xs">Libellé complémentaire</Label>
-                <Input id="libelleComplementaire" value={editingItem.libelleComplementaire} onChange={(e) => handleInputChange("libelleComplementaire", e.target.value)} className="text-sm" />
+                <Label htmlFor="libelleLongSiham" className="text-xs">Libellé long Siham</Label>
+                <Input id="libelleLongSiham" value={editingItem.libelleLongSiham} onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)} className="text-sm" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="typeArreteDecision" className="text-xs">Type d'arrêté / décision</Label>
-                <Input id="typeArreteDecision" value={editingItem.typeArreteDecision} onChange={(e) => handleInputChange("typeArreteDecision", e.target.value)} className="text-sm" />
+                <Label htmlFor="referencesReglementaires" className="text-xs">Références réglementaires</Label>
+                <Input id="referencesReglementaires" value={editingItem.referencesReglementaires} onChange={(e) => handleInputChange("referencesReglementaires", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="casUtilisation" className="text-xs">Cas d'utilisation</Label>
+                <Input id="casUtilisation" value={editingItem.casUtilisation} onChange={(e) => handleInputChange("casUtilisation", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bibliothequeActes" className="text-xs">Bibliothèque des actes</Label>
+                <Input id="bibliothequeActes" value={editingItem.bibliothequeActes} onChange={(e) => handleInputChange("bibliothequeActes", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sousCategorie" className="text-xs">Sous catégorie</Label>
+                <Input id="sousCategorie" value={editingItem.sousCategorie} onChange={(e) => handleInputChange("sousCategorie", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="infosComplementaires" className="text-xs">Informations complémentaires</Label>
+                <Input id="infosComplementaires" value={editingItem.infosComplementaires} onChange={(e) => handleInputChange("infosComplementaires", e.target.value)} className="text-sm" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gradeTG" className="text-xs">Grade TG</Label>
+                <Input id="gradeTG" value={editingItem.gradeTG} onChange={(e) => handleInputChange("gradeTG", e.target.value)} className="text-sm" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="typePopulation" className="text-xs">Type de population</Label>
-                  <Input id="typePopulation" value={editingItem.typePopulation} onChange={(e) => handleInputChange("typePopulation", e.target.value)} className="text-sm" />
+                  <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
+                  <Input id="codeCISIRH" value={editingItem.codeCISIRH} onChange={(e) => handleInputChange("codeCISIRH", e.target.value)} className="text-sm" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="numeroOrdre" className="text-xs">Numéro d'ordre</Label>
-                  <Input id="numeroOrdre" value={editingItem.numeroOrdre} onChange={(e) => handleInputChange("numeroOrdre", e.target.value)} className="text-sm" />
+                  <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
+                  <Input id="libelleCISIRH" value={editingItem.libelleCISIRH} onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)} className="text-sm" />
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="codeVisa" className="text-xs">Code du visa</Label>
-                  <Input id="codeVisa" value={editingItem.codeVisa} onChange={(e) => handleInputChange("codeVisa", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="visa" className="text-xs">Visa</Label>
-                  <Input id="visa" value={editingItem.visa} onChange={(e) => handleInputChange("visa", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="typePopulation2" className="text-xs">Type de population (2)</Label>
-                  <Input id="typePopulation2" value={editingItem.typePopulation2} onChange={(e) => handleInputChange("typePopulation2", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="numeroOrdre2" className="text-xs">Numéro d'ordre (2)</Label>
-                  <Input id="numeroOrdre2" value={editingItem.numeroOrdre2} onChange={(e) => handleInputChange("numeroOrdre2", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="codeArticle" className="text-xs">Code de l'article</Label>
-                <Input id="codeArticle" value={editingItem.codeArticle} onChange={(e) => handleInputChange("codeArticle", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="article" className="text-xs">Article</Label>
-                <Input id="article" value={editingItem.article} onChange={(e) => handleInputChange("article", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="processus" className="text-xs">Processus</Label>
-                <Input id="processus" value={editingItem.processus} onChange={(e) => handleInputChange("processus", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="octroiRenouvellement" className="text-xs">Octroi/Renouvellement</Label>
-                <Input id="octroiRenouvellement" value={editingItem.octroiRenouvellement} onChange={(e) => handleInputChange("octroiRenouvellement", e.target.value)} className="text-sm" />
               </div>
             </div>
           )}
