@@ -48,18 +48,20 @@ const Reference2 = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetch("/data/vacataires.xlsx")
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const workbook = XLSX.read(buffer, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
+    const loadData = async () => {
+      try {
         const parsedData: Vacataire[] = [];
         
-        for (let i = 1; i < jsonData.length; i++) {
-          const row = jsonData[i] as any[];
+        // Charger les données du fichier principal
+        const response1 = await fetch("/data/vacataires.xlsx");
+        const buffer1 = await response1.arrayBuffer();
+        const workbook1 = XLSX.read(buffer1, { type: "array" });
+        const sheetName1 = workbook1.SheetNames[0];
+        const worksheet1 = workbook1.Sheets[sheetName1];
+        const jsonData1 = XLSX.utils.sheet_to_json(worksheet1, { header: 1 });
+        
+        for (let i = 1; i < jsonData1.length; i++) {
+          const row = jsonData1[i] as any[];
           if (row.length >= 28) {
             parsedData.push({
               codeSiham: String(row[0] || ""),
@@ -93,6 +95,54 @@ const Reference2 = () => {
             });
           }
         }
+        
+        // Charger et fusionner les données du nouveau fichier
+        try {
+          const response2 = await fetch("/data/vac2.xlsx");
+          const buffer2 = await response2.arrayBuffer();
+          const workbook2 = XLSX.read(buffer2, { type: "array" });
+          const sheetName2 = workbook2.SheetNames[0];
+          const worksheet2 = workbook2.Sheets[sheetName2];
+          const jsonData2 = XLSX.utils.sheet_to_json(worksheet2, { header: 1 });
+          
+          for (let i = 1; i < jsonData2.length; i++) {
+            const row = jsonData2[i] as any[];
+            if (row.length >= 28) {
+              parsedData.push({
+                codeSiham: String(row[0] || ""),
+                categorieSiham: String(row[1] || ""),
+                libelleCourtSiham: String(row[2] || ""),
+                libelleLongSiham: String(row[3] || ""),
+                dateDeb: formatExcelDate(row[4]),
+                dateFin: formatExcelDate(row[5]),
+                referencesReglementaires: String(row[6] || ""),
+                casUtilisation: String(row[7] || ""),
+                permanentTemporaire: String(row[8] || ""),
+                regleDurees: String(row[9] || ""),
+                typeContrat: String(row[10] || ""),
+                catFP: String(row[11] || ""),
+                sousCategorie: String(row[12] || ""),
+                obligationsStatutairesEnseignement: String(row[13] || ""),
+                bibliothequeActes: String(row[14] || ""),
+                infosComplementaires: String(row[15] || ""),
+                modeGestionRemuneration: String(row[16] || ""),
+                gradeTG: String(row[17] || ""),
+                pseudoGrade: String(row[18] || ""),
+                echelon: String(row[19] || ""),
+                indiceBrutMajoreForce: String(row[20] || ""),
+                situationStatutaire: String(row[21] || ""),
+                regimeSecuriteSociale: String(row[22] || ""),
+                regimeRetraite: String(row[23] || ""),
+                codeLibelleHarpege: String(row[24] || ""),
+                rgPourRDD: String(row[25] || ""),
+                codeCISIRH: String(row[26] || ""),
+                libelleCISIRH: String(row[27] || ""),
+              });
+            }
+          }
+        } catch (error) {
+          console.log("Pas de fichier vac2.xlsx trouvé ou erreur lors du chargement");
+        }
 
         setData(parsedData);
         
@@ -101,11 +151,13 @@ const Reference2 = () => {
         logDateValidationErrors(dateErrors);
         
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Erreur lors du chargement des données:", error);
         setLoading(false);
-      });
+      }
+    };
+    
+    loadData();
   }, []);
 
   const handleAdd = () => {
