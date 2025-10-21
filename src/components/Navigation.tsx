@@ -17,6 +17,7 @@ const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
   { name: "Vacataires", path: "/ref2" },
   { name: "Hébergés", path: "/heberges" },
+  { name: "Actes", path: "/actes" },
   { name: "Positions", path: "/ref3" },
   { name: "Corps", path: "/ref4" },
   { name: "Grades", path: "/grades" },
