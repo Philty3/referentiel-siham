@@ -61,6 +61,52 @@ const emptyUO: Omit<UONode, "children"> = Object.fromEntries(
   uoFields.map(f => [f.key, ""])
 ) as any;
 
+// Distinct hues for niveau 2 branches
+const BRANCH_HUES = [210, 340, 150, 30, 270, 180, 0, 60, 300, 120, 240, 20, 330, 90, 200];
+
+// Build a map: code_uo -> { hue, depth } where hue comes from the niveau 2 ancestor
+function buildColorMap(roots: UONode[]): Map<string, { hue: number; depth: number }> {
+  const map = new Map<string, { hue: number; depth: number }>();
+  let hueIndex = 0;
+
+  const walk = (node: UONode, hue: number | null, depth: number) => {
+    const nodeLevel = parseInt(node.niveau, 10);
+    if (nodeLevel === 2 || (isNaN(nodeLevel) && depth === 1)) {
+      hue = BRANCH_HUES[hueIndex % BRANCH_HUES.length];
+      hueIndex++;
+    }
+    if (hue !== null) {
+      map.set(node.code_uo, { hue, depth });
+    }
+    node.children.forEach(child => walk(child, hue, depth + 1));
+  };
+
+  roots.forEach(root => walk(root, null, 0));
+  return map;
+}
+
+function getNodeColorStyle(hue: number, depth: number, isSelected: boolean, isHighlighted: boolean) {
+  if (isSelected || isHighlighted) return {};
+  // Niveau 2 = depth where assigned, deeper = lighter (higher lightness)
+  const saturation = Math.max(30, 65 - depth * 5);
+  const lightness = Math.min(95, 88 + depth * 1.5);
+  const borderLightness = Math.min(70, 45 + depth * 5);
+  return {
+    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+    borderColor: `hsl(${hue}, ${saturation}%, ${borderLightness}%)`,
+  };
+}
+
+function getListItemColorStyle(hue: number, depth: number, isSelected: boolean, isHighlighted: boolean) {
+  if (isSelected || isHighlighted) return {};
+  const saturation = Math.max(25, 55 - depth * 5);
+  const lightness = Math.min(96, 90 + depth * 1.5);
+  return {
+    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+    borderLeft: `3px solid hsl(${hue}, ${saturation}%, ${Math.min(65, 40 + depth * 5)}%)`,
+  };
+}
+
 const OrgNodeCard = ({
   node,
   isExpanded,
@@ -69,6 +115,7 @@ const OrgNodeCard = ({
   isSelected,
   isHighlighted,
   depth,
+  colorStyle,
 }: {
   node: UONode;
   isExpanded: boolean;
@@ -77,6 +124,7 @@ const OrgNodeCard = ({
   isSelected: boolean;
   isHighlighted: boolean;
   depth: number;
+  colorStyle?: React.CSSProperties;
 }) => {
   const hasChildren = node.children.length > 0;
   
@@ -89,9 +137,10 @@ const OrgNodeCard = ({
           ? "border-primary bg-primary/10 shadow-lg ring-2 ring-primary/30" 
           : isHighlighted 
             ? "border-amber-400 bg-amber-50 dark:bg-amber-900/20 shadow-md" 
-            : "border-border bg-card hover:border-primary/50 hover:shadow-md"
+            : "hover:shadow-md"
         }
       `}
+      style={!isSelected && !isHighlighted ? colorStyle : undefined}
       onClick={onSelect}
     >
       <div className="flex items-start gap-1.5">
@@ -134,6 +183,7 @@ const TreeBranch = ({
   selectedNode,
   setSelectedNode,
   highlightedNodes,
+  colorMap,
   depth = 0,
 }: {
   node: UONode;
@@ -142,10 +192,15 @@ const TreeBranch = ({
   selectedNode: string | null;
   setSelectedNode: (code: string | null) => void;
   highlightedNodes: Set<string>;
+  colorMap: Map<string, { hue: number; depth: number }>;
   depth?: number;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
   const hasChildren = node.children.length > 0;
+  const colorInfo = colorMap.get(node.code_uo);
+  const isSelected = selectedNode === node.code_uo;
+  const isHighlighted = highlightedNodes.has(node.code_uo);
+  const colorStyle = colorInfo ? getNodeColorStyle(colorInfo.hue, colorInfo.depth, isSelected, isHighlighted) : undefined;
 
   return (
     <div className="flex flex-col items-center">
@@ -154,17 +209,15 @@ const TreeBranch = ({
         isExpanded={isExpanded}
         onToggle={() => toggleNode(node.code_uo)}
         onSelect={() => setSelectedNode(node.code_uo === selectedNode ? null : node.code_uo)}
-        isSelected={selectedNode === node.code_uo}
-        isHighlighted={highlightedNodes.has(node.code_uo)}
+        isSelected={isSelected}
+        isHighlighted={isHighlighted}
         depth={depth}
+        colorStyle={colorStyle}
       />
       
       {hasChildren && isExpanded && (
         <>
-          {/* Vertical connector from parent */}
           <div className="w-px h-4 bg-border" />
-          
-          {/* Horizontal connector bar */}
           {node.children.length > 1 && (
             <div className="relative w-full flex justify-center">
               <div 
@@ -176,8 +229,6 @@ const TreeBranch = ({
               />
             </div>
           )}
-          
-          {/* Children */}
           <div className="flex gap-3 pt-0">
             {node.children.map((child) => (
               <div key={child.code_uo} className="flex flex-col items-center">
@@ -189,6 +240,7 @@ const TreeBranch = ({
                   selectedNode={selectedNode}
                   setSelectedNode={setSelectedNode}
                   highlightedNodes={highlightedNodes}
+                  colorMap={colorMap}
                   depth={depth + 1}
                 />
               </div>
@@ -208,6 +260,7 @@ const TreeListItem = ({
   selectedNode,
   setSelectedNode,
   highlightedNodes,
+  colorMap,
   depth = 0,
 }: {
   node: UONode;
@@ -216,12 +269,18 @@ const TreeListItem = ({
   selectedNode: string | null;
   setSelectedNode: (code: string | null) => void;
   highlightedNodes: Set<string>;
+  colorMap: Map<string, { hue: number; depth: number }>;
   depth?: number;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
   const hasChildren = node.children.length > 0;
   const isSelected = selectedNode === node.code_uo;
   const isHighlighted = highlightedNodes.has(node.code_uo);
+  const colorInfo = colorMap.get(node.code_uo);
+  const itemStyle: React.CSSProperties = {
+    paddingLeft: `${depth * 20 + 12}px`,
+    ...(colorInfo ? getListItemColorStyle(colorInfo.hue, colorInfo.depth, isSelected, isHighlighted) : {}),
+  };
 
   return (
     <div>
@@ -232,7 +291,7 @@ const TreeListItem = ({
           ${isHighlighted ? "bg-amber-50 dark:bg-amber-900/20" : ""}
           hover:bg-muted
         `}
-        style={{ paddingLeft: `${depth * 20 + 12}px` }}
+        style={itemStyle}
         onClick={() => setSelectedNode(node.code_uo === selectedNode ? null : node.code_uo)}
       >
         {hasChildren ? (
@@ -265,6 +324,7 @@ const TreeListItem = ({
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
               highlightedNodes={highlightedNodes}
+              colorMap={colorMap}
               depth={depth + 1}
             />
           ))}
@@ -283,6 +343,7 @@ const Organigramme = () => {
   const [highlightedNodes, setHighlightedNodes] = useState<Set<string>>(new Set());
   const [allNodesMap, setAllNodesMap] = useState<Map<string, UONode>>(new Map());
   const [viewMode, setViewMode] = useState<"tree" | "list">("list");
+  const [colorMap, setColorMap] = useState<Map<string, { hue: number; depth: number }>>(new Map());
   const [zoom, setZoom] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Omit<UONode, "children"> | null>(null);
@@ -325,6 +386,7 @@ const Organigramme = () => {
     };
     sortChildren(roots);
     setData(roots);
+    setColorMap(buildColorMap(roots));
 
     if (expandedRef.current.size === 0) {
       const firstLevel = new Set<string>();
@@ -604,6 +666,7 @@ const Organigramme = () => {
                     selectedNode={selectedNode}
                     setSelectedNode={setSelectedNode}
                     highlightedNodes={highlightedNodes}
+                    colorMap={colorMap}
                   />
                 ))}
               </div>
@@ -632,6 +695,7 @@ const Organigramme = () => {
                         selectedNode={selectedNode}
                         setSelectedNode={setSelectedNode}
                         highlightedNodes={highlightedNodes}
+                        colorMap={colorMap}
                       />
                     </div>
                   ))}
