@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchAllRows } from "@/lib/supabaseUtils";
 
 const fields = [
   { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
@@ -27,7 +28,7 @@ const Diplomes = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const { data: rows, error } = await supabase.from("diplomes").select("*").order("code");
+    const { data: rows, error } = await fetchAllRows("diplomes", "code");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
     setLoading(false);
