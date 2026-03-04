@@ -73,46 +73,40 @@ export type Database = {
       }
       centres_couts: {
         Row: {
-          code: string | null
-          commentaire: string | null
+          affectation_generale: string | null
+          centre_financier: string | null
+          code_centre_cout: string | null
+          code_uo_affectation: string | null
+          composante_direction: string | null
           created_at: string
-          date_debut_validite: string | null
-          date_fin_validite: string | null
+          designation: string | null
           id: string
-          libelle_court: string | null
-          libelle_long: string | null
-          responsable: string | null
-          statut: string | null
-          type: string | null
-          uo_rattachee: string | null
+          population: string | null
+          uo_affectation_principale: string | null
         }
         Insert: {
-          code?: string | null
-          commentaire?: string | null
+          affectation_generale?: string | null
+          centre_financier?: string | null
+          code_centre_cout?: string | null
+          code_uo_affectation?: string | null
+          composante_direction?: string | null
           created_at?: string
-          date_debut_validite?: string | null
-          date_fin_validite?: string | null
+          designation?: string | null
           id?: string
-          libelle_court?: string | null
-          libelle_long?: string | null
-          responsable?: string | null
-          statut?: string | null
-          type?: string | null
-          uo_rattachee?: string | null
+          population?: string | null
+          uo_affectation_principale?: string | null
         }
         Update: {
-          code?: string | null
-          commentaire?: string | null
+          affectation_generale?: string | null
+          centre_financier?: string | null
+          code_centre_cout?: string | null
+          code_uo_affectation?: string | null
+          composante_direction?: string | null
           created_at?: string
-          date_debut_validite?: string | null
-          date_fin_validite?: string | null
+          designation?: string | null
           id?: string
-          libelle_court?: string | null
-          libelle_long?: string | null
-          responsable?: string | null
-          statut?: string | null
-          type?: string | null
-          uo_rattachee?: string | null
+          population?: string | null
+          uo_affectation_principale?: string | null
         }
         Relationships: []
       }

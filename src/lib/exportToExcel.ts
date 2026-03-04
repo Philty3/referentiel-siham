@@ -8,7 +8,7 @@ const dateFieldsMap: Record<string, string[]> = {
   vacataires: ["date_deb", "date_fin"],
   heberges: [],
   actes: [],
-  centres_couts: ["date_debut_validite", "date_fin_validite"],
+  centres_couts: [],
   positions: ["date_debut_validite", "date_fin_validite"],
   corps: ["date_debut_validite", "date_fin_validite"],
   grades: ["date_debut_validite", "date_fin_validite"],
@@ -96,7 +96,7 @@ export const exportAllDataToExcel = async () => {
       { table: "diplomes", sheet: "Diplômes", order: "code" },
       { table: "etablissements", sheet: "Établissements", order: "code_uai" },
       { table: "uo", sheet: "UO", order: "code_uo" },
-      { table: "centres_couts", sheet: "Centres de coûts", order: "code" },
+      { table: "centres_couts", sheet: "Centres de coûts", order: "code_centre_cout" },
     ];
 
     for (const t of tables) {
