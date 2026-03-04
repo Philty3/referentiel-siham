@@ -1,17 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X, ChevronDown } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import logoVideo from "@/assets/logo-video.mp4";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 
 const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
@@ -132,43 +125,29 @@ export const Navigation = () => {
         </div>
         
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-4">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="hover:bg-muted">
-                  Référentiels
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-1 p-4">
-                    {navItems.map((item) => (
-                      <li key={item.path}>
-                        <NavLink
-                          to={item.path}
-                          className={({ isActive }) =>
-                            `block px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                              isActive
-                                ? "bg-primary text-primary-foreground shadow-sm"
-                                : "text-foreground hover:bg-muted"
-                            }`
-                          }
-                        >
-                          {item.name}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+        <div className="hidden lg:flex items-center gap-2 flex-wrap">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-foreground hover:bg-muted"
+                }`
+              }
+            >
+              {item.name}
+            </NavLink>
+          ))}
           
           <Button
             onClick={handleExport}
             disabled={isExporting}
             variant="outline"
             size="sm"
-            className="gap-2 hover:scale-105 transition-transform duration-200"
+            className="gap-2 hover:scale-105 transition-transform duration-200 ml-2"
           >
             <Download className={`h-4 w-4 ${isExporting ? "animate-pulse" : ""}`} />
             {isExporting ? "Export..." : "Export"}
