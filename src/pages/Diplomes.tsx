@@ -5,245 +5,75 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
-import * as XLSX from "xlsx";
-import { formatExcelDate, validateDataDates, logDateValidationErrors } from "@/lib/dateValidator";
+import { supabase } from "@/integrations/supabase/client";
 
-interface Diplome {
-  code: string;
-  libelle: string;
-  libelleLong: string;
-  echelleInternationale: string;
-  modele: string;
-  temExclusionInclusion: string;
-  dateDebValidite: string;
-  dateFinValidite: string;
-}
+const fields = [
+  { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
+  { key: "echelle_internationale", label: "Echelle internationale" }, { key: "modele", label: "Modèle" },
+  { key: "tem_exclusion_inclusion", label: "Tém exclusion/inclusion" },
+  { key: "date_deb_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+] as const;
+type F = typeof fields[number]["key"];
+type Item = { id?: string } & Record<F, string>;
+const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Item;
 
 const Diplomes = () => {
-  const [data, setData] = useState<Diplome[]>([]);
+  const [data, setData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<Diplome | null>(null);
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetch("/data/diplomes.xlsx")
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const workbook = XLSX.read(buffer, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
-        const parsedData: Diplome[] = [];
-        
-        for (let i = 1; i < jsonData.length; i++) {
-          const row = jsonData[i] as any[];
-          if (row.length >= 6) {
-            parsedData.push({
-              code: String(row[0] || ""),
-              libelle: String(row[1] || ""),
-              libelleLong: String(row[2] || ""),
-              echelleInternationale: String(row[3] || ""),
-              modele: String(row[4] || ""),
-              temExclusionInclusion: String(row[5] || ""),
-              dateDebValidite: formatExcelDate(row[6]),
-              dateFinValidite: formatExcelDate(row[7]),
-            });
-          }
-        }
-
-        setData(parsedData);
-        
-        // Valider les dates
-        const dateErrors = validateDataDates(parsedData, ["dateDebValidite", "dateFinValidite"], "Diplômes");
-        logDateValidationErrors(dateErrors);
-        
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement des données:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  const handleAdd = () => {
-    const newItem: Diplome = {
-      code: "",
-      libelle: "",
-      libelleLong: "",
-      echelleInternationale: "",
-      modele: "",
-      temExclusionInclusion: "",
-      dateDebValidite: "",
-      dateFinValidite: "",
-    };
-    setEditingItem(newItem);
-    setEditingIndex(null);
-    setIsDialogOpen(true);
+  const fetchData = async () => {
+    setLoading(true);
+    const { data: rows, error } = await supabase.from("diplomes").select("*").order("code");
+    if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
+    setLoading(false);
   };
+  useEffect(() => { fetchData(); }, []);
 
-  const handleEdit = (item: Diplome, index: number) => {
-    setEditingItem({ ...item });
-    setEditingIndex(index);
-    setIsDialogOpen(true);
-  };
-
-  const handleSave = () => {
-    if (editingItem) {
-      if (editingIndex !== null) {
-        // Modification d'un élément existant
-        const updatedData = [...data];
-        updatedData[editingIndex] = editingItem;
-        setData(updatedData);
-        toast({
-          title: "Modifications enregistrées",
-          description: "L'élément a été mis à jour avec succès.",
-        });
-      } else {
-        // Ajout d'un nouvel élément
-        setData([...data, editingItem]);
-        toast({
-          title: "Élément ajouté",
-          description: "Le nouvel élément a été créé avec succès.",
-        });
-      }
-      setIsDialogOpen(false);
-      setEditingItem(null);
-      setEditingIndex(null);
+  const handleAdd = () => { setEditingItem({ ...emptyItem }); setEditingIndex(null); setIsDialogOpen(true); };
+  const handleEdit = (item: Item, i: number) => { setEditingItem({ ...item }); setEditingIndex(i); setIsDialogOpen(true); };
+  const handleSave = async () => {
+    if (!editingItem) return; const { id, ...payload } = editingItem;
+    if (editingIndex !== null && id) {
+      const { error } = await supabase.from("diplomes").update(payload).eq("id", id);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Modifications enregistrées" });
+    } else {
+      const { error } = await supabase.from("diplomes").insert(payload);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Élément ajouté" });
     }
+    setIsDialogOpen(false); setEditingItem(null); setEditingIndex(null); fetchData();
   };
-
-  const handleDelete = (index: number) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    setData(updatedData);
-    toast({
-      title: "Élément supprimé",
-      description: "L'élément a été supprimé avec succès.",
-      variant: "destructive",
-    });
+  const handleDelete = async (i: number) => {
+    const item = data[i]; if (!item.id) return;
+    const { error } = await supabase.from("diplomes").delete().eq("id", item.id);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Élément supprimé", variant: "destructive" }); fetchData();
   };
-
-  const handleInputChange = (field: keyof Diplome, value: string) => {
-    if (editingItem) {
-      setEditingItem({ ...editingItem, [field]: value });
-    }
-  };
-
-  const columns = [
-    { key: "code", label: "Code", width: "w-[90px]" },
-    { key: "libelle", label: "Libellé", width: "w-[140px]" },
-    { key: "libelleLong", label: "Libellé long", width: "w-[250px]" },
-    { key: "echelleInternationale", label: "Echelle internationale", width: "w-[160px]" },
-  ];
-
-  const renderExpandedContent = (row: Diplome) => (
-    <div className="grid grid-cols-2 gap-4 text-xs">
-      <div>
-        <p className="font-semibold text-foreground mb-1">Code:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.code}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelle}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé long:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLong}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Echelle internationale:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.echelleInternationale}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Modèle:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.modele}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Tém exclusion/inclusion des réglem.:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.temExclusionInclusion}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Date de début de validité:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDebValidite}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Date de fin de validité:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFinValidite}</p>
-      </div>
-    </div>
-  );
 
   return (
     <>
-      <DataTableWithPagination
-        title="Diplômes"
-        data={data}
-        columns={columns}
-        searchFields={["code", "libelle", "libelleLong", "echelleInternationale"]}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onAdd={handleAdd}
-        renderExpandedContent={renderExpandedContent}
-      />
-
+      <DataTableWithPagination title="Diplômes" data={data}
+        columns={[{ key: "code", label: "Code", width: "w-[90px]" }, { key: "libelle", label: "Libellé", width: "w-[140px]" }, { key: "libelle_long", label: "Libellé long", width: "w-[250px]" }, { key: "echelle_internationale", label: "Echelle internationale", width: "w-[160px]" }]}
+        searchFields={["code", "libelle", "libelle_long", "echelle_internationale"]}
+        loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
+        renderExpandedContent={(row: Item) => (<div className="grid grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
-          </DialogHeader>
-          {editingItem && (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="code" className="text-xs">Code</Label>
-                  <Input id="code" value={editingItem.code} onChange={(e) => handleInputChange("code", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="libelle" className="text-xs">Libellé</Label>
-                  <Input id="libelle" value={editingItem.libelle} onChange={(e) => handleInputChange("libelle", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="libelleLong" className="text-xs">Libellé long</Label>
-                <Input id="libelleLong" value={editingItem.libelleLong} onChange={(e) => handleInputChange("libelleLong", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="echelleInternationale" className="text-xs">Echelle internationale</Label>
-                  <Input id="echelleInternationale" value={editingItem.echelleInternationale} onChange={(e) => handleInputChange("echelleInternationale", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="modele" className="text-xs">Modèle</Label>
-                  <Input id="modele" value={editingItem.modele} onChange={(e) => handleInputChange("modele", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="temExclusionInclusion" className="text-xs">Tém exclusion/inclusion des réglem.</Label>
-                <Input id="temExclusionInclusion" value={editingItem.temExclusionInclusion} onChange={(e) => handleInputChange("temExclusionInclusion", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="dateDebValidite" className="text-xs">Date de début de validité (JJ/MM/AAAA)</Label>
-                  <Input id="dateDebValidite" value={editingItem.dateDebValidite} onChange={(e) => handleInputChange("dateDebValidite", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="dateFinValidite" className="text-xs">Date de fin de validité (JJ/MM/AAAA)</Label>
-                  <Input id="dateFinValidite" value={editingItem.dateFinValidite} onChange={(e) => handleInputChange("dateFinValidite", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
-            <Button onClick={handleSave}>Enregistrer</Button>
-          </DialogFooter>
+          <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
+          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-2 gap-4">
+            {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" /></div>))}
+          </div></div>)}
+          <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </>
   );
 };
-
 export default Diplomes;

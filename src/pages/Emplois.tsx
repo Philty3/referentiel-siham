@@ -5,225 +5,74 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
-import * as XLSX from "xlsx";
-import { formatExcelDate, validateDataDates, logDateValidationErrors } from "@/lib/dateValidator";
+import { supabase } from "@/integrations/supabase/client";
 
-interface Emploi {
-  cle: string;
-  emploi: string;
-  libelleEmploi: string;
-  dateEffet: string;
-  classificationEmploi: string;
-  codePlusUtiliser: string;
-}
+const fields = [
+  { key: "cle", label: "Clé" }, { key: "emploi", label: "Emploi" }, { key: "libelle_emploi", label: "Libellé emploi" },
+  { key: "date_effet", label: "Date d'effet" }, { key: "classification_emploi", label: "Classification emploi" },
+  { key: "code_plus_utiliser", label: "Code à ne plus utiliser" },
+] as const;
+type F = typeof fields[number]["key"];
+type Item = { id?: string } & Record<F, string>;
+const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Item;
 
 const Emplois = () => {
-  const [data, setData] = useState<Emploi[]>([]);
+  const [data, setData] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState<Emploi | null>(null);
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetch("/data/emplois.xlsx")
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const workbook = XLSX.read(buffer, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
-        const parsedData: Emploi[] = [];
-        
-        for (let i = 1; i < jsonData.length; i++) {
-          const row = jsonData[i] as any[];
-          if (row.length >= 4) {
-            parsedData.push({
-              cle: String(row[0] || ""),
-              emploi: String(row[1] || ""),
-              libelleEmploi: String(row[2] || ""),
-              dateEffet: formatExcelDate(row[3]),
-              classificationEmploi: String(row[4] || ""),
-              codePlusUtiliser: String(row[5] || ""),
-            });
-          }
-        }
-
-        setData(parsedData);
-        
-        // Valider les dates
-        const dateErrors = validateDataDates(parsedData, ["dateEffet"], "Emplois");
-        logDateValidationErrors(dateErrors);
-        
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement des données:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  const handleAdd = () => {
-    const newItem: Emploi = {
-      cle: "",
-      emploi: "",
-      libelleEmploi: "",
-      dateEffet: "",
-      classificationEmploi: "",
-      codePlusUtiliser: "",
-    };
-    setEditingItem(newItem);
-    setEditingIndex(null);
-    setIsDialogOpen(true);
+  const fetchData = async () => {
+    setLoading(true);
+    const { data: rows, error } = await supabase.from("emplois").select("*").order("cle");
+    if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
+    setLoading(false);
   };
+  useEffect(() => { fetchData(); }, []);
 
-  const handleEdit = (item: Emploi, index: number) => {
-    setEditingItem({ ...item });
-    setEditingIndex(index);
-    setIsDialogOpen(true);
-  };
-
-  const handleSave = () => {
-    if (editingItem) {
-      if (editingIndex !== null) {
-        // Modification d'un élément existant
-        const updatedData = [...data];
-        updatedData[editingIndex] = editingItem;
-        setData(updatedData);
-        toast({
-          title: "Modifications enregistrées",
-          description: "L'élément a été mis à jour avec succès.",
-        });
-      } else {
-        // Ajout d'un nouvel élément
-        setData([...data, editingItem]);
-        toast({
-          title: "Élément ajouté",
-          description: "Le nouvel élément a été créé avec succès.",
-        });
-      }
-      setIsDialogOpen(false);
-      setEditingItem(null);
-      setEditingIndex(null);
+  const handleAdd = () => { setEditingItem({ ...emptyItem }); setEditingIndex(null); setIsDialogOpen(true); };
+  const handleEdit = (item: Item, i: number) => { setEditingItem({ ...item }); setEditingIndex(i); setIsDialogOpen(true); };
+  const handleSave = async () => {
+    if (!editingItem) return; const { id, ...payload } = editingItem;
+    if (editingIndex !== null && id) {
+      const { error } = await supabase.from("emplois").update(payload).eq("id", id);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Modifications enregistrées" });
+    } else {
+      const { error } = await supabase.from("emplois").insert(payload);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Élément ajouté" });
     }
+    setIsDialogOpen(false); setEditingItem(null); setEditingIndex(null); fetchData();
   };
-
-  const handleDelete = (index: number) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    setData(updatedData);
-    toast({
-      title: "Élément supprimé",
-      description: "L'élément a été supprimé avec succès.",
-      variant: "destructive",
-    });
+  const handleDelete = async (i: number) => {
+    const item = data[i]; if (!item.id) return;
+    const { error } = await supabase.from("emplois").delete().eq("id", item.id);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Élément supprimé", variant: "destructive" }); fetchData();
   };
-
-  const handleInputChange = (field: keyof Emploi, value: string) => {
-    if (editingItem) {
-      setEditingItem({ ...editingItem, [field]: value });
-    }
-  };
-
-  const columns = [
-    { key: "cle", label: "Clé", width: "w-[110px]" },
-    { key: "emploi", label: "Emploi", width: "w-[120px]" },
-    { key: "libelleEmploi", label: "Libellé de l'emploi", width: "w-[250px]" },
-    { key: "dateEffet", label: "Date d'effet", width: "w-[100px]" },
-    { key: "classificationEmploi", label: "Classification de l'emploi", width: "w-[180px]", truncate: true },
-    { key: "codePlusUtiliser", label: "Code à ne plus utiliser au 1/01/17", width: "w-[200px]", truncate: true },
-  ];
-
-  const renderExpandedContent = (row: Emploi) => (
-    <div className="grid grid-cols-2 gap-4 text-xs">
-      <div>
-        <p className="font-semibold text-foreground mb-1">Clé:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.cle}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Emploi:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.emploi}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé de l'emploi:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleEmploi}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Date d'effet:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateEffet}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Classification de l'emploi:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.classificationEmploi}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Code à ne plus utiliser au 1/01/17:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codePlusUtiliser}</p>
-      </div>
-    </div>
-  );
 
   return (
     <>
-      <DataTableWithPagination
-        title="Emplois"
-        data={data}
-        columns={columns}
-        searchFields={["cle", "emploi", "libelleEmploi", "classificationEmploi"]}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onAdd={handleAdd}
-        renderExpandedContent={renderExpandedContent}
-      />
-
+      <DataTableWithPagination title="Emplois" data={data}
+        columns={[{ key: "cle", label: "Clé", width: "w-[110px]" }, { key: "emploi", label: "Emploi", width: "w-[120px]" }, { key: "libelle_emploi", label: "Libellé emploi", width: "w-[250px]" }, { key: "date_effet", label: "Date d'effet", width: "w-[100px]" }]}
+        searchFields={["cle", "emploi", "libelle_emploi", "classification_emploi"]}
+        loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
+        renderExpandedContent={(row: Item) => (<div className="grid grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
-          </DialogHeader>
-          {editingItem && (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="cle" className="text-xs">Clé</Label>
-                  <Input id="cle" value={editingItem.cle} onChange={(e) => handleInputChange("cle", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="emploi" className="text-xs">Emploi</Label>
-                  <Input id="emploi" value={editingItem.emploi} onChange={(e) => handleInputChange("emploi", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="libelleEmploi" className="text-xs">Libellé de l'emploi</Label>
-                <Input id="libelleEmploi" value={editingItem.libelleEmploi} onChange={(e) => handleInputChange("libelleEmploi", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="dateEffet" className="text-xs">Date d'effet (JJ/MM/AAAA)</Label>
-                <Input id="dateEffet" value={editingItem.dateEffet} onChange={(e) => handleInputChange("dateEffet", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="classificationEmploi" className="text-xs">Classification de l'emploi</Label>
-                <Input id="classificationEmploi" value={editingItem.classificationEmploi} onChange={(e) => handleInputChange("classificationEmploi", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="codePlusUtiliser" className="text-xs">Code à ne plus utiliser au 1/01/17</Label>
-                <Input id="codePlusUtiliser" value={editingItem.codePlusUtiliser} onChange={(e) => handleInputChange("codePlusUtiliser", e.target.value)} className="text-sm" />
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Annuler
-            </Button>
-            <Button onClick={handleSave}>
-              Enregistrer
-            </Button>
-          </DialogFooter>
+          <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
+          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-2 gap-4">
+            {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" /></div>))}
+          </div></div>)}
+          <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </>
   );
 };
-
 export default Emplois;

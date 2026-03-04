@@ -5,39 +5,36 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
-import * as XLSX from "xlsx";
-import { formatExcelDate, validateDataDates, logDateValidationErrors } from "@/lib/dateValidator";
+import { supabase } from "@/integrations/supabase/client";
 
-interface Vacataire {
-  codeSiham: string;
-  categorieSiham: string;
-  libelleCourtSiham: string;
-  libelleLongSiham: string;
-  dateDeb: string;
-  dateFin: string;
-  referencesReglementaires: string;
-  casUtilisation: string;
-  permanentTemporaire: string;
-  regleDurees: string;
-  typeContrat: string;
-  catFP: string;
-  sousCategorie: string;
-  obligationsStatutairesEnseignement: string;
-  bibliothequeActes: string;
-  infosComplementaires: string;
-  modeGestionRemuneration: string;
-  gradeTG: string;
-  pseudoGrade: string;
-  echelon: string;
-  indiceBrutMajoreForce: string;
-  situationStatutaire: string;
-  regimeSecuriteSociale: string;
-  regimeRetraite: string;
-  codeLibelleHarpege: string;
-  rgPourRDD: string;
-  codeCISIRH: string;
-  libelleCISIRH: string;
+interface Vacataire { id?: string;
+  code_siham: string; categorie_siham: string; libelle_court_siham: string; libelle_long_siham: string;
+  date_deb: string; date_fin: string; references_reglementaires: string; cas_utilisation: string;
+  permanent_temporaire: string; regle_durees: string; type_contrat: string; cat_fp: string;
+  sous_categorie: string; obligations_statutaires_enseignement: string; bibliotheque_actes: string;
+  infos_complementaires: string; mode_gestion_remuneration: string; grade_tg: string;
+  pseudo_grade: string; echelon: string; indice_brut_majore_force: string; situation_statutaire: string;
+  regime_securite_sociale: string; regime_retraite: string; code_libelle_harpege: string;
+  rg_pour_rdd: string; code_cisirh: string; libelle_cisirh: string;
 }
+
+const fields: { key: keyof Vacataire; label: string }[] = [
+  { key: "code_siham", label: "Code Siham" }, { key: "categorie_siham", label: "Catégorie Siham" },
+  { key: "libelle_court_siham", label: "Libellé court Siham" }, { key: "libelle_long_siham", label: "Libellé long Siham" },
+  { key: "date_deb", label: "Date Deb" }, { key: "date_fin", label: "Date Fin" },
+  { key: "references_reglementaires", label: "Références réglementaires" }, { key: "cas_utilisation", label: "Cas d'utilisation" },
+  { key: "permanent_temporaire", label: "Permanent/temporaire" }, { key: "regle_durees", label: "Règle de durées" },
+  { key: "type_contrat", label: "Type de contrat" }, { key: "cat_fp", label: "Cat. FP" },
+  { key: "sous_categorie", label: "Sous catégorie" }, { key: "obligations_statutaires_enseignement", label: "Obligations stat. enseignement" },
+  { key: "bibliotheque_actes", label: "Bibliothèque des actes" }, { key: "infos_complementaires", label: "Infos complémentaires" },
+  { key: "mode_gestion_remuneration", label: "Mode gestion/rémunération" }, { key: "grade_tg", label: "Grade TG" },
+  { key: "pseudo_grade", label: "Pseudo grade" }, { key: "echelon", label: "Echelon" },
+  { key: "indice_brut_majore_force", label: "Indice brut/majoré forcé" }, { key: "situation_statutaire", label: "Situation statutaire" },
+  { key: "regime_securite_sociale", label: "Régime sécu. sociale" }, { key: "regime_retraite", label: "Régime retraite" },
+  { key: "code_libelle_harpege", label: "Code/Libellé Harpège" }, { key: "rg_pour_rdd", label: "RG pour RDD" },
+  { key: "code_cisirh", label: "Code CISIRH" }, { key: "libelle_cisirh", label: "Libellé CISIRH" },
+];
+const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Vacataire;
 
 const Reference2 = () => {
   const [data, setData] = useState<Vacataire[]>([]);
@@ -47,489 +44,66 @@ const Reference2 = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const parsedData: Vacataire[] = [];
-        
-        // Charger les données du fichier principal
-        const response1 = await fetch("/data/vacataires.xlsx");
-        const buffer1 = await response1.arrayBuffer();
-        const workbook1 = XLSX.read(buffer1, { type: "array" });
-        const sheetName1 = workbook1.SheetNames[0];
-        const worksheet1 = workbook1.Sheets[sheetName1];
-        const jsonData1 = XLSX.utils.sheet_to_json(worksheet1, { header: 1 });
-        
-        for (let i = 1; i < jsonData1.length; i++) {
-          const row = jsonData1[i] as any[];
-          if (row.length >= 28) {
-            parsedData.push({
-              codeSiham: String(row[0] || ""),
-              categorieSiham: String(row[1] || ""),
-              libelleCourtSiham: String(row[2] || ""),
-              libelleLongSiham: String(row[3] || ""),
-              dateDeb: formatExcelDate(row[4]),
-              dateFin: formatExcelDate(row[5]),
-              referencesReglementaires: String(row[6] || ""),
-              casUtilisation: String(row[7] || ""),
-              permanentTemporaire: String(row[8] || ""),
-              regleDurees: String(row[9] || ""),
-              typeContrat: String(row[10] || ""),
-              catFP: String(row[11] || ""),
-              sousCategorie: String(row[12] || ""),
-              obligationsStatutairesEnseignement: String(row[13] || ""),
-              bibliothequeActes: String(row[14] || ""),
-              infosComplementaires: String(row[15] || ""),
-              modeGestionRemuneration: String(row[16] || ""),
-              gradeTG: String(row[17] || ""),
-              pseudoGrade: String(row[18] || ""),
-              echelon: String(row[19] || ""),
-              indiceBrutMajoreForce: String(row[20] || ""),
-              situationStatutaire: String(row[21] || ""),
-              regimeSecuriteSociale: String(row[22] || ""),
-              regimeRetraite: String(row[23] || ""),
-              codeLibelleHarpege: String(row[24] || ""),
-              rgPourRDD: String(row[25] || ""),
-              codeCISIRH: String(row[26] || ""),
-              libelleCISIRH: String(row[27] || ""),
-            });
-          }
-        }
-        
-        // Charger et fusionner les données du nouveau fichier
-        try {
-          const response2 = await fetch("/data/vac2.xlsx");
-          const buffer2 = await response2.arrayBuffer();
-          const workbook2 = XLSX.read(buffer2, { type: "array" });
-          const sheetName2 = workbook2.SheetNames[0];
-          const worksheet2 = workbook2.Sheets[sheetName2];
-          const jsonData2 = XLSX.utils.sheet_to_json(worksheet2, { header: 1 });
-          
-          for (let i = 1; i < jsonData2.length; i++) {
-            const row = jsonData2[i] as any[];
-            if (row.length >= 28) {
-              parsedData.push({
-                codeSiham: String(row[0] || ""),
-                categorieSiham: String(row[1] || ""),
-                libelleCourtSiham: String(row[2] || ""),
-                libelleLongSiham: String(row[3] || ""),
-                dateDeb: formatExcelDate(row[4]),
-                dateFin: formatExcelDate(row[5]),
-                referencesReglementaires: String(row[6] || ""),
-                casUtilisation: String(row[7] || ""),
-                permanentTemporaire: String(row[8] || ""),
-                regleDurees: String(row[9] || ""),
-                typeContrat: String(row[10] || ""),
-                catFP: String(row[11] || ""),
-                sousCategorie: String(row[12] || ""),
-                obligationsStatutairesEnseignement: String(row[13] || ""),
-                bibliothequeActes: String(row[14] || ""),
-                infosComplementaires: String(row[15] || ""),
-                modeGestionRemuneration: String(row[16] || ""),
-                gradeTG: String(row[17] || ""),
-                pseudoGrade: String(row[18] || ""),
-                echelon: String(row[19] || ""),
-                indiceBrutMajoreForce: String(row[20] || ""),
-                situationStatutaire: String(row[21] || ""),
-                regimeSecuriteSociale: String(row[22] || ""),
-                regimeRetraite: String(row[23] || ""),
-                codeLibelleHarpege: String(row[24] || ""),
-                rgPourRDD: String(row[25] || ""),
-                codeCISIRH: String(row[26] || ""),
-                libelleCISIRH: String(row[27] || ""),
-              });
-            }
-          }
-        } catch (error) {
-          console.log("Pas de fichier vac2.xlsx trouvé ou erreur lors du chargement");
-        }
-
-        setData(parsedData);
-        
-        // Valider les dates
-        const dateErrors = validateDataDates(parsedData, ["dateDeb", "dateFin"], "Vacataires");
-        logDateValidationErrors(dateErrors);
-        
-        setLoading(false);
-      } catch (error) {
-        console.error("Erreur lors du chargement des données:", error);
-        setLoading(false);
-      }
-    };
-    
-    loadData();
-  }, []);
-
-  const handleAdd = () => {
-    const newItem: Vacataire = {
-      codeSiham: "",
-      categorieSiham: "",
-      libelleCourtSiham: "",
-      libelleLongSiham: "",
-      dateDeb: "",
-      dateFin: "",
-      referencesReglementaires: "",
-      casUtilisation: "",
-      permanentTemporaire: "",
-      regleDurees: "",
-      typeContrat: "",
-      catFP: "",
-      sousCategorie: "",
-      obligationsStatutairesEnseignement: "",
-      bibliothequeActes: "",
-      infosComplementaires: "",
-      modeGestionRemuneration: "",
-      gradeTG: "",
-      pseudoGrade: "",
-      echelon: "",
-      indiceBrutMajoreForce: "",
-      situationStatutaire: "",
-      regimeSecuriteSociale: "",
-      regimeRetraite: "",
-      codeLibelleHarpege: "",
-      rgPourRDD: "",
-      codeCISIRH: "",
-      libelleCISIRH: "",
-    };
-    setEditingItem(newItem);
-    setEditingIndex(null);
-    setIsDialogOpen(true);
+  const fetchData = async () => {
+    setLoading(true);
+    const { data: rows, error } = await supabase.from("vacataires").select("*").order("code_siham");
+    if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = r[f.key as keyof typeof r] || ""); return item; }));
+    setLoading(false);
   };
+  useEffect(() => { fetchData(); }, []);
 
-  const handleEdit = (item: Vacataire, index: number) => {
-    setEditingItem({ ...item });
-    setEditingIndex(index);
-    setIsDialogOpen(true);
-  };
-
-  const handleSave = () => {
-    if (editingItem) {
-      if (editingIndex !== null) {
-        // Modification d'un élément existant
-        const updatedData = [...data];
-        updatedData[editingIndex] = editingItem;
-        setData(updatedData);
-        toast({
-          title: "Modifications enregistrées",
-          description: "L'élément a été mis à jour avec succès.",
-        });
-      } else {
-        // Ajout d'un nouvel élément
-        setData([...data, editingItem]);
-        toast({
-          title: "Élément ajouté",
-          description: "Le nouvel élément a été créé avec succès.",
-        });
-      }
-      setIsDialogOpen(false);
-      setEditingItem(null);
-      setEditingIndex(null);
+  const handleAdd = () => { setEditingItem({ ...emptyItem }); setEditingIndex(null); setIsDialogOpen(true); };
+  const handleEdit = (item: Vacataire, i: number) => { setEditingItem({ ...item }); setEditingIndex(i); setIsDialogOpen(true); };
+  const handleSave = async () => {
+    if (!editingItem) return; const { id, ...payload } = editingItem;
+    if (editingIndex !== null && id) {
+      const { error } = await supabase.from("vacataires").update(payload).eq("id", id);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Modifications enregistrées" });
+    } else {
+      const { error } = await supabase.from("vacataires").insert(payload);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Élément ajouté" });
     }
+    setIsDialogOpen(false); setEditingItem(null); setEditingIndex(null); fetchData();
   };
-
-  const handleDelete = (index: number) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    setData(updatedData);
-    toast({
-      title: "Élément supprimé",
-      description: "L'élément a été supprimé avec succès.",
-      variant: "destructive",
-    });
+  const handleDelete = async (i: number) => {
+    const item = data[i]; if (!item.id) return;
+    const { error } = await supabase.from("vacataires").delete().eq("id", item.id);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Élément supprimé", variant: "destructive" }); fetchData();
   };
-
-  const handleInputChange = (field: keyof Vacataire, value: string) => {
-    if (editingItem) {
-      setEditingItem({ ...editingItem, [field]: value });
-    }
-  };
+  const handleInputChange = (field: keyof Vacataire, value: string) => { if (editingItem) setEditingItem({ ...editingItem, [field]: value }); };
 
   const columns = [
-    { key: "codeSiham", label: "Code Siham", width: "w-[90px]" },
-    { key: "categorieSiham", label: "Catégorie Siham", width: "w-[110px]" },
-    { key: "libelleCourtSiham", label: "Libellé court Siham", width: "w-[140px]" },
-    { key: "libelleLongSiham", label: "Libellé long Siham", width: "w-[200px]" },
+    { key: "code_siham", label: "Code Siham", width: "w-[90px]" },
+    { key: "categorie_siham", label: "Catégorie Siham", width: "w-[110px]" },
+    { key: "libelle_court_siham", label: "Libellé court Siham", width: "w-[140px]" },
+    { key: "libelle_long_siham", label: "Libellé long Siham", width: "w-[200px]" },
   ];
-
   const renderExpandedContent = (row: Vacataire) => (
     <div className="grid grid-cols-2 gap-4 text-xs">
-      <div>
-        <p className="font-semibold text-foreground mb-1">Code Siham:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeSiham}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Catégorie Siham:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.categorieSiham}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé court Siham:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCourtSiham}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé long Siham:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleLongSiham}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Date Deb:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateDeb}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Date Fin:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.dateFin}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Références réglementaires:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.referencesReglementaires}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Cas d'utilisation:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.casUtilisation}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Permanent / temporaire:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.permanentTemporaire}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Règle de durées:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.regleDurees}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Type de contrat:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.typeContrat}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Cat. FP:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.catFP}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Sous catégorie:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.sousCategorie}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Obligations statutaires d'enseignement:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.obligationsStatutairesEnseignement}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Bibliothèque des actes:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.bibliothequeActes}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Informations complémentaires:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.infosComplementaires}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Mode de gestion / rémunération:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.modeGestionRemuneration}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Grade TG:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.gradeTG}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Pseudo grade:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.pseudoGrade}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Echelon:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.echelon}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Indice brut ou majoré forcé:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.indiceBrutMajoreForce}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Situation statutaire:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.situationStatutaire}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Régime Sécurité sociale:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeSecuriteSociale}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Régime retraite:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.regimeRetraite}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Code et Libellé Harpège:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeLibelleHarpege}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">RG pour RDD depuis Harpège:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.rgPourRDD}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Code CISIRH:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.codeCISIRH}</p>
-      </div>
-      <div>
-        <p className="font-semibold text-foreground mb-1">Libellé CISIRH:</p>
-        <p className="text-muted-foreground whitespace-pre-wrap">{row.libelleCISIRH}</p>
-      </div>
+      {fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}
     </div>
   );
 
   return (
     <>
-      <DataTableWithPagination
-        title="Vacataires"
-        data={data}
-        columns={columns}
-        searchFields={["codeSiham", "categorieSiham", "libelleCourtSiham", "libelleLongSiham", "codeCISIRH", "libelleCISIRH"]}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onAdd={handleAdd}
-        renderExpandedContent={renderExpandedContent}
-      />
-
+      <DataTableWithPagination title="Vacataires" data={data} columns={columns}
+        searchFields={["code_siham", "categorie_siham", "libelle_court_siham", "libelle_long_siham", "code_cisirh"]}
+        loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} renderExpandedContent={renderExpandedContent} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
-          </DialogHeader>
-          {editingItem && (
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="codeSiham" className="text-xs">Code Siham</Label>
-                  <Input id="codeSiham" value={editingItem.codeSiham} onChange={(e) => handleInputChange("codeSiham", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="categorieSiham" className="text-xs">Catégorie Siham</Label>
-                  <Input id="categorieSiham" value={editingItem.categorieSiham} onChange={(e) => handleInputChange("categorieSiham", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="libelleCourtSiham" className="text-xs">Libellé court Siham</Label>
-                <Input id="libelleCourtSiham" value={editingItem.libelleCourtSiham} onChange={(e) => handleInputChange("libelleCourtSiham", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="libelleLongSiham" className="text-xs">Libellé long Siham</Label>
-                <Input id="libelleLongSiham" value={editingItem.libelleLongSiham} onChange={(e) => handleInputChange("libelleLongSiham", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="dateDeb" className="text-xs">Date Deb (JJ/MM/AAAA)</Label>
-                  <Input id="dateDeb" value={editingItem.dateDeb} onChange={(e) => handleInputChange("dateDeb", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="dateFin" className="text-xs">Date Fin (JJ/MM/AAAA)</Label>
-                  <Input id="dateFin" value={editingItem.dateFin} onChange={(e) => handleInputChange("dateFin", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="referencesReglementaires" className="text-xs">Références réglementaires</Label>
-                <Input id="referencesReglementaires" value={editingItem.referencesReglementaires} onChange={(e) => handleInputChange("referencesReglementaires", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="casUtilisation" className="text-xs">Cas d'utilisation</Label>
-                  <Input id="casUtilisation" value={editingItem.casUtilisation} onChange={(e) => handleInputChange("casUtilisation", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="permanentTemporaire" className="text-xs">Permanent / temporaire</Label>
-                  <Input id="permanentTemporaire" value={editingItem.permanentTemporaire} onChange={(e) => handleInputChange("permanentTemporaire", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="regleDurees" className="text-xs">Règle de durées</Label>
-                <Input id="regleDurees" value={editingItem.regleDurees} onChange={(e) => handleInputChange("regleDurees", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="typeContrat" className="text-xs">Type de contrat</Label>
-                  <Input id="typeContrat" value={editingItem.typeContrat} onChange={(e) => handleInputChange("typeContrat", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="catFP" className="text-xs">Cat. FP</Label>
-                  <Input id="catFP" value={editingItem.catFP} onChange={(e) => handleInputChange("catFP", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="sousCategorie" className="text-xs">Sous catégorie</Label>
-                  <Input id="sousCategorie" value={editingItem.sousCategorie} onChange={(e) => handleInputChange("sousCategorie", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="obligationsStatutairesEnseignement" className="text-xs">Obligations statutaires d'enseignement</Label>
-                <Input id="obligationsStatutairesEnseignement" value={editingItem.obligationsStatutairesEnseignement} onChange={(e) => handleInputChange("obligationsStatutairesEnseignement", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bibliothequeActes" className="text-xs">Bibliothèque des actes</Label>
-                <Input id="bibliothequeActes" value={editingItem.bibliothequeActes} onChange={(e) => handleInputChange("bibliothequeActes", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="infosComplementaires" className="text-xs">Informations complémentaires à saisir dans Siham</Label>
-                <Input id="infosComplementaires" value={editingItem.infosComplementaires} onChange={(e) => handleInputChange("infosComplementaires", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="modeGestionRemuneration" className="text-xs">Mode de gestion / Mode de rémunération</Label>
-                <Input id="modeGestionRemuneration" value={editingItem.modeGestionRemuneration} onChange={(e) => handleInputChange("modeGestionRemuneration", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="gradeTG" className="text-xs">Grade TG</Label>
-                  <Input id="gradeTG" value={editingItem.gradeTG} onChange={(e) => handleInputChange("gradeTG", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="pseudoGrade" className="text-xs">Pseudo grade</Label>
-                  <Input id="pseudoGrade" value={editingItem.pseudoGrade} onChange={(e) => handleInputChange("pseudoGrade", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="echelon" className="text-xs">Echelon</Label>
-                  <Input id="echelon" value={editingItem.echelon} onChange={(e) => handleInputChange("echelon", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="indiceBrutMajoreForce" className="text-xs">Indice brut ou majoré forcé</Label>
-                  <Input id="indiceBrutMajoreForce" value={editingItem.indiceBrutMajoreForce} onChange={(e) => handleInputChange("indiceBrutMajoreForce", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="situationStatutaire" className="text-xs">Situation statutaire</Label>
-                  <Input id="situationStatutaire" value={editingItem.situationStatutaire} onChange={(e) => handleInputChange("situationStatutaire", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="regimeSecuriteSociale" className="text-xs">Régime Sécurité sociale</Label>
-                  <Input id="regimeSecuriteSociale" value={editingItem.regimeSecuriteSociale} onChange={(e) => handleInputChange("regimeSecuriteSociale", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="regimeRetraite" className="text-xs">Régime retraite</Label>
-                  <Input id="regimeRetraite" value={editingItem.regimeRetraite} onChange={(e) => handleInputChange("regimeRetraite", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="codeLibelleHarpege" className="text-xs">Code et Libellé Harpège</Label>
-                <Input id="codeLibelleHarpege" value={editingItem.codeLibelleHarpege} onChange={(e) => handleInputChange("codeLibelleHarpege", e.target.value)} className="text-sm" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="rgPourRDD" className="text-xs">RG pour RDD depuis Harpège</Label>
-                <Input id="rgPourRDD" value={editingItem.rgPourRDD} onChange={(e) => handleInputChange("rgPourRDD", e.target.value)} className="text-sm" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="codeCISIRH" className="text-xs">Code CISIRH</Label>
-                  <Input id="codeCISIRH" value={editingItem.codeCISIRH} onChange={(e) => handleInputChange("codeCISIRH", e.target.value)} className="text-sm" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="libelleCISIRH" className="text-xs">Libellé CISIRH</Label>
-                  <Input id="libelleCISIRH" value={editingItem.libelleCISIRH} onChange={(e) => handleInputChange("libelleCISIRH", e.target.value)} className="text-sm" />
-                </div>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Annuler
-            </Button>
-            <Button onClick={handleSave}>
-              Enregistrer
-            </Button>
-          </DialogFooter>
+          <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
+          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-2 gap-4">
+            {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => handleInputChange(f.key, e.target.value)} className="text-sm" /></div>))}
+          </div></div>)}
+          <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </>
   );
 };
-
 export default Reference2;
