@@ -82,6 +82,7 @@ const OrgNodeCard = ({
   
   return (
     <div
+      data-uo={node.code_uo}
       className={`
         relative rounded-lg border-2 px-3 py-2 cursor-pointer transition-all duration-200 min-w-[180px] max-w-[240px]
         ${isSelected 
@@ -287,8 +288,11 @@ const Organigramme = () => {
   const [editingItem, setEditingItem] = useState<Omit<UONode, "children"> | null>(null);
   const [isNewItem, setIsNewItem] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
   const { toast } = useToast();
   const expandedRef = useRef<Set<string>>(new Set());
+  const hasCentered = useRef(false);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -329,6 +333,68 @@ const Organigramme = () => {
       expandedRef.current = firstLevel;
     }
     setLoading(false);
+  }, []);
+
+  // Center on UDP0000000 after initial load
+  useEffect(() => {
+    if (!loading && data.length > 0 && !hasCentered.current && viewMode === "tree") {
+      hasCentered.current = true;
+      setTimeout(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const target = el.querySelector('[data-uo="UDP0000000"]');
+        if (target) {
+          target.scrollIntoView({ block: "center", inline: "center" });
+        } else {
+          // fallback: scroll to center of content
+          el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
+          el.scrollTop = 0;
+        }
+      }, 100);
+    }
+  }, [loading, data, viewMode]);
+
+  // Also center when switching to tree mode
+  useEffect(() => {
+    if (viewMode === "tree" && data.length > 0) {
+      setTimeout(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const target = el.querySelector('[data-uo="UDP0000000"]');
+        if (target) {
+          target.scrollIntoView({ block: "center", inline: "center" });
+        }
+      }, 100);
+    }
+  }, [viewMode]);
+
+  // Mouse drag to pan
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const el = containerRef.current;
+    if (!el) return;
+    isDragging.current = true;
+    dragStart.current = { x: e.clientX, y: e.clientY, scrollLeft: el.scrollLeft, scrollTop: el.scrollTop };
+    el.style.cursor = "grabbing";
+    el.style.userSelect = "none";
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const el = containerRef.current;
+    if (!el) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    el.scrollLeft = dragStart.current.scrollLeft - dx;
+    el.scrollTop = dragStart.current.scrollTop - dy;
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    isDragging.current = false;
+    const el = containerRef.current;
+    if (el) {
+      el.style.cursor = "grab";
+      el.style.userSelect = "";
+    }
   }, []);
 
   useEffect(() => { loadData(); }, [loadData]);
@@ -544,7 +610,15 @@ const Organigramme = () => {
             </ScrollArea>
           ) : (
             <div className="relative">
-              <div className="overflow-auto h-[calc(100vh-280px)] p-6" ref={containerRef}>
+              <div
+                className="overflow-auto h-[calc(100vh-280px)] p-6"
+                ref={containerRef}
+                style={{ cursor: "grab" }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+              >
                 <div
                   className="inline-flex flex-col items-center gap-0 min-w-max"
                   style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
