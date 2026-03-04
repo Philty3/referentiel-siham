@@ -459,6 +459,30 @@ const Organigramme = () => {
     }
   }, []);
 
+  // Mouse wheel to zoom
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      setZoom(z => {
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        return Math.min(2.5, Math.max(0.2, z + delta));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    // Also handle native wheel for preventDefault to work
+    const el = containerRef.current;
+    if (!el) return;
+    const handler = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    };
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
+  }, [viewMode]);
+
   useEffect(() => { loadData(); }, [loadData]);
 
   const handleEdit = (node: UONode) => {
@@ -681,6 +705,7 @@ const Organigramme = () => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
+                onWheel={handleWheel}
               >
                 <div
                   className="inline-flex flex-col items-center gap-0 min-w-max"
