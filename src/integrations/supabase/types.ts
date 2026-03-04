@@ -581,6 +581,81 @@ export type Database = {
         }
         Relationships: []
       }
+      uo: {
+        Row: {
+          adresse: string | null
+          code_postal: string | null
+          code_uai: string | null
+          code_uo: string | null
+          code_uo_bis: string | null
+          code_uo_mere: string | null
+          code_uo_p5_p7: string | null
+          code_uo_site_associe: string | null
+          complement_adresse: string | null
+          created_at: string
+          groupe_eval: string | null
+          groupe_phare: string | null
+          id: string
+          libelle_court: string | null
+          libelle_long: string | null
+          niveau: string | null
+          numero_voie: string | null
+          responsable_administratif: string | null
+          responsable_composante: string | null
+          statut: string | null
+          type: string | null
+          ville: string | null
+        }
+        Insert: {
+          adresse?: string | null
+          code_postal?: string | null
+          code_uai?: string | null
+          code_uo?: string | null
+          code_uo_bis?: string | null
+          code_uo_mere?: string | null
+          code_uo_p5_p7?: string | null
+          code_uo_site_associe?: string | null
+          complement_adresse?: string | null
+          created_at?: string
+          groupe_eval?: string | null
+          groupe_phare?: string | null
+          id?: string
+          libelle_court?: string | null
+          libelle_long?: string | null
+          niveau?: string | null
+          numero_voie?: string | null
+          responsable_administratif?: string | null
+          responsable_composante?: string | null
+          statut?: string | null
+          type?: string | null
+          ville?: string | null
+        }
+        Update: {
+          adresse?: string | null
+          code_postal?: string | null
+          code_uai?: string | null
+          code_uo?: string | null
+          code_uo_bis?: string | null
+          code_uo_mere?: string | null
+          code_uo_p5_p7?: string | null
+          code_uo_site_associe?: string | null
+          complement_adresse?: string | null
+          created_at?: string
+          groupe_eval?: string | null
+          groupe_phare?: string | null
+          id?: string
+          libelle_court?: string | null
+          libelle_long?: string | null
+          niveau?: string | null
+          numero_voie?: string | null
+          responsable_administratif?: string | null
+          responsable_composante?: string | null
+          statut?: string | null
+          type?: string | null
+          ville?: string | null
+        }
+        Relationships: []
+      }
       vacataires: {
         Row: {
           bibliotheque_actes: string | null
