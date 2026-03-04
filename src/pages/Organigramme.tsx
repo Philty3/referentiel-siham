@@ -61,32 +61,32 @@ const emptyUO: Omit<UONode, "children"> = Object.fromEntries(
   uoFields.map(f => [f.key, ""])
 ) as any;
 
-// Palette de couleurs bleu/teal pour les branches de niveau 2 (HSL)
+// Palette pastel bleu/teal pour les branches de niveau 2 (HSL) - lisible avec texte noir
 const BRANCH_COLORS: [number, number, number][] = [
-  [197, 100, 16],  // #003052
-  [225, 50, 22],   // #1C2952
-  [225, 75, 28],   // #101E6B
-  [220, 80, 36],   // #1135A7
-  [200, 100, 49],  // #0E4C94
-  [210, 100, 50],  // #0080FE
-  [207, 100, 46],  // #008ECD
-  [214, 100, 40],  // #0F52BA
-  [195, 100, 46],  // #008ECD
-  [222, 53, 68],   // #6694F6
-  [160, 40, 50],   // #4D516D
-  [174, 100, 25],  // #008082
-  [190, 40, 54],   // #95C9D9
-  [195, 65, 85],   // #B1DFE6
-  [165, 70, 60],   // #3CE1D0
-  [185, 100, 80],  // #7EF9FF
-  [175, 30, 55],   // #598BAF
-  [190, 50, 75],   // #8AD0F0
-  [180, 40, 66],   // #81D7D1
-  [205, 40, 50],   // #4683B4
-  [185, 40, 55],   // #57A0D2
-  [200, 35, 46],   // #5097A4
-  [215, 30, 49],   // #7285A5
-  [215, 80, 72],   // #73C2FA
+  [197, 60, 82],   // bleu canard clair
+  [225, 50, 85],   // bleu nuit pastel
+  [220, 55, 83],   // bleu royal pastel
+  [210, 60, 84],   // bleu vif pastel
+  [200, 55, 82],   // bleu azur pastel
+  [207, 50, 83],   // bleu ciel pastel
+  [214, 55, 85],   // bleu cobalt pastel
+  [195, 50, 82],   // bleu cyan pastel
+  [222, 45, 86],   // bleu lavande
+  [160, 40, 84],   // vert-bleu pastel
+  [174, 45, 82],   // teal pastel
+  [190, 45, 84],   // bleu-gris pastel
+  [165, 45, 83],   // menthe pastel
+  [185, 50, 85],   // cyan pastel
+  [175, 40, 84],   // turquoise pastel
+  [180, 45, 83],   // aigue-marine pastel
+  [205, 45, 84],   // acier pastel
+  [215, 50, 86],   // pervenche pastel
+  [192, 45, 83],   // bleu poudre
+  [170, 40, 84],   // jade pastel
+  [200, 40, 85],   // bleu cendré
+  [188, 45, 83],   // bleu nordique
+  [210, 45, 86],   // bleu glacier
+  [195, 50, 84],   // bleu arctique
 ];
 
 // Build a map: code_uo -> { color (HSL tuple), depth } where color comes from the niveau 2 ancestor
@@ -110,35 +110,31 @@ function buildColorMap(roots: UONode[]): Map<string, { color: [number, number, n
   return map;
 }
 
-// Dégrade la couleur de base du niveau 2 vers le blanc selon la profondeur
+// Dégrade la couleur pastel du niveau 2 vers le blanc selon la profondeur
 function degradeColor(base: [number, number, number], depth: number): [number, number, number] {
-  // depth 0 = niveau 2 lui-même (couleur pleine), chaque niveau en dessous est plus clair
-  const depthFromBranch = Math.max(0, depth - 1); // depth 1 = niveau 2
-  const factor = Math.min(depthFromBranch * 0.12, 0.7); // max 70% vers le blanc
+  const depthFromBranch = Math.max(0, depth - 1);
+  const factor = Math.min(depthFromBranch * 0.15, 0.6);
   const h = base[0];
-  const s = base[1] * (1 - factor * 0.6); // désaturer progressivement
-  const l = base[2] + (100 - base[2]) * factor; // éclaircir progressivement
-  return [h, Math.max(10, s), Math.min(96, l)];
+  const s = base[1] * (1 - factor * 0.5);
+  const l = base[2] + (100 - base[2]) * factor;
+  return [h, Math.max(10, s), Math.min(97, l)];
 }
 
 function getNodeColorStyle(color: [number, number, number], depth: number, isSelected: boolean, isHighlighted: boolean) {
   if (isSelected || isHighlighted) return {};
   const [h, s, l] = degradeColor(color, depth);
-  const bgL = Math.min(96, l + 20); // fond plus clair
-  const borderL = Math.min(80, l);
   return {
-    backgroundColor: `hsl(${h}, ${Math.max(15, s * 0.7)}%, ${bgL}%)`,
-    borderColor: `hsl(${h}, ${s}%, ${borderL}%)`,
+    backgroundColor: `hsl(${h}, ${s}%, ${l}%)`,
+    borderColor: `hsl(${h}, ${Math.min(70, s + 10)}%, ${Math.max(50, l - 25)}%)`,
   };
 }
 
 function getListItemColorStyle(color: [number, number, number], depth: number, isSelected: boolean, isHighlighted: boolean) {
   if (isSelected || isHighlighted) return {};
   const [h, s, l] = degradeColor(color, depth);
-  const bgL = Math.min(96, l + 20);
   return {
-    backgroundColor: `hsl(${h}, ${Math.max(15, s * 0.5)}%, ${bgL}%)`,
-    borderLeft: `3px solid hsl(${h}, ${s}%, ${Math.min(70, l)}%)`,
+    backgroundColor: `hsl(${h}, ${s}%, ${l}%)`,
+    borderLeft: `3px solid hsl(${h}, ${Math.min(70, s + 10)}%, ${Math.max(45, l - 30)}%)`,
   };
 }
 
