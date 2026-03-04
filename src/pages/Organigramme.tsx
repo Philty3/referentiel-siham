@@ -109,7 +109,7 @@ const OrgNodeCard = ({
         <div className="flex-1 min-w-0">
           <p className="text-[10px] font-mono text-muted-foreground leading-tight">{node.code_uo}</p>
           <p className="text-xs font-semibold text-foreground leading-tight mt-0.5 line-clamp-2">
-            {node.libelle_court || node.libelle_long}
+            {node.libelle_long || node.libelle_court}
           </p>
           {node.type && (
             <span className="inline-block mt-1 text-[9px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
@@ -249,7 +249,7 @@ const TreeListItem = ({
           <Minus className="h-3.5 w-3.5 text-muted-foreground/40 flex-shrink-0 ml-0.5" />
         )}
         <span className="font-mono text-[10px] text-muted-foreground w-24 flex-shrink-0">{node.code_uo}</span>
-        <span className="truncate">{node.libelle_court || node.libelle_long}</span>
+        <span className="truncate">{node.libelle_long || node.libelle_court}</span>
         {hasChildren && (
           <span className="text-[10px] text-muted-foreground ml-auto flex-shrink-0">({node.children.length})</span>
         )}
