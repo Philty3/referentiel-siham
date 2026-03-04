@@ -34,6 +34,7 @@ const CentresCouts = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [uoOptions, setUoOptions] = useState<string[]>([]);
+  const [uoRows, setUoRows] = useState<{ libelle_long: string; code_uo: string }[]>([]);
   const [openCombobox, setOpenCombobox] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
@@ -42,8 +43,10 @@ const CentresCouts = () => {
   useEffect(() => {
     fetchAllRows("uo", "libelle_long").then(({ data: rows }) => {
       if (rows) {
-        const labels = rows.map((r: any) => r.libelle_long).filter(Boolean).sort();
-        setUoOptions([...new Set(labels)] as string[]);
+        const allRows = rows.map((r: any) => ({ libelle_long: r.libelle_long || "", code_uo: r.code_uo || "" })).filter(r => r.libelle_long);
+        setUoRows(allRows);
+        const labels = [...new Set(allRows.map(r => r.libelle_long))].sort();
+        setUoOptions(labels as string[]);
       }
     });
   }, []);
@@ -126,8 +129,13 @@ const CentresCouts = () => {
                             <CommandEmpty>Aucune UO trouvée.</CommandEmpty>
                             <CommandGroup>
                               {uoOptions.map(opt => (
-                                <CommandItem key={opt} value={opt} onSelect={(val) => {
-                                  setEditingItem({ ...editingItem, [f.key]: val });
+                              <CommandItem key={opt} value={opt} onSelect={(val) => {
+                                  const updates: Partial<Item> = { [f.key]: val };
+                                  if (f.key === "uo_affectation_principale") {
+                                    const match = uoRows.find(r => r.libelle_long === val);
+                                    if (match) updates.code_uo_affectation = match.code_uo;
+                                  }
+                                  setEditingItem({ ...editingItem, ...updates });
                                   setOpenCombobox(prev => ({ ...prev, [f.key]: false }));
                                 }}>
                                   <Check className={cn("mr-2 h-4 w-4", editingItem[f.key] === opt ? "opacity-100" : "opacity-0")} />
