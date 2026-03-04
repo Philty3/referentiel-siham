@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X, ChevronDown } from "lucide-react";
+import { Download, Menu, X, ChevronDown, Lock, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import logoVideo from "@/assets/logo-video.mp4";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAdmin } from "@/contexts/AdminContext";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
@@ -26,6 +29,7 @@ const navItems = [
 
 export const Navigation = () => {
   const { toast } = useToast();
+  const { isAdmin, login } = useAdmin();
   const [isExporting, setIsExporting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,6 +37,8 @@ export const Navigation = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReversing, setIsReversing] = useState(false);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,8 +106,19 @@ export const Navigation = () => {
       });
     }
   };
+  const handleLogin = () => {
+    if (login(password)) {
+      setLoginDialogOpen(false);
+      setPassword("");
+      toast({ title: "Connecté", description: "Accès administration activé" });
+    } else {
+      toast({ title: "Erreur", description: "Mot de passe incorrect", variant: "destructive" });
+    }
+  };
 
   return (
+    <>
+
     <nav 
       className={`sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur-md shadow-sm transition-all duration-300 ${
         scrolled ? "shadow-lg" : ""
@@ -186,6 +203,24 @@ export const Navigation = () => {
             <Download className={`h-4 w-4 ${isExporting ? "animate-pulse" : ""}`} />
             {isExporting ? "Export..." : "Export"}
           </Button>
+
+          {isAdmin ? (
+            <NavLink to="/administration">
+              <Button variant="outline" size="sm" className="gap-2 hover:scale-105 transition-transform duration-200">
+                <Lock className="h-4 w-4" />
+                Administration
+              </Button>
+            </NavLink>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setLoginDialogOpen(true)}
+              className="gap-1 text-xs text-muted-foreground"
+            >
+              <LogIn className="h-3 w-3" />
+            </Button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -244,5 +279,24 @@ export const Navigation = () => {
         </div>
       )}
     </nav>
+
+    <Dialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>Accès Administration</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="space-y-4">
+          <Input
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoFocus
+          />
+          <Button type="submit" className="w-full">Se connecter</Button>
+        </form>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 };

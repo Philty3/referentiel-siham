@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
+import { AdminProvider } from "./contexts/AdminContext";
 import Index from "./pages/Index";
 import Reference1 from "./pages/Reference1";
 import Reference2 from "./pages/Reference2";
@@ -19,6 +20,7 @@ import Diplomes from "./pages/Diplomes";
 import Etablissements from "./pages/Etablissements";
 import UO from "./pages/UO";
 import Organigramme from "./pages/Organigramme";
+import Administration from "./pages/Administration";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,32 +28,35 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen bg-background">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/ref1" element={<Reference1 />} />
-            <Route path="/ref2" element={<Reference2 />} />
-            <Route path="/heberges" element={<Heberges />} />
-            <Route path="/actes" element={<Actes />} />
-            <Route path="/ref3" element={<Reference3 />} />
-            <Route path="/ref4" element={<Reference4 />} />
-            <Route path="/grades" element={<Grades />} />
-            <Route path="/conges" element={<Conges />} />
-            <Route path="/emplois" element={<Emplois />} />
-            <Route path="/modalites" element={<Modalites />} />
-            <Route path="/diplomes" element={<Diplomes />} />
-            <Route path="/etablissements" element={<Etablissements />} />
-            <Route path="/uo" element={<UO />} />
-            <Route path="/organigramme" element={<Organigramme />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      <AdminProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen bg-background">
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/ref1" element={<Reference1 />} />
+              <Route path="/ref2" element={<Reference2 />} />
+              <Route path="/heberges" element={<Heberges />} />
+              <Route path="/actes" element={<Actes />} />
+              <Route path="/ref3" element={<Reference3 />} />
+              <Route path="/ref4" element={<Reference4 />} />
+              <Route path="/grades" element={<Grades />} />
+              <Route path="/conges" element={<Conges />} />
+              <Route path="/emplois" element={<Emplois />} />
+              <Route path="/modalites" element={<Modalites />} />
+              <Route path="/diplomes" element={<Diplomes />} />
+              <Route path="/etablissements" element={<Etablissements />} />
+              <Route path="/uo" element={<UO />} />
+              <Route path="/organigramme" element={<Organigramme />} />
+              <Route path="/administration" element={<Administration />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </AdminProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
