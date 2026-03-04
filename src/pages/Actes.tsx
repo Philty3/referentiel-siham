@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { exportPageToExcel } from "@/lib/exportToExcel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -65,6 +66,7 @@ const Actes = () => {
         columns={[{ key: "code", label: "Code", width: "w-[120px]" }, { key: "libelle", label: "Libellé", width: "w-[200px]" }, { key: "libelle_complementaire", label: "Libellé complémentaire", width: "w-[200px]" }, { key: "type_arrete_decision", label: "Type arrêté/décision", width: "w-[150px]" }]}
         searchFields={["code", "libelle", "libelle_complementaire", "type_arrete_decision"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
+        onExport={() => exportPageToExcel(data, "Actes", "Actes")}
         renderExpandedContent={(row: Item) => (<div className="grid grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">

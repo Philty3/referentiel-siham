@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { exportPageToExcel } from "@/lib/exportToExcel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -64,6 +65,7 @@ const Heberges = () => {
         columns={[{ key: "code_siham", label: "Code Siham", width: "w-[90px]" }, { key: "libelle_court_siham", label: "Libellé court", width: "w-[140px]" }, { key: "libelle_long_siham", label: "Libellé long", width: "w-[200px]" }, { key: "sous_categorie", label: "Sous catégorie", width: "w-[120px]" }]}
         searchFields={["code_siham", "libelle_court_siham", "libelle_long_siham", "sous_categorie", "code_cisirh"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
+        onExport={() => exportPageToExcel(data, "Hébergés", "Heberges")}
         renderExpandedContent={(row: Item) => (<div className="grid grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
