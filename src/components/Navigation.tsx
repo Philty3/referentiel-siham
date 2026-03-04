@@ -25,6 +25,7 @@ const navItems = [
   { name: "Établissements", path: "/etablissements" },
   { name: "UO", path: "/uo" },
   { name: "Organigramme", path: "/organigramme" },
+  { name: "Centres de coûts", path: "/centres-couts" },
 ];
 
 export const Navigation = () => {

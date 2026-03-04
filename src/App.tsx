@@ -21,6 +21,7 @@ import Etablissements from "./pages/Etablissements";
 import UO from "./pages/UO";
 import Organigramme from "./pages/Organigramme";
 import Administration from "./pages/Administration";
+import CentresCouts from "./pages/CentresCouts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/etablissements" element={<Etablissements />} />
               <Route path="/uo" element={<UO />} />
               <Route path="/organigramme" element={<Organigramme />} />
+              <Route path="/centres-couts" element={<CentresCouts />} />
               <Route path="/administration" element={<Administration />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

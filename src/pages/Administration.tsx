@@ -72,6 +72,11 @@ const tableConfigs = [
     table: "uo", label: "UO", minColumns: 1, sheet: 1,
     columns: ["code_uo","libelle_long","libelle_court","code_uo_mere","type","niveau","code_uai","statut","responsable_composante","responsable_administratif","numero_voie","complement_adresse","adresse","code_postal","ville","code_uo_p5_p7","code_uo_bis","code_uo_site_associe","groupe_eval","groupe_phare"],
   },
+  {
+    table: "centres_couts", label: "Centres de coûts", minColumns: 1,
+    columns: ["code","libelle_court","libelle_long","type","uo_rattachee","responsable","date_debut_validite","date_fin_validite","statut","commentaire"],
+    dateColumns: [6, 7],
+  },
 ];
 
 type ImportStatus = "idle" | "loading" | "success" | "error";
