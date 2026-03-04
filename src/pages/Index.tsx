@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchAllRows } from "@/lib/supabaseUtils";
 import { useToast } from "@/hooks/use-toast";
 
 interface Column {
@@ -173,10 +174,7 @@ const Index = () => {
 
       for (const source of dataSourcesConfig) {
         try {
-          const { data: rows, error } = await supabase
-            .from(source.table)
-            .select("*")
-            .order(source.orderBy);
+          const { data: rows, error } = await fetchAllRows(source.table, source.orderBy);
 
           if (error) {
             console.error(`Erreur lors du chargement de ${source.label}:`, error);

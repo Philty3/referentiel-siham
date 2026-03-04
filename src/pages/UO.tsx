@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchAllRows } from "@/lib/supabaseUtils";
 
 interface UOItem {
   id?: string;
@@ -50,7 +51,7 @@ const UOPage = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const { data: rows, error } = await supabase.from("uo").select("*").order("code_uo");
+    const { data: rows, error } = await fetchAllRows("uo", "code_uo");
     if (error) {
       console.error("Erreur chargement UO:", error);
       toast({ title: "Erreur", description: "Impossible de charger les données UO.", variant: "destructive" });
