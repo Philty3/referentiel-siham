@@ -819,23 +819,16 @@ const Organigramme = () => {
               </div>
             </div>
             <div className="space-y-2 text-xs">
-              {[
-                { label: "Code UO", value: selectedNodeData.code_uo },
-                { label: "Libellé court", value: selectedNodeData.libelle_court },
-                { label: "Libellé long", value: selectedNodeData.libelle_long },
-                { label: "UO mère", value: selectedNodeData.code_uo_mere },
-                { label: "Type", value: selectedNodeData.type },
-                { label: "Niveau", value: selectedNodeData.niveau },
-                { label: "Statut", value: selectedNodeData.statut },
-                { label: "Code UAI", value: selectedNodeData.code_uai },
-                { label: "Ville", value: selectedNodeData.ville },
-                { label: "Sous-unités", value: String(selectedNodeData.children.length) },
-              ].map(({ label, value }) => (
-                <div key={label}>
-                  <p className="font-semibold text-muted-foreground">{label}</p>
-                  <p className="text-foreground">{value || "—"}</p>
+              {uoFields.map(f => (
+                <div key={f.key}>
+                  <p className="font-semibold text-muted-foreground">{f.label}</p>
+                  <p className="text-foreground">{(selectedNodeData as any)[f.key] || "—"}</p>
                 </div>
               ))}
+              <div>
+                <p className="font-semibold text-muted-foreground">Sous-unités</p>
+                <p className="text-foreground">{String(selectedNodeData.children.length)}</p>
+              </div>
             </div>
           </div>
         )}
