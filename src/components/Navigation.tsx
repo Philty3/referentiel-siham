@@ -26,6 +26,7 @@ const navItems = [
   { name: "Modalités de service", path: "/modalites" },
   { name: "Diplômes", path: "/diplomes" },
   { name: "Établissements", path: "/etablissements" },
+  { name: "UO", path: "/uo" },
 ];
 
 export const Navigation = () => {
