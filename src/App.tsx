@@ -18,6 +18,7 @@ import Modalites from "./pages/Modalites";
 import Diplomes from "./pages/Diplomes";
 import Etablissements from "./pages/Etablissements";
 import UO from "./pages/UO";
+import Organigramme from "./pages/Organigramme";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/diplomes" element={<Diplomes />} />
             <Route path="/etablissements" element={<Etablissements />} />
             <Route path="/uo" element={<UO />} />
+            <Route path="/organigramme" element={<Organigramme />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
