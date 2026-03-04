@@ -399,43 +399,52 @@ const Organigramme = () => {
     setExpandedNodes(firstLevel);
   };
 
-  // Search
+  // Search: build a filtered tree containing only matching nodes + ancestors
+  const [filteredData, setFilteredData] = useState<UONode[]>([]);
+
   useEffect(() => {
     if (!searchTerm.trim()) {
       setHighlightedNodes(new Set());
+      setFilteredData([]);
       return;
     }
     const term = searchTerm.toLowerCase();
     const matches = new Set<string>();
     const pathsToExpand = new Set<string>();
 
-    // Find matching nodes and their ancestor paths
-    const findPath = (node: UONode): boolean => {
+    // Recursively filter: keep nodes that match or have matching descendants
+    const filterTree = (node: UONode): UONode | null => {
       const nodeMatches =
         node.code_uo.toLowerCase().includes(term) ||
         node.libelle_court.toLowerCase().includes(term) ||
         node.libelle_long.toLowerCase().includes(term);
 
-      let childMatches = false;
-      node.children.forEach(child => {
-        if (findPath(child)) childMatches = true;
-      });
+      const filteredChildren = node.children
+        .map(child => filterTree(child))
+        .filter(Boolean) as UONode[];
 
       if (nodeMatches) {
         matches.add(node.code_uo);
       }
-      if (nodeMatches || childMatches) {
+
+      if (nodeMatches || filteredChildren.length > 0) {
         pathsToExpand.add(node.code_uo);
-        return true;
+        return { ...node, children: filteredChildren };
       }
-      return false;
+      return null;
     };
 
-    data.forEach(root => findPath(root));
+    const filtered = data
+      .map(root => filterTree(root))
+      .filter(Boolean) as UONode[];
+
+    setFilteredData(filtered);
     setHighlightedNodes(matches);
     setExpandedNodes(prev => new Set([...prev, ...pathsToExpand]));
   }, [searchTerm, data]);
 
+  const isSearching = searchTerm.trim().length > 0;
+  const displayData = isSearching ? filteredData : data;
   const selectedNodeData = selectedNode ? allNodesMap.get(selectedNode) : null;
 
   if (loading) {
@@ -520,7 +529,7 @@ const Organigramme = () => {
           {viewMode === "list" ? (
             <ScrollArea className="h-[calc(100vh-280px)]">
               <div className="p-2">
-                {data.map((root) => (
+                {displayData.map((root) => (
                   <TreeListItem
                     key={root.code_uo}
                     node={root}
@@ -539,7 +548,7 @@ const Organigramme = () => {
                 className="inline-flex flex-col items-center gap-0 min-w-max"
                 style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
               >
-                {data.map((root) => (
+                {displayData.map((root) => (
                   <div key={root.code_uo} className="mb-8">
                     <TreeBranch
                       node={root}
