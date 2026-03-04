@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -732,8 +732,15 @@ const Organigramme = () => {
                   variant="outline"
                   size="icon"
                   className="h-9 w-9 rounded-full shadow-md bg-card"
-                  title="Retour en haut"
-                  onClick={() => containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" })}
+                  title="Centrer sur UDP0000000"
+                  onClick={() => {
+                    const el = containerRef.current;
+                    if (!el) return;
+                    const target = el.querySelector('[data-uo="UDP0000000"]');
+                    if (target) {
+                      target.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+                    }
+                  }}
                 >
                   <ArrowUp className="h-4 w-4" />
                 </Button>
@@ -775,6 +782,9 @@ const Organigramme = () => {
                 <Button variant="outline" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(selectedNodeData)} title="Supprimer">
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
+                <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => setSelectedNode(null)} title="Fermer">
+                  <X className="h-3.5 w-3.5" />
+                </Button>
               </div>
             </div>
             <div className="space-y-2 text-xs">
@@ -796,14 +806,6 @@ const Organigramme = () => {
                 </div>
               ))}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full mt-4 text-xs"
-              onClick={() => setSelectedNode(null)}
-            >
-              Fermer
-            </Button>
           </div>
         )}
       </div>
