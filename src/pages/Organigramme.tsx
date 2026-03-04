@@ -2,12 +2,13 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface UONode {
   id?: string;
@@ -147,6 +148,9 @@ const OrgNodeCard = ({
   isHighlighted,
   depth,
   colorStyle,
+  selectionMode,
+  isChecked,
+  onCheck,
 }: {
   node: UONode;
   isExpanded: boolean;
@@ -156,6 +160,9 @@ const OrgNodeCard = ({
   isHighlighted: boolean;
   depth: number;
   colorStyle?: React.CSSProperties;
+  selectionMode?: boolean;
+  isChecked?: boolean;
+  onCheck?: (code: string) => void;
 }) => {
   const hasChildren = node.children.length > 0;
   
@@ -175,6 +182,14 @@ const OrgNodeCard = ({
       onClick={onSelect}
     >
       <div className="flex items-start gap-1.5">
+        {selectionMode && (
+          <Checkbox
+            checked={isChecked}
+            onCheckedChange={() => onCheck?.(node.code_uo)}
+            onClick={(e) => e.stopPropagation()}
+            className="mt-0.5 flex-shrink-0"
+          />
+        )}
         {hasChildren && (
           <button
             onClick={(e) => { e.stopPropagation(); onToggle(); }}
@@ -216,6 +231,9 @@ const TreeBranch = ({
   highlightedNodes,
   colorMap,
   depth = 0,
+  selectionMode,
+  checkedNodes,
+  onCheck,
 }: {
   node: UONode;
   expandedNodes: Set<string>;
@@ -225,6 +243,9 @@ const TreeBranch = ({
   highlightedNodes: Set<string>;
   colorMap: Map<string, { color: [number, number, number]; depth: number }>;
   depth?: number;
+  selectionMode?: boolean;
+  checkedNodes?: Set<string>;
+  onCheck?: (code: string) => void;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
   const hasChildren = node.children.length > 0;
@@ -244,6 +265,9 @@ const TreeBranch = ({
         isHighlighted={isHighlighted}
         depth={depth}
         colorStyle={colorStyle}
+        selectionMode={selectionMode}
+        isChecked={checkedNodes?.has(node.code_uo)}
+        onCheck={onCheck}
       />
       
       {hasChildren && isExpanded && (
@@ -273,6 +297,9 @@ const TreeBranch = ({
                   highlightedNodes={highlightedNodes}
                   colorMap={colorMap}
                   depth={depth + 1}
+                  selectionMode={selectionMode}
+                  checkedNodes={checkedNodes}
+                  onCheck={onCheck}
                 />
               </div>
             ))}
@@ -293,6 +320,9 @@ const TreeListItem = ({
   highlightedNodes,
   colorMap,
   depth = 0,
+  selectionMode,
+  checkedNodes,
+  onCheck,
 }: {
   node: UONode;
   expandedNodes: Set<string>;
@@ -302,6 +332,9 @@ const TreeListItem = ({
   highlightedNodes: Set<string>;
   colorMap: Map<string, { color: [number, number, number]; depth: number }>;
   depth?: number;
+  selectionMode?: boolean;
+  checkedNodes?: Set<string>;
+  onCheck?: (code: string) => void;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
   const hasChildren = node.children.length > 0;
@@ -325,6 +358,14 @@ const TreeListItem = ({
         style={itemStyle}
         onClick={() => setSelectedNode(node.code_uo === selectedNode ? null : node.code_uo)}
       >
+        {selectionMode && (
+          <Checkbox
+            checked={checkedNodes?.has(node.code_uo)}
+            onCheckedChange={() => onCheck?.(node.code_uo)}
+            onClick={(e) => e.stopPropagation()}
+            className="flex-shrink-0"
+          />
+        )}
         {hasChildren ? (
           <button
             onClick={(e) => { e.stopPropagation(); toggleNode(node.code_uo); }}
@@ -357,6 +398,9 @@ const TreeListItem = ({
               highlightedNodes={highlightedNodes}
               colorMap={colorMap}
               depth={depth + 1}
+              selectionMode={selectionMode}
+              checkedNodes={checkedNodes}
+              onCheck={onCheck}
             />
           ))}
         </div>
@@ -379,6 +423,8 @@ const Organigramme = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Omit<UONode, "children"> | null>(null);
   const [isNewItem, setIsNewItem] = useState(false);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [checkedNodes, setCheckedNodes] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
@@ -561,6 +607,46 @@ const Organigramme = () => {
     await loadData();
   };
 
+  const toggleCheck = useCallback((code: string) => {
+    setCheckedNodes(prev => {
+      const next = new Set(prev);
+      if (next.has(code)) next.delete(code);
+      else next.add(code);
+      return next;
+    });
+  }, []);
+
+  const handleBulkDelete = async () => {
+    if (checkedNodes.size === 0) return;
+    // Check that none of the checked nodes have children
+    const nodesWithChildren: string[] = [];
+    checkedNodes.forEach(code => {
+      const node = allNodesMap.get(code);
+      if (node && node.children.length > 0) {
+        nodesWithChildren.push(code);
+      }
+    });
+    if (nodesWithChildren.length > 0) {
+      toast({ title: "Suppression impossible", description: `${nodesWithChildren.length} UO ont des sous-unités. Supprimez d'abord les sous-unités.`, variant: "destructive" });
+      return;
+    }
+    // Get ids
+    const ids: string[] = [];
+    checkedNodes.forEach(code => {
+      const node = allNodesMap.get(code);
+      if (node?.id) ids.push(node.id);
+    });
+    if (ids.length === 0) return;
+    const { error } = await supabase.from("uo").delete().in("id", ids);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: `${ids.length} UO supprimée(s)`, variant: "destructive" });
+    setCheckedNodes(new Set());
+    setSelectionMode(false);
+    setSelectedNode(null);
+    expandedRef.current = expandedNodes;
+    await loadData();
+  };
+
   const toggleNode = useCallback((code: string) => {
     setExpandedNodes((prev) => {
       const next = new Set(prev);
@@ -666,6 +752,20 @@ const Organigramme = () => {
             <Plus className="h-3.5 w-3.5" /> Ajouter
           </Button>
           <div className="h-6 w-px bg-border mx-1" />
+          <Button
+            variant={selectionMode ? "default" : "outline"}
+            size="sm"
+            onClick={() => { setSelectionMode(!selectionMode); setCheckedNodes(new Set()); }}
+            className="gap-1.5"
+          >
+            <CheckSquare className="h-3.5 w-3.5" /> Sélectionner
+          </Button>
+          {selectionMode && checkedNodes.size > 0 && (
+            <Button variant="destructive" size="sm" onClick={handleBulkDelete} className="gap-1.5">
+              <Trash2 className="h-3.5 w-3.5" /> Supprimer ({checkedNodes.size})
+            </Button>
+          )}
+          <div className="h-6 w-px bg-border mx-1" />
           <Button variant="outline" size="sm" onClick={expandAll}>Tout déplier</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Tout replier</Button>
           <div className="h-6 w-px bg-border mx-1" />
@@ -722,6 +822,9 @@ const Organigramme = () => {
                     setSelectedNode={setSelectedNode}
                     highlightedNodes={highlightedNodes}
                     colorMap={colorMap}
+                    selectionMode={selectionMode}
+                    checkedNodes={checkedNodes}
+                    onCheck={toggleCheck}
                   />
                 ))}
               </div>
@@ -752,6 +855,9 @@ const Organigramme = () => {
                         setSelectedNode={setSelectedNode}
                         highlightedNodes={highlightedNodes}
                         colorMap={colorMap}
+                        selectionMode={selectionMode}
+                        checkedNodes={checkedNodes}
+                        onCheck={toggleCheck}
                       />
                     </div>
                   ))}
