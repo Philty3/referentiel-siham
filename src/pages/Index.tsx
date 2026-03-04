@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import { FileSpreadsheet, Database, Search, FileText } from "lucide-react";
+import { FileSpreadsheet, Database, Search, FileText, Upload, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import * as XLSX from "xlsx";
 import { formatExcelDate } from "@/lib/dateValidator";
+import { importAllTables, tableNames } from "@/lib/importData";
+import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 interface Column {
   key: string;
@@ -25,6 +28,10 @@ const Index = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [allData, setAllData] = useState<{ [key: string]: any[] }>({});
   const [allHeaders, setAllHeaders] = useState<{ [key: string]: string[] }>({});
+  const [isImporting, setIsImporting] = useState(false);
+  const [importProgress, setImportProgress] = useState<Record<string, string>>({});
+  const [importDone, setImportDone] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Charger toutes les données au démarrage
@@ -113,7 +120,6 @@ const Index = () => {
 
     Object.entries(allData).forEach(([sourceName, items]) => {
       items.forEach((item) => {
-        // Rechercher dans toutes les valeurs de l'objet
         const matchFound = Object.values(item).some((value) => 
           String(value).toLowerCase().includes(searchLower)
         );
@@ -128,12 +134,33 @@ const Index = () => {
     setIsSearching(false);
   };
 
+  const handleImportAll = async () => {
+    setIsImporting(true);
+    setImportDone(false);
+    setImportProgress({});
+    
+    const results = await importAllTables((table, msg) => {
+      setImportProgress(prev => ({ ...prev, [table]: msg }));
+    });
+
+    setIsImporting(false);
+    setImportDone(true);
+    
+    const successCount = Object.values(results).filter(r => r.success).length;
+    const totalRows = Object.values(results).reduce((sum, r) => sum + r.count, 0);
+    
+    toast({
+      title: `Import terminé`,
+      description: `${successCount}/${Object.keys(results).length} tables importées (${totalRows} lignes au total)`,
+      variant: successCount === Object.keys(results).length ? "default" : "destructive",
+    });
+  };
+
   const getDisplayColumns = (): Column[] => {
     const baseColumns: Column[] = [
       { key: "source", label: "Source", width: "w-[150px]" },
     ];
     
-    // Ajouter les 4 premières colonnes disponibles
     if (searchResults.length > 0) {
       const firstResult = searchResults[0];
       const keys = Object.keys(firstResult).filter(k => k !== "source");
@@ -183,6 +210,9 @@ const Index = () => {
     },
   ];
 
+  const completedCount = Object.values(importProgress).filter(v => v.startsWith("✅") || v.startsWith("❌")).length;
+  const progressPercent = tableNames.length > 0 ? (completedCount / tableNames.length) * 100 : 0;
+
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto max-w-7xl px-4 py-12">
@@ -198,6 +228,67 @@ const Index = () => {
             Plateforme de consultation des référentiels principaux SIHAM.
             Accédez facilement à vos données de référence.
           </p>
+        </div>
+
+        {/* Import Section */}
+        <div className="mb-12">
+          <Card className="border-2 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                  <Upload className="h-6 w-6 text-primary" />
+                  Importer les données Excel
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Importe toutes les données des fichiers Excel dans la base de données ({tableNames.length} tables)
+                </p>
+              </div>
+              <Button 
+                onClick={handleImportAll} 
+                disabled={isImporting}
+                size="lg"
+                className="gap-2"
+              >
+                {isImporting ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Upload className="h-5 w-5" />
+                )}
+                {isImporting ? "Import en cours..." : "Importer tout"}
+              </Button>
+            </div>
+
+            {(isImporting || importDone) && (
+              <div className="mt-4 space-y-3">
+                <Progress value={progressPercent} className="h-2" />
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-xs">
+                  {tableNames.map((table) => (
+                    <div
+                      key={table}
+                      className={`flex items-center gap-1.5 rounded-md px-2 py-1.5 ${
+                        importProgress[table]?.startsWith("✅")
+                          ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300"
+                          : importProgress[table]?.startsWith("❌")
+                          ? "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"
+                          : importProgress[table]
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {importProgress[table]?.startsWith("✅") ? (
+                        <CheckCircle className="h-3.5 w-3.5 shrink-0" />
+                      ) : importProgress[table]?.startsWith("❌") ? (
+                        <XCircle className="h-3.5 w-3.5 shrink-0" />
+                      ) : importProgress[table] ? (
+                        <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                      ) : null}
+                      <span className="font-medium truncate">{table}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </Card>
         </div>
 
         {/* Search Section */}
