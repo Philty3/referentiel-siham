@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Edit, Trash2, ChevronDown, Plus, Star } from "lucide-react";
+import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Column {
@@ -36,6 +36,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   itemsPerPage?: number;
   hideAddButton?: boolean;
   hideSearchField?: boolean;
+  onExport?: () => void;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -51,6 +52,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   itemsPerPage = 20,
   hideAddButton = false,
   hideSearchField = false,
+  onExport,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -149,16 +151,29 @@ export function DataTableWithPagination<T extends Record<string, any>>({
               {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
             </p>
           </div>
-          {!hideAddButton && (
-            <Button
-              onClick={onAdd}
-              size="sm"
-              className="h-9 gap-1.5"
-            >
-              <Plus className="h-4 w-4" />
-              Ajouter
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {onExport && (
+              <Button
+                onClick={onExport}
+                size="sm"
+                variant="outline"
+                className="h-9 gap-1.5"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </Button>
+            )}
+            {!hideAddButton && (
+              <Button
+                onClick={onAdd}
+                size="sm"
+                className="h-9 gap-1.5"
+              >
+                <Plus className="h-4 w-4" />
+                Ajouter
+              </Button>
+            )}
+          </div>
         </div>
 
         {!hideSearchField && (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { exportPageToExcel } from "@/lib/exportToExcel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -207,6 +208,7 @@ const UOPage = () => {
         onDelete={handleDelete}
         onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
+        onExport={() => exportPageToExcel(data, "UO", "UO")}
       />
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

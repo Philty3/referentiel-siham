@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { exportPageToExcel } from "@/lib/exportToExcel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -93,7 +94,8 @@ const Reference2 = () => {
     <>
       <DataTableWithPagination title="Vacataires" data={data} columns={columns}
         searchFields={["code_siham", "categorie_siham", "libelle_court_siham", "libelle_long_siham", "code_cisirh"]}
-        loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} renderExpandedContent={renderExpandedContent} />
+        loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} renderExpandedContent={renderExpandedContent}
+        onExport={() => exportPageToExcel(data, "Vacataires", "Vacataires", ["date_deb", "date_fin"])} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
