@@ -5,146 +5,194 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
-import * as XLSX from "xlsx";
+import { supabase } from "@/integrations/supabase/client";
 
-interface UO {
-  [key: string]: string;
+interface UOItem {
+  id?: string;
+  code_uo: string;
+  libelle_long: string;
+  libelle_court: string;
+  code_uo_mere: string;
+  type: string;
+  niveau: string;
+  code_uai: string;
+  statut: string;
+  responsable_composante: string;
+  responsable_administratif: string;
+  numero_voie: string;
+  complement_adresse: string;
+  adresse: string;
+  code_postal: string;
+  ville: string;
+  code_uo_p5_p7: string;
+  code_uo_bis: string;
+  code_uo_site_associe: string;
+  groupe_eval: string;
+  groupe_phare: string;
 }
 
-const headerKeyMap: Record<string, string> = {};
-const headerLabels: string[] = [];
+const emptyItem: UOItem = {
+  code_uo: "", libelle_long: "", libelle_court: "", code_uo_mere: "",
+  type: "", niveau: "", code_uai: "", statut: "",
+  responsable_composante: "", responsable_administratif: "",
+  numero_voie: "", complement_adresse: "", adresse: "", code_postal: "", ville: "",
+  code_uo_p5_p7: "", code_uo_bis: "", code_uo_site_associe: "",
+  groupe_eval: "", groupe_phare: "",
+};
 
 const UOPage = () => {
-  const [data, setData] = useState<UO[]>([]);
+  const [data, setData] = useState<UOItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [headers, setHeaders] = useState<string[]>([]);
-  const [headerKeys, setHeaderKeys] = useState<string[]>([]);
-  const [editingItem, setEditingItem] = useState<UO | null>(null);
+  const [editingItem, setEditingItem] = useState<UOItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const toKey = (header: string) =>
-    header
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-zA-Z0-9]/g, "_")
-      .replace(/_+/g, "_")
-      .replace(/^_|_$/g, "")
-      .toLowerCase();
+  const fetchData = async () => {
+    setLoading(true);
+    const { data: rows, error } = await supabase.from("uo").select("*").order("code_uo");
+    if (error) {
+      console.error("Erreur chargement UO:", error);
+      toast({ title: "Erreur", description: "Impossible de charger les données UO.", variant: "destructive" });
+    } else {
+      setData(
+        (rows || []).map((r) => ({
+          id: r.id,
+          code_uo: r.code_uo || "",
+          libelle_long: r.libelle_long || "",
+          libelle_court: r.libelle_court || "",
+          code_uo_mere: r.code_uo_mere || "",
+          type: r.type || "",
+          niveau: r.niveau || "",
+          code_uai: r.code_uai || "",
+          statut: r.statut || "",
+          responsable_composante: r.responsable_composante || "",
+          responsable_administratif: r.responsable_administratif || "",
+          numero_voie: r.numero_voie || "",
+          complement_adresse: r.complement_adresse || "",
+          adresse: r.adresse || "",
+          code_postal: r.code_postal || "",
+          ville: r.ville || "",
+          code_uo_p5_p7: r.code_uo_p5_p7 || "",
+          code_uo_bis: r.code_uo_bis || "",
+          code_uo_site_associe: r.code_uo_site_associe || "",
+          groupe_eval: r.groupe_eval || "",
+          groupe_phare: r.groupe_phare || "",
+        }))
+      );
+    }
+    setLoading(false);
+  };
 
-  useEffect(() => {
-    fetch("/data/uo.xlsx")
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        const workbook = XLSX.read(buffer, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-        if (jsonData.length === 0) {
-          setLoading(false);
-          return;
-        }
-
-        const rawHeaders = (jsonData[0] as any[]).map((h) => String(h || ""));
-        const keys = rawHeaders.map((h) => toKey(h));
-
-        setHeaders(rawHeaders);
-        setHeaderKeys(keys);
-
-        const parsedData: UO[] = [];
-        for (let i = 1; i < jsonData.length; i++) {
-          const row = jsonData[i] as any[];
-          if (!row || row.length === 0) continue;
-          const obj: UO = {};
-          keys.forEach((key, idx) => {
-            obj[key] = String(row[idx] ?? "");
-          });
-          parsedData.push(obj);
-        }
-
-        setData(parsedData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erreur lors du chargement des données UO:", error);
-        setLoading(false);
-      });
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const handleAdd = () => {
-    const newItem: UO = {};
-    headerKeys.forEach((key) => {
-      newItem[key] = "";
-    });
-    setEditingItem(newItem);
+    setEditingItem({ ...emptyItem });
     setEditingIndex(null);
     setIsDialogOpen(true);
   };
 
-  const handleEdit = (item: UO, index: number) => {
+  const handleEdit = (item: UOItem, index: number) => {
     setEditingItem({ ...item });
     setEditingIndex(index);
     setIsDialogOpen(true);
   };
 
-  const handleSave = () => {
-    if (editingItem) {
-      if (editingIndex !== null) {
-        const updatedData = [...data];
-        updatedData[editingIndex] = editingItem;
-        setData(updatedData);
-        toast({
-          title: "Modifications enregistrées",
-          description: "L'élément a été mis à jour avec succès.",
-        });
-      } else {
-        setData([...data, editingItem]);
-        toast({
-          title: "Élément ajouté",
-          description: "Le nouvel élément a été créé avec succès.",
-        });
+  const handleSave = async () => {
+    if (!editingItem) return;
+    const { id, ...payload } = editingItem;
+
+    if (editingIndex !== null && id) {
+      const { error } = await supabase.from("uo").update(payload).eq("id", id);
+      if (error) {
+        toast({ title: "Erreur", description: "Impossible de mettre à jour.", variant: "destructive" });
+        return;
       }
-      setIsDialogOpen(false);
-      setEditingItem(null);
-      setEditingIndex(null);
+      toast({ title: "Modifications enregistrées", description: "L'élément a été mis à jour avec succès." });
+    } else {
+      const { error } = await supabase.from("uo").insert(payload);
+      if (error) {
+        toast({ title: "Erreur", description: "Impossible d'ajouter.", variant: "destructive" });
+        return;
+      }
+      toast({ title: "Élément ajouté", description: "Le nouvel élément a été créé avec succès." });
     }
+    setIsDialogOpen(false);
+    setEditingItem(null);
+    setEditingIndex(null);
+    fetchData();
   };
 
-  const handleDelete = (index: number) => {
-    const updatedData = data.filter((_, i) => i !== index);
-    setData(updatedData);
-    toast({
-      title: "Élément supprimé",
-      description: "L'élément a été supprimé avec succès.",
-      variant: "destructive",
-    });
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    if (editingItem) {
-      setEditingItem({ ...editingItem, [field]: value });
+  const handleDelete = async (index: number) => {
+    const item = data[index];
+    if (!item.id) return;
+    const { error } = await supabase.from("uo").delete().eq("id", item.id);
+    if (error) {
+      toast({ title: "Erreur", description: "Impossible de supprimer.", variant: "destructive" });
+      return;
     }
+    toast({ title: "Élément supprimé", description: "L'élément a été supprimé avec succès.", variant: "destructive" });
+    fetchData();
   };
 
-  // Show first 4 columns in table, rest in expanded view
-  const columns = headerKeys.slice(0, 4).map((key, idx) => ({
-    key,
-    label: headers[idx] || key,
-    width: idx === 0 ? "w-[150px]" : idx < 2 ? "w-[180px]" : "w-[250px]",
-  }));
+  const handleInputChange = (field: keyof UOItem, value: string) => {
+    if (editingItem) setEditingItem({ ...editingItem, [field]: value });
+  };
 
-  const renderExpandedContent = (row: UO) => (
+  const columns = [
+    { key: "code_uo", label: "Code UO", width: "w-[150px]" },
+    { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
+    { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
+    { key: "statut", label: "Statut", width: "w-[100px]" },
+  ];
+
+  const renderExpandedContent = (row: UOItem) => (
     <div className="grid grid-cols-2 gap-4 text-xs">
-      {headerKeys.map((key, idx) => (
-        <div key={key}>
-          <p className="font-semibold text-foreground mb-1">{headers[idx]}:</p>
-          <p className="text-muted-foreground whitespace-pre-wrap">{row[key]}</p>
-        </div>
-      ))}
+      <div><p className="font-semibold text-foreground mb-1">Code UO:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Libellé long:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.libelle_long}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Libellé court:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.libelle_court}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code UO mère:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo_mere}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Type:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.type}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Niveau:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.niveau}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code UAI:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uai}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Statut:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.statut}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Responsable composante:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_composante}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Responsable administratif:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_administratif}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">N° voie:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.numero_voie}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Complément adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.complement_adresse}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.adresse}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code postal:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_postal}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Ville:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.ville}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code UO P5/P7:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo_p5_p7}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code UO (bis):</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo_bis}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Code UO site associé:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo_site_associe}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Groupe EVAL:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_eval}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Groupe PhaRe:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_phare}</p></div>
     </div>
   );
+
+  const fields: { key: keyof UOItem; label: string }[] = [
+    { key: "code_uo", label: "Code UO" },
+    { key: "libelle_long", label: "Libellé long" },
+    { key: "libelle_court", label: "Libellé court" },
+    { key: "code_uo_mere", label: "Code UO mère" },
+    { key: "type", label: "Type" },
+    { key: "niveau", label: "Niveau" },
+    { key: "code_uai", label: "Code UAI" },
+    { key: "statut", label: "Statut" },
+    { key: "responsable_composante", label: "Responsable composante" },
+    { key: "responsable_administratif", label: "Responsable administratif" },
+    { key: "numero_voie", label: "N° voie" },
+    { key: "complement_adresse", label: "Complément adresse" },
+    { key: "adresse", label: "Adresse" },
+    { key: "code_postal", label: "Code postal" },
+    { key: "ville", label: "Ville" },
+    { key: "code_uo_p5_p7", label: "Code UO P5/P7" },
+    { key: "code_uo_bis", label: "Code UO (bis)" },
+    { key: "code_uo_site_associe", label: "Code UO site associé" },
+    { key: "groupe_eval", label: "Groupe EVAL" },
+    { key: "groupe_phare", label: "Groupe PhaRe" },
+  ];
 
   return (
     <>
@@ -152,7 +200,7 @@ const UOPage = () => {
         title="UO (Unités Organisationnelles)"
         data={data}
         columns={columns}
-        searchFields={headerKeys}
+        searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville"]}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -163,18 +211,14 @@ const UOPage = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>
-              {editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}
-            </DialogTitle>
+            <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
           </DialogHeader>
           {editingItem && (
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
-                {headerKeys.map((key, idx) => (
+                {fields.map(({ key, label }) => (
                   <div key={key} className="space-y-2">
-                    <Label htmlFor={key} className="text-xs">
-                      {headers[idx]}
-                    </Label>
+                    <Label htmlFor={key} className="text-xs">{label}</Label>
                     <Input
                       id={key}
                       value={editingItem[key] || ""}
@@ -187,9 +231,7 @@ const UOPage = () => {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Annuler
-            </Button>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
             <Button onClick={handleSave}>Enregistrer</Button>
           </DialogFooter>
         </DialogContent>
