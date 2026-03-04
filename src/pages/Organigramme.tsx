@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 interface UONode {
+  id?: string;
   code_uo: string;
   libelle_court: string;
   libelle_long: string;
@@ -14,8 +18,48 @@ interface UONode {
   type: string;
   niveau: string;
   statut: string;
+  code_uai: string;
+  responsable_composante: string;
+  responsable_administratif: string;
+  numero_voie: string;
+  complement_adresse: string;
+  adresse: string;
+  code_postal: string;
+  ville: string;
+  code_uo_p5_p7: string;
+  code_uo_bis: string;
+  code_uo_site_associe: string;
+  groupe_eval: string;
+  groupe_phare: string;
   children: UONode[];
 }
+
+const uoFields: { key: keyof Omit<UONode, "children" | "id">; label: string }[] = [
+  { key: "code_uo", label: "Code UO" },
+  { key: "libelle_long", label: "Libellé long" },
+  { key: "libelle_court", label: "Libellé court" },
+  { key: "code_uo_mere", label: "Code UO mère" },
+  { key: "type", label: "Type" },
+  { key: "niveau", label: "Niveau" },
+  { key: "code_uai", label: "Code UAI" },
+  { key: "statut", label: "Statut" },
+  { key: "responsable_composante", label: "Responsable composante" },
+  { key: "responsable_administratif", label: "Responsable administratif" },
+  { key: "numero_voie", label: "N° voie" },
+  { key: "complement_adresse", label: "Complément adresse" },
+  { key: "adresse", label: "Adresse" },
+  { key: "code_postal", label: "Code postal" },
+  { key: "ville", label: "Ville" },
+  { key: "code_uo_p5_p7", label: "Code UO P5/P7" },
+  { key: "code_uo_bis", label: "Code UO (bis)" },
+  { key: "code_uo_site_associe", label: "Code UO site associé" },
+  { key: "groupe_eval", label: "Groupe EVAL" },
+  { key: "groupe_phare", label: "Groupe PhaRe" },
+];
+
+const emptyUO: Omit<UONode, "children"> = Object.fromEntries(
+  uoFields.map(f => [f.key, ""])
+) as any;
 
 const OrgNodeCard = ({
   node,
@@ -239,62 +283,100 @@ const Organigramme = () => {
   const [allNodesMap, setAllNodesMap] = useState<Map<string, UONode>>(new Map());
   const [viewMode, setViewMode] = useState<"tree" | "list">("list");
   const [zoom, setZoom] = useState(1);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<Omit<UONode, "children"> | null>(null);
+  const [isNewItem, setIsNewItem] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const expandedRef = useRef<Set<string>>(new Set());
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      const { data: rows, error } = await fetchAllRows("uo", "code_uo");
-      if (error) {
-        toast({ title: "Erreur", description: "Impossible de charger les UO.", variant: "destructive" });
-        setLoading(false);
-        return;
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    const { data: rows, error } = await fetchAllRows("uo", "code_uo");
+    if (error) {
+      toast({ title: "Erreur", description: "Impossible de charger les UO.", variant: "destructive" });
+      setLoading(false);
+      return;
+    }
+
+    const nodeMap = new Map<string, UONode>();
+    (rows || []).forEach((r: any) => {
+      const node: UONode = { id: r.id, children: [] } as any;
+      uoFields.forEach(f => { (node as any)[f.key] = r[f.key] || ""; });
+      nodeMap.set(node.code_uo, node);
+    });
+    setAllNodesMap(nodeMap);
+
+    const roots: UONode[] = [];
+    nodeMap.forEach((node) => {
+      if (node.code_uo_mere && nodeMap.has(node.code_uo_mere) && node.code_uo_mere !== node.code_uo) {
+        nodeMap.get(node.code_uo_mere)!.children.push(node);
+      } else {
+        roots.push(node);
       }
+    });
+    const sortChildren = (nodes: UONode[]) => {
+      nodes.sort((a, b) => a.code_uo.localeCompare(b.code_uo));
+      nodes.forEach(n => sortChildren(n.children));
+    };
+    sortChildren(roots);
+    setData(roots);
 
-      // Build node map
-      const nodeMap = new Map<string, UONode>();
-      (rows || []).forEach((r: any) => {
-        nodeMap.set(r.code_uo || "", {
-          code_uo: r.code_uo || "",
-          libelle_court: r.libelle_court || "",
-          libelle_long: r.libelle_long || "",
-          code_uo_mere: r.code_uo_mere || "",
-          type: r.type || "",
-          niveau: r.niveau || "",
-          statut: r.statut || "",
-          children: [],
-        });
-      });
-
-      setAllNodesMap(nodeMap);
-
-      // Build tree
-      const roots: UONode[] = [];
-      nodeMap.forEach((node) => {
-        if (node.code_uo_mere && nodeMap.has(node.code_uo_mere) && node.code_uo_mere !== node.code_uo) {
-          nodeMap.get(node.code_uo_mere)!.children.push(node);
-        } else {
-          roots.push(node);
-        }
-      });
-
-      // Sort children at each level
-      const sortChildren = (nodes: UONode[]) => {
-        nodes.sort((a, b) => a.code_uo.localeCompare(b.code_uo));
-        nodes.forEach(n => sortChildren(n.children));
-      };
-      sortChildren(roots);
-
-      setData(roots);
-      // Expand first level by default
+    if (expandedRef.current.size === 0) {
       const firstLevel = new Set<string>();
       roots.forEach(r => firstLevel.add(r.code_uo));
       setExpandedNodes(firstLevel);
-      setLoading(false);
-    };
-    loadData();
+      expandedRef.current = firstLevel;
+    }
+    setLoading(false);
   }, []);
+
+  useEffect(() => { loadData(); }, [loadData]);
+
+  const handleEdit = (node: UONode) => {
+    const { children, ...rest } = node;
+    setEditingItem({ ...rest });
+    setIsNewItem(false);
+    setIsDialogOpen(true);
+  };
+
+  const handleAdd = (parentCodeUo?: string) => {
+    setEditingItem({ ...emptyUO, code_uo_mere: parentCodeUo || "" });
+    setIsNewItem(true);
+    setIsDialogOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!editingItem) return;
+    const { id, ...payload } = editingItem;
+    if (!isNewItem && id) {
+      const { error } = await supabase.from("uo").update(payload).eq("id", id);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "Modifications enregistrées" });
+    } else {
+      const { error } = await supabase.from("uo").insert(payload);
+      if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+      toast({ title: "UO ajoutée" });
+    }
+    setIsDialogOpen(false);
+    setEditingItem(null);
+    expandedRef.current = expandedNodes;
+    await loadData();
+  };
+
+  const handleDelete = async (node: UONode) => {
+    if (!node.id) return;
+    if (node.children.length > 0) {
+      toast({ title: "Suppression impossible", description: "Cette UO a des sous-unités. Supprimez-les d'abord.", variant: "destructive" });
+      return;
+    }
+    const { error } = await supabase.from("uo").delete().eq("id", node.id);
+    if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "UO supprimée", variant: "destructive" });
+    setSelectedNode(null);
+    expandedRef.current = expandedNodes;
+    await loadData();
+  };
 
   const toggleNode = useCallback((code: string) => {
     setExpandedNodes((prev) => {
@@ -388,6 +470,10 @@ const Organigramme = () => {
           />
         </div>
         <div className="flex items-center gap-1.5">
+          <Button size="sm" onClick={() => handleAdd()} className="gap-1.5">
+            <Plus className="h-3.5 w-3.5" /> Ajouter
+          </Button>
+          <div className="h-6 w-px bg-border mx-1" />
           <Button variant="outline" size="sm" onClick={expandAll}>Tout déplier</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Tout replier</Button>
           <div className="h-6 w-px bg-border mx-1" />
@@ -472,9 +558,22 @@ const Organigramme = () => {
 
         {/* Detail panel */}
         {selectedNodeData && (
-          <div className="w-72 border rounded-lg bg-card p-4 flex-shrink-0 h-fit sticky top-24">
-            <h3 className="text-sm font-bold text-foreground mb-3">Détails de l'UO</h3>
-            <div className="space-y-2.5 text-xs">
+          <div className="w-80 border rounded-lg bg-card p-4 flex-shrink-0 h-fit sticky top-24">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-foreground">Détails de l'UO</h3>
+              <div className="flex gap-1">
+                <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => handleEdit(selectedNodeData)} title="Modifier">
+                  <Pencil className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => handleAdd(selectedNodeData.code_uo)} title="Ajouter sous-unité">
+                  <Plus className="h-3.5 w-3.5" />
+                </Button>
+                <Button variant="outline" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => handleDelete(selectedNodeData)} title="Supprimer">
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+            <div className="space-y-2 text-xs">
               {[
                 { label: "Code UO", value: selectedNodeData.code_uo },
                 { label: "Libellé court", value: selectedNodeData.libelle_court },
@@ -483,6 +582,8 @@ const Organigramme = () => {
                 { label: "Type", value: selectedNodeData.type },
                 { label: "Niveau", value: selectedNodeData.niveau },
                 { label: "Statut", value: selectedNodeData.statut },
+                { label: "Code UAI", value: selectedNodeData.code_uai },
+                { label: "Ville", value: selectedNodeData.ville },
                 { label: "Sous-unités", value: String(selectedNodeData.children.length) },
               ].map(({ label, value }) => (
                 <div key={label}>
@@ -502,6 +603,36 @@ const Organigramme = () => {
           </div>
         )}
       </div>
+
+      {/* Edit/Add Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{isNewItem ? "Ajouter une UO" : "Modifier l'UO"}</DialogTitle>
+          </DialogHeader>
+          {editingItem && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                {uoFields.map(f => (
+                  <div key={f.key} className="space-y-2">
+                    <Label htmlFor={`org-${f.key}`} className="text-xs">{f.label}</Label>
+                    <Input
+                      id={`org-${f.key}`}
+                      value={(editingItem as any)[f.key] || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })}
+                      className="text-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
+            <Button onClick={handleSave}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
