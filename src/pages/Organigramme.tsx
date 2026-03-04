@@ -61,49 +61,84 @@ const emptyUO: Omit<UONode, "children"> = Object.fromEntries(
   uoFields.map(f => [f.key, ""])
 ) as any;
 
-// Distinct hues for niveau 2 branches
-const BRANCH_HUES = [210, 340, 150, 30, 270, 180, 0, 60, 300, 120, 240, 20, 330, 90, 200];
+// Palette de couleurs bleu/teal pour les branches de niveau 2 (HSL)
+const BRANCH_COLORS: [number, number, number][] = [
+  [197, 100, 16],  // #003052
+  [225, 50, 22],   // #1C2952
+  [225, 75, 28],   // #101E6B
+  [220, 80, 36],   // #1135A7
+  [200, 100, 49],  // #0E4C94
+  [210, 100, 50],  // #0080FE
+  [207, 100, 46],  // #008ECD
+  [214, 100, 40],  // #0F52BA
+  [195, 100, 46],  // #008ECD
+  [222, 53, 68],   // #6694F6
+  [160, 40, 50],   // #4D516D
+  [174, 100, 25],  // #008082
+  [190, 40, 54],   // #95C9D9
+  [195, 65, 85],   // #B1DFE6
+  [165, 70, 60],   // #3CE1D0
+  [185, 100, 80],  // #7EF9FF
+  [175, 30, 55],   // #598BAF
+  [190, 50, 75],   // #8AD0F0
+  [180, 40, 66],   // #81D7D1
+  [205, 40, 50],   // #4683B4
+  [185, 40, 55],   // #57A0D2
+  [200, 35, 46],   // #5097A4
+  [215, 30, 49],   // #7285A5
+  [215, 80, 72],   // #73C2FA
+];
 
-// Build a map: code_uo -> { hue, depth } where hue comes from the niveau 2 ancestor
-function buildColorMap(roots: UONode[]): Map<string, { hue: number; depth: number }> {
-  const map = new Map<string, { hue: number; depth: number }>();
-  let hueIndex = 0;
+// Build a map: code_uo -> { color (HSL tuple), depth } where color comes from the niveau 2 ancestor
+function buildColorMap(roots: UONode[]): Map<string, { color: [number, number, number]; depth: number }> {
+  const map = new Map<string, { color: [number, number, number]; depth: number }>();
+  let colorIndex = 0;
 
-  const walk = (node: UONode, hue: number | null, depth: number) => {
+  const walk = (node: UONode, color: [number, number, number] | null, depth: number) => {
     const nodeLevel = parseInt(node.niveau, 10);
     if (nodeLevel === 2 || (isNaN(nodeLevel) && depth === 1)) {
-      hue = BRANCH_HUES[hueIndex % BRANCH_HUES.length];
-      hueIndex++;
+      color = BRANCH_COLORS[colorIndex % BRANCH_COLORS.length];
+      colorIndex++;
     }
-    if (hue !== null) {
-      map.set(node.code_uo, { hue, depth });
+    if (color !== null) {
+      map.set(node.code_uo, { color, depth });
     }
-    node.children.forEach(child => walk(child, hue, depth + 1));
+    node.children.forEach(child => walk(child, color, depth + 1));
   };
 
   roots.forEach(root => walk(root, null, 0));
   return map;
 }
 
-function getNodeColorStyle(hue: number, depth: number, isSelected: boolean, isHighlighted: boolean) {
+// Dégrade la couleur de base du niveau 2 vers le blanc selon la profondeur
+function degradeColor(base: [number, number, number], depth: number): [number, number, number] {
+  // depth 0 = niveau 2 lui-même (couleur pleine), chaque niveau en dessous est plus clair
+  const depthFromBranch = Math.max(0, depth - 1); // depth 1 = niveau 2
+  const factor = Math.min(depthFromBranch * 0.12, 0.7); // max 70% vers le blanc
+  const h = base[0];
+  const s = base[1] * (1 - factor * 0.6); // désaturer progressivement
+  const l = base[2] + (100 - base[2]) * factor; // éclaircir progressivement
+  return [h, Math.max(10, s), Math.min(96, l)];
+}
+
+function getNodeColorStyle(color: [number, number, number], depth: number, isSelected: boolean, isHighlighted: boolean) {
   if (isSelected || isHighlighted) return {};
-  // Niveau 2 = depth where assigned, deeper = lighter (higher lightness)
-  const saturation = Math.max(30, 65 - depth * 5);
-  const lightness = Math.min(95, 88 + depth * 1.5);
-  const borderLightness = Math.min(70, 45 + depth * 5);
+  const [h, s, l] = degradeColor(color, depth);
+  const bgL = Math.min(96, l + 20); // fond plus clair
+  const borderL = Math.min(80, l);
   return {
-    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
-    borderColor: `hsl(${hue}, ${saturation}%, ${borderLightness}%)`,
+    backgroundColor: `hsl(${h}, ${Math.max(15, s * 0.7)}%, ${bgL}%)`,
+    borderColor: `hsl(${h}, ${s}%, ${borderL}%)`,
   };
 }
 
-function getListItemColorStyle(hue: number, depth: number, isSelected: boolean, isHighlighted: boolean) {
+function getListItemColorStyle(color: [number, number, number], depth: number, isSelected: boolean, isHighlighted: boolean) {
   if (isSelected || isHighlighted) return {};
-  const saturation = Math.max(25, 55 - depth * 5);
-  const lightness = Math.min(96, 90 + depth * 1.5);
+  const [h, s, l] = degradeColor(color, depth);
+  const bgL = Math.min(96, l + 20);
   return {
-    backgroundColor: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
-    borderLeft: `3px solid hsl(${hue}, ${saturation}%, ${Math.min(65, 40 + depth * 5)}%)`,
+    backgroundColor: `hsl(${h}, ${Math.max(15, s * 0.5)}%, ${bgL}%)`,
+    borderLeft: `3px solid hsl(${h}, ${s}%, ${Math.min(70, l)}%)`,
   };
 }
 
@@ -192,7 +227,7 @@ const TreeBranch = ({
   selectedNode: string | null;
   setSelectedNode: (code: string | null) => void;
   highlightedNodes: Set<string>;
-  colorMap: Map<string, { hue: number; depth: number }>;
+  colorMap: Map<string, { color: [number, number, number]; depth: number }>;
   depth?: number;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
@@ -200,7 +235,7 @@ const TreeBranch = ({
   const colorInfo = colorMap.get(node.code_uo);
   const isSelected = selectedNode === node.code_uo;
   const isHighlighted = highlightedNodes.has(node.code_uo);
-  const colorStyle = colorInfo ? getNodeColorStyle(colorInfo.hue, colorInfo.depth, isSelected, isHighlighted) : undefined;
+  const colorStyle = colorInfo ? getNodeColorStyle(colorInfo.color, colorInfo.depth, isSelected, isHighlighted) : undefined;
 
   return (
     <div className="flex flex-col items-center">
@@ -269,7 +304,7 @@ const TreeListItem = ({
   selectedNode: string | null;
   setSelectedNode: (code: string | null) => void;
   highlightedNodes: Set<string>;
-  colorMap: Map<string, { hue: number; depth: number }>;
+  colorMap: Map<string, { color: [number, number, number]; depth: number }>;
   depth?: number;
 }) => {
   const isExpanded = expandedNodes.has(node.code_uo);
@@ -279,7 +314,7 @@ const TreeListItem = ({
   const colorInfo = colorMap.get(node.code_uo);
   const itemStyle: React.CSSProperties = {
     paddingLeft: `${depth * 20 + 12}px`,
-    ...(colorInfo ? getListItemColorStyle(colorInfo.hue, colorInfo.depth, isSelected, isHighlighted) : {}),
+    ...(colorInfo ? getListItemColorStyle(colorInfo.color, colorInfo.depth, isSelected, isHighlighted) : {}),
   };
 
   return (
@@ -343,7 +378,7 @@ const Organigramme = () => {
   const [highlightedNodes, setHighlightedNodes] = useState<Set<string>>(new Set());
   const [allNodesMap, setAllNodesMap] = useState<Map<string, UONode>>(new Map());
   const [viewMode, setViewMode] = useState<"tree" | "list">("list");
-  const [colorMap, setColorMap] = useState<Map<string, { hue: number; depth: number }>>(new Map());
+  const [colorMap, setColorMap] = useState<Map<string, { color: [number, number, number]; depth: number }>>(new Map());
   const [zoom, setZoom] = useState(1);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Omit<UONode, "children"> | null>(null);
