@@ -86,6 +86,7 @@ const Reference1 = () => {
     { key: "categorie_siham", label: "Catégorie Siham", width: "w-[110px]" },
     { key: "libelle_court_siham", label: "Libellé court Siham", width: "w-[140px]" },
     { key: "libelle_long_siham", label: "Libellé long Siham", width: "w-[200px]" },
+    { key: "references_reglementaires", label: "Réf. réglementaires", width: "w-[200px]" },
   ];
 
   const renderExpandedContent = (row: StatutContractuel) => (
@@ -97,7 +98,7 @@ const Reference1 = () => {
   return (
     <>
       <DataTableWithPagination title="Statuts contractuels" data={data} columns={columns}
-        searchFields={["code_siham", "categorie_siham", "libelle_court_siham", "libelle_long_siham", "code_cisirh", "libelle_cisirh"]}
+        searchFields={["code_siham", "categorie_siham", "libelle_court_siham", "libelle_long_siham", "references_reglementaires", "code_cisirh", "libelle_cisirh"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} renderExpandedContent={renderExpandedContent} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
