@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -543,23 +543,55 @@ const Organigramme = () => {
               </div>
             </ScrollArea>
           ) : (
-            <div className="overflow-auto h-[calc(100vh-280px)] p-6" ref={containerRef}>
-              <div
-                className="inline-flex flex-col items-center gap-0 min-w-max"
-                style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
-              >
-                {displayData.map((root) => (
-                  <div key={root.code_uo} className="mb-8">
-                    <TreeBranch
-                      node={root}
-                      expandedNodes={expandedNodes}
-                      toggleNode={toggleNode}
-                      selectedNode={selectedNode}
-                      setSelectedNode={setSelectedNode}
-                      highlightedNodes={highlightedNodes}
-                    />
-                  </div>
-                ))}
+            <div className="relative">
+              <div className="overflow-auto h-[calc(100vh-280px)] p-6" ref={containerRef}>
+                <div
+                  className="inline-flex flex-col items-center gap-0 min-w-max"
+                  style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
+                >
+                  {displayData.map((root) => (
+                    <div key={root.code_uo} className="mb-8">
+                      <TreeBranch
+                        node={root}
+                        expandedNodes={expandedNodes}
+                        toggleNode={toggleNode}
+                        selectedNode={selectedNode}
+                        setSelectedNode={setSelectedNode}
+                        highlightedNodes={highlightedNodes}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Floating controls */}
+              <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9 rounded-full shadow-md bg-card"
+                  title="Retour en haut"
+                  onClick={() => containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "smooth" })}
+                >
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9 rounded-full shadow-md bg-card"
+                  title="Agrandir (voir moins d'UO)"
+                  onClick={() => setZoom(z => Math.min(z + 0.15, 2.5))}
+                >
+                  <ZoomIn className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9 rounded-full shadow-md bg-card"
+                  title="Réduire (voir plus d'UO)"
+                  onClick={() => setZoom(z => Math.max(z - 0.15, 0.2))}
+                >
+                  <ZoomOut className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           )}
