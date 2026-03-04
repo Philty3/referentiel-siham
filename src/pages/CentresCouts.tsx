@@ -10,16 +10,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 
 const fields = [
-  { key: "code", label: "Code" },
-  { key: "libelle_court", label: "Libellé court" },
-  { key: "libelle_long", label: "Libellé long" },
-  { key: "type", label: "Type" },
-  { key: "uo_rattachee", label: "UO rattachée" },
-  { key: "responsable", label: "Responsable" },
-  { key: "date_debut_validite", label: "Date début validité" },
-  { key: "date_fin_validite", label: "Date fin validité" },
-  { key: "statut", label: "Statut" },
-  { key: "commentaire", label: "Commentaire" },
+  { key: "affectation_generale", label: "Affectation générale" },
+  { key: "composante_direction", label: "Composante / Direction" },
+  { key: "uo_affectation_principale", label: "UO - Affectation principale" },
+  { key: "code_uo_affectation", label: "Code UO - Affectation principale" },
+  { key: "population", label: "Population" },
+  { key: "code_centre_cout", label: "Centre de coût (code)" },
+  { key: "designation", label: "Désignation" },
+  { key: "centre_financier", label: "Centre financier" },
 ] as const;
 type F = typeof fields[number]["key"];
 type Item = { id?: string } & Record<F, string>;
@@ -35,7 +33,7 @@ const CentresCouts = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const { data: rows, error } = await fetchAllRows("centres_couts", "code");
+    const { data: rows, error } = await fetchAllRows("centres_couts", "code_centre_cout");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
     setLoading(false);
@@ -68,15 +66,16 @@ const CentresCouts = () => {
     <>
       <DataTableWithPagination title="Centres de coûts" data={data}
         columns={[
-          { key: "code", label: "Code", width: "w-[120px]" },
-          { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
-          { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
-          { key: "type", label: "Type", width: "w-[120px]" },
-          { key: "statut", label: "Statut", width: "w-[100px]" },
+          { key: "affectation_generale", label: "Affectation générale", width: "w-[200px]" },
+          { key: "composante_direction", label: "Composante / Direction", width: "w-[220px]" },
+          { key: "code_centre_cout", label: "Code CC", width: "w-[140px]" },
+          { key: "designation", label: "Désignation", width: "w-[200px]" },
+          { key: "population", label: "Population", width: "w-[100px]" },
+          { key: "centre_financier", label: "Centre financier", width: "w-[130px]" },
         ]}
-        searchFields={["code", "libelle_court", "libelle_long", "type", "uo_rattachee", "responsable", "statut"]}
+        searchFields={["affectation_generale", "composante_direction", "uo_affectation_principale", "code_uo_affectation", "population", "code_centre_cout", "designation", "centre_financier"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
-        onExport={() => exportPageToExcel(data, "Centres de coûts", "Centres_couts", ["date_debut_validite", "date_fin_validite"])}
+        onExport={() => exportPageToExcel(data, "Centres de coûts", "Centres_couts", [])}
         renderExpandedContent={(row: Item) => (
           <div className="grid grid-cols-2 gap-4 text-xs">
             {fields.map(f => (

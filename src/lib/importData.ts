@@ -75,8 +75,11 @@ const mappings: TableMapping[] = [
     table: "uo", file: "/data/uo.xlsx", sheet: 1, minColumns: 1,
     columns: ["code_uo","libelle_long","libelle_court","code_uo_mere","type","niveau","code_uai","statut","responsable_composante","responsable_administratif","numero_voie","complement_adresse","adresse","code_postal","ville","code_uo_p5_p7","code_uo_bis","code_uo_site_associe","groupe_eval","groupe_phare"],
   },
+  {
+    table: "centres_couts", file: "/data/centres_couts.xlsx", minColumns: 1,
+    columns: ["affectation_generale","composante_direction","uo_affectation_principale","code_uo_affectation","population","code_centre_cout","designation","centre_financier"],
+  },
 ];
-
 async function readExcelFile(file: string, sheetIndex = 0): Promise<any[][]> {
   const response = await fetch(file);
   const buffer = await response.arrayBuffer();
