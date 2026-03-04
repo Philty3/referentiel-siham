@@ -21,6 +21,7 @@ const navItems = [
   { name: "Diplômes", path: "/diplomes" },
   { name: "Établissements", path: "/etablissements" },
   { name: "UO", path: "/uo" },
+  { name: "Organigramme", path: "/organigramme" },
 ];
 
 export const Navigation = () => {
