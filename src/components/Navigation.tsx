@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X } from "lucide-react";
+import { Download, Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect, useRef } from "react";
 import logoVideo from "@/assets/logo-video.mp4";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const navItems = [
   { name: "Statuts contractuels", path: "/ref1" },
@@ -27,6 +28,8 @@ export const Navigation = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReversing, setIsReversing] = useState(false);
 
@@ -36,6 +39,16 @@ export const Navigation = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -125,29 +138,49 @@ export const Navigation = () => {
         </div>
         
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-2 flex-wrap">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap ${
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-foreground hover:bg-muted"
-                }`
-              }
+        <div className="hidden lg:flex items-center gap-3">
+          <div className="relative" ref={dropdownRef}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
             >
-              {item.name}
-            </NavLink>
-          ))}
+              Référentiels
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
+            </Button>
+            {dropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-56 rounded-md border bg-popover shadow-lg z-50">
+                <ScrollArea className="h-[360px]">
+                  <div className="p-2 flex flex-col gap-0.5">
+                    {navItems.map((item) => (
+                      <NavLink
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setDropdownOpen(false)}
+                        className={({ isActive }) =>
+                          `block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                            isActive
+                              ? "bg-primary text-primary-foreground"
+                              : "text-popover-foreground hover:bg-muted"
+                          }`
+                        }
+                      >
+                        {item.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
+            )}
+          </div>
           
           <Button
             onClick={handleExport}
             disabled={isExporting}
             variant="outline"
             size="sm"
-            className="gap-2 hover:scale-105 transition-transform duration-200 ml-2"
+            className="gap-2 hover:scale-105 transition-transform duration-200"
           >
             <Download className={`h-4 w-4 ${isExporting ? "animate-pulse" : ""}`} />
             {isExporting ? "Export..." : "Export"}
