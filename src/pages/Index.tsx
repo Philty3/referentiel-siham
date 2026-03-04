@@ -3,9 +3,11 @@ import { FileSpreadsheet, Database, Search, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
-import * as XLSX from "xlsx";
-import { formatExcelDate } from "@/lib/dateValidator";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Column {
   key: string;
@@ -15,87 +17,185 @@ interface Column {
 }
 
 interface SearchResultItem {
+  id?: string;
   source: string;
+  _tableName: string;
   [key: string]: any;
 }
+
+// Configuration for each data source: source label, supabase table, fields, order column
+const dataSourcesConfig = [
+  {
+    label: "Statuts contractuels",
+    table: "contractuels" as const,
+    orderBy: "code_siham",
+    fields: [
+      { key: "code_siham", label: "Code Siham" }, { key: "categorie_siham", label: "Catégorie Siham" },
+      { key: "libelle_court_siham", label: "Libellé court Siham" }, { key: "libelle_long_siham", label: "Libellé long Siham" },
+      { key: "date_deb", label: "Date Deb" }, { key: "date_fin", label: "Date Fin" },
+      { key: "references_reglementaires", label: "Références réglementaires" }, { key: "droit_public_prive", label: "Droit public/privé" },
+      { key: "cas_utilisation", label: "Cas d'utilisation" }, { key: "permanent_temporaire", label: "Permanent/temporaire" },
+      { key: "regle_durees", label: "Règle de durées" }, { key: "type_contrat", label: "Type de contrat" },
+      { key: "cat_fp", label: "Cat. FP" }, { key: "sous_categorie", label: "Sous catégorie" },
+      { key: "obligations_statutaires_enseignement", label: "Obligations stat. enseignement" },
+      { key: "bibliotheque_actes", label: "Bibliothèque des actes" }, { key: "infos_complementaires", label: "Infos complémentaires" },
+      { key: "mode_gestion_remuneration", label: "Mode gestion/rémunération" },
+      { key: "grade_tg", label: "Grade TG" }, { key: "pseudo_grade", label: "Pseudo grade" },
+      { key: "echelon", label: "Echelon" }, { key: "indice_brut_majore_force", label: "Indice brut/majoré forcé" },
+      { key: "situation_statutaire", label: "Situation statutaire" }, { key: "regime_securite_sociale", label: "Régime sécu. sociale" },
+      { key: "regime_retraite", label: "Régime retraite" }, { key: "code_libelle_harpege", label: "Code/Libellé Harpège" },
+      { key: "rg_pour_rdd", label: "RG pour RDD" }, { key: "code_cisirh", label: "Code CISIRH" },
+      { key: "libelle_cisirh", label: "Libellé CISIRH" },
+    ],
+  },
+  {
+    label: "Vacataires",
+    table: "vacataires" as const,
+    orderBy: "code_siham",
+    fields: [
+      { key: "code_siham", label: "Code Siham" }, { key: "categorie_siham", label: "Catégorie Siham" },
+      { key: "libelle_court_siham", label: "Libellé court Siham" }, { key: "libelle_long_siham", label: "Libellé long Siham" },
+      { key: "date_deb", label: "Date Deb" }, { key: "date_fin", label: "Date Fin" },
+      { key: "references_reglementaires", label: "Références réglementaires" }, { key: "cas_utilisation", label: "Cas d'utilisation" },
+      { key: "permanent_temporaire", label: "Permanent/temporaire" }, { key: "regle_durees", label: "Règle de durées" },
+      { key: "type_contrat", label: "Type de contrat" }, { key: "cat_fp", label: "Cat. FP" },
+      { key: "sous_categorie", label: "Sous catégorie" }, { key: "obligations_statutaires_enseignement", label: "Obligations stat. enseignement" },
+      { key: "bibliotheque_actes", label: "Bibliothèque des actes" }, { key: "infos_complementaires", label: "Infos complémentaires" },
+      { key: "mode_gestion_remuneration", label: "Mode gestion/rémunération" }, { key: "grade_tg", label: "Grade TG" },
+      { key: "pseudo_grade", label: "Pseudo grade" }, { key: "echelon", label: "Echelon" },
+      { key: "indice_brut_majore_force", label: "Indice brut/majoré forcé" }, { key: "situation_statutaire", label: "Situation statutaire" },
+      { key: "regime_securite_sociale", label: "Régime sécu. sociale" }, { key: "regime_retraite", label: "Régime retraite" },
+      { key: "code_libelle_harpege", label: "Code/Libellé Harpège" }, { key: "rg_pour_rdd", label: "RG pour RDD" },
+      { key: "code_cisirh", label: "Code CISIRH" }, { key: "libelle_cisirh", label: "Libellé CISIRH" },
+    ],
+  },
+  {
+    label: "Positions",
+    table: "positions" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle_court", label: "Libellé court" }, { key: "libelle_long", label: "Libellé long" },
+      { key: "libelle_long_bis", label: "Libellé long (bis)" }, { key: "position_statutaire", label: "Position statutaire" },
+      { key: "temoin_position_entree_sortie", label: "Témoin position entrée/sortie" },
+      { key: "temoin_lien_enfant_obligatoire", label: "Témoin lien enfant obligatoire" },
+      { key: "tem_exclusion_inclusion_reglem", label: "Tém exclusion/inclusion réglem." },
+      { key: "date_debut_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+    ],
+  },
+  {
+    label: "Corps",
+    table: "corps" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
+      { key: "libelle_long_bis", label: "Libellé long (bis)" }, { key: "libelle_court_bis", label: "Libellé court (bis)" },
+      { key: "tem_exclusion_inclusion_reglem", label: "Tém exclusion/inclusion réglem." },
+      { key: "date_debut_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+      { key: "code_filiere", label: "Code filière" }, { key: "filiere", label: "Filière" },
+      { key: "nombres_grades", label: "Nombres de grades" }, { key: "corps_extinction", label: "Corps en extinction" },
+      { key: "code_categorie_statutaire", label: "Code catégorie statutaire" }, { key: "categorie_statutaire", label: "Catégorie statutaire" },
+      { key: "service_statutaire", label: "Service statutaire" },
+    ],
+  },
+  {
+    label: "Grades",
+    table: "grades" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
+      { key: "categorie_statutaire", label: "Catégorie statutaire" }, { key: "code_filiere", label: "Code filière" },
+      { key: "filiere", label: "Filière" }, { key: "code_corps_cadre_emploi", label: "Code corps/cadre emploi" },
+      { key: "corps_cadre_emploi", label: "Corps/cadre emploi" }, { key: "code_groupe_hierarchique", label: "Code groupe hiérarchique" },
+      { key: "groupe_hierarchique", label: "Groupe hiérarchique" }, { key: "age_limite_depart_retraite", label: "Age limite retraite" },
+      { key: "tem_exclusion_inclusion_reglem", label: "Tém exclusion/inclusion réglem." },
+      { key: "date_debut_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+      { key: "code_tresorerie_generale", label: "Code trésorerie générale" },
+    ],
+  },
+  {
+    label: "Congés/absences",
+    table: "conges" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle_long", label: "Libellé long" }, { key: "libelle_court", label: "Libellé court" },
+      { key: "tem_exclusion_inclusion_reglem", label: "Tém exclusion/inclusion réglem." },
+      { key: "date_debut_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+    ],
+  },
+  {
+    label: "Emplois",
+    table: "emplois" as const,
+    orderBy: "cle",
+    fields: [
+      { key: "cle", label: "Clé" }, { key: "emploi", label: "Emploi" }, { key: "libelle_emploi", label: "Libellé emploi" },
+      { key: "date_effet", label: "Date d'effet" }, { key: "classification_emploi", label: "Classification emploi" },
+      { key: "code_plus_utiliser", label: "Code à ne plus utiliser" },
+    ],
+  },
+  {
+    label: "Modalités de service",
+    table: "modalites" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
+      { key: "libelle_long_bis", label: "Libellé long (bis)" }, { key: "temoin_temps_partiel", label: "Témoin temps partiel" },
+      { key: "pourcentage_acquisition_conges", label: "% acquisition congés" }, { key: "pourcentage_prise_conge", label: "% prise congé" },
+      { key: "temoin_lien_enfant_obligatoire", label: "Témoin lien enfant obligatoire" },
+      { key: "tem_exclusion_inclusion", label: "Tém exclusion/inclusion" },
+      { key: "date_deb_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+    ],
+  },
+  {
+    label: "Diplômes",
+    table: "diplomes" as const,
+    orderBy: "code",
+    fields: [
+      { key: "code", label: "Code" }, { key: "libelle", label: "Libellé" }, { key: "libelle_long", label: "Libellé long" },
+      { key: "echelle_internationale", label: "Echelle internationale" }, { key: "modele", label: "Modèle" },
+      { key: "tem_exclusion_inclusion", label: "Tém exclusion/inclusion" },
+      { key: "date_deb_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+    ],
+  },
+];
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [allData, setAllData] = useState<{ [key: string]: any[] }>({});
-  const [allHeaders, setAllHeaders] = useState<{ [key: string]: string[] }>({});
+  const [allData, setAllData] = useState<{ [key: string]: SearchResultItem[] }>({});
+  const [editingItem, setEditingItem] = useState<SearchResultItem | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Charger toutes les données au démarrage
     const loadAllData = async () => {
-      const dataSources = [
-        { name: "Statuts contractuels", path: "/data/statuts-contractuels.csv", type: "csv" },
-        { name: "Vacataires", path: "/data/vacataires.xlsx", type: "xlsx" },
-        { name: "Positions", path: "/data/positions.xlsx", type: "xlsx" },
-        { name: "Corps", path: "/data/corps.xlsx", type: "xlsx" },
-        { name: "Grades", path: "/data/grades.xlsx", type: "xlsx" },
-        { name: "Congés/absences", path: "/data/conges.xlsx", type: "xlsx" },
-        { name: "Emplois", path: "/data/emplois.xlsx", type: "xlsx" },
-        { name: "Modalités de service", path: "/data/modalites.xlsx", type: "xlsx" },
-        { name: "Diplômes", path: "/data/diplomes.xlsx", type: "xlsx" },
-      ];
+      const loadedData: { [key: string]: SearchResultItem[] } = {};
 
-      const loadedData: { [key: string]: any[] } = {};
-      const loadedHeaders: { [key: string]: string[] } = {};
-
-      for (const source of dataSources) {
+      for (const source of dataSourcesConfig) {
         try {
-          const response = await fetch(source.path);
-          const buffer = await response.arrayBuffer();
-          
-          if (source.type === "csv") {
-            const text = new TextDecoder().decode(buffer);
-            const lines = text.split("\n");
-            const headers = lines[0].split(";");
-            loadedHeaders[source.name] = headers;
-            
-            const data = [];
-            for (let i = 1; i < lines.length; i++) {
-              const values = lines[i].split(";");
-              if (values.length > 0 && values[0]) {
-                const rowObj: any = { source: source.name };
-                headers.forEach((header, idx) => {
-                  rowObj[header] = values[idx] || "";
-                });
-                data.push(rowObj);
-              }
-            }
-            loadedData[source.name] = data;
-          } else {
-            const workbook = XLSX.read(buffer, { type: "array" });
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
-            
-            const headers = jsonData[0] as string[];
-            loadedHeaders[source.name] = headers.map(h => String(h));
-            
-            const data = [];
-            for (let i = 1; i < jsonData.length; i++) {
-              const row = jsonData[i];
-              if (row.length > 0 && row[0]) {
-                const rowObj: any = { source: source.name };
-                headers.forEach((header, idx) => {
-                  rowObj[String(header)] = row[idx] ? String(row[idx]) : "";
-                });
-                data.push(rowObj);
-              }
-            }
-            loadedData[source.name] = data;
+          const { data: rows, error } = await supabase
+            .from(source.table)
+            .select("*")
+            .order(source.orderBy);
+
+          if (error) {
+            console.error(`Erreur lors du chargement de ${source.label}:`, error);
+            continue;
           }
+
+          loadedData[source.label] = (rows || []).map((r: any) => {
+            const item: SearchResultItem = { id: r.id, source: source.label, _tableName: source.table };
+            source.fields.forEach(f => {
+              item[f.key] = r[f.key] || "";
+            });
+            return item;
+          });
         } catch (error) {
-          console.error(`Erreur lors du chargement de ${source.name}:`, error);
+          console.error(`Erreur lors du chargement de ${source.label}:`, error);
         }
       }
 
       setAllData(loadedData);
-      setAllHeaders(loadedHeaders);
     };
 
     loadAllData();
@@ -111,14 +211,14 @@ const Index = () => {
     const results: SearchResultItem[] = [];
     const searchLower = searchTerm.toLowerCase().trim();
 
-    Object.entries(allData).forEach(([sourceName, items]) => {
+    Object.entries(allData).forEach(([, items]) => {
       items.forEach((item) => {
-        const matchFound = Object.values(item).some((value) => 
-          String(value).toLowerCase().includes(searchLower)
+        const matchFound = Object.entries(item).some(([key, value]) =>
+          key !== "_tableName" && String(value).toLowerCase().includes(searchLower)
         );
-        
+
         if (matchFound) {
-          results.push({ ...item, source: sourceName });
+          results.push({ ...item });
         }
       });
     });
@@ -127,42 +227,129 @@ const Index = () => {
     setIsSearching(false);
   };
 
+  const refreshData = async (tableName: string, sourceLabel: string) => {
+    const source = dataSourcesConfig.find(s => s.table === tableName);
+    if (!source) return;
+
+    const { data: rows, error } = await supabase
+      .from(source.table)
+      .select("*")
+      .order(source.orderBy);
+
+    if (error) return;
+
+    const newItems = (rows || []).map((r: any) => {
+      const item: SearchResultItem = { id: r.id, source: source.label, _tableName: source.table };
+      source.fields.forEach(f => {
+        item[f.key] = r[f.key] || "";
+      });
+      return item;
+    });
+
+    setAllData(prev => ({ ...prev, [sourceLabel]: newItems }));
+
+    // Re-run search to update results
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim();
+      const updatedAllData = { ...allData, [sourceLabel]: newItems };
+      const results: SearchResultItem[] = [];
+      Object.entries(updatedAllData).forEach(([, items]) => {
+        items.forEach((item) => {
+          const matchFound = Object.entries(item).some(([key, value]) =>
+            key !== "_tableName" && String(value).toLowerCase().includes(searchLower)
+          );
+          if (matchFound) results.push({ ...item });
+        });
+      });
+      setSearchResults(results);
+    }
+  };
+
+  const getFieldsForSource = (sourceLabel: string) => {
+    return dataSourcesConfig.find(s => s.label === sourceLabel)?.fields || [];
+  };
+
+  const handleEdit = (item: SearchResultItem) => {
+    setEditingItem({ ...item });
+    setIsDialogOpen(true);
+  };
+
+  const handleSave = async () => {
+    if (!editingItem || !editingItem.id) return;
+    const tableName = editingItem._tableName;
+    const sourceLabel = editingItem.source;
+    const fieldsConfig = getFieldsForSource(sourceLabel);
+
+    const payload: Record<string, any> = {};
+    fieldsConfig.forEach(f => {
+      payload[f.key] = editingItem[f.key] || "";
+    });
+
+    const { error } = await supabase.from(tableName as any).update(payload).eq("id", editingItem.id);
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Modifications enregistrées" });
+    setIsDialogOpen(false);
+    setEditingItem(null);
+    refreshData(tableName, sourceLabel);
+  };
+
+  const handleDelete = async (item: SearchResultItem) => {
+    if (!item.id) return;
+    const tableName = item._tableName;
+    const sourceLabel = item.source;
+
+    const { error } = await supabase.from(tableName as any).delete().eq("id", item.id);
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Élément supprimé", variant: "destructive" });
+    refreshData(tableName, sourceLabel);
+  };
 
   const getDisplayColumns = (): Column[] => {
     const baseColumns: Column[] = [
       { key: "source", label: "Source", width: "w-[150px]" },
     ];
-    
+
     if (searchResults.length > 0) {
       const firstResult = searchResults[0];
-      const keys = Object.keys(firstResult).filter(k => k !== "source");
+      const keys = Object.keys(firstResult).filter(k => k !== "source" && k !== "id" && k !== "_tableName");
       keys.slice(0, 4).forEach(key => {
         baseColumns.push({
           key: key,
           label: key.charAt(0).toUpperCase() + key.slice(1),
           width: "w-[180px]",
-          truncate: true
+          truncate: true,
         });
       });
     }
-    
+
     return baseColumns;
   };
 
   const renderExpandedContent = (row: SearchResultItem) => {
-    const keys = Object.keys(row).filter(k => k !== "source");
-    
+    const fieldsConfig = getFieldsForSource(row.source);
+    const displayFields = fieldsConfig.length > 0 ? fieldsConfig : Object.keys(row)
+      .filter(k => k !== "source" && k !== "id" && k !== "_tableName")
+      .map(k => ({ key: k, label: k }));
+
     return (
       <div className="grid grid-cols-2 gap-4 text-xs">
-        {keys.map((key) => (
-          <div key={key}>
-            <p className="font-semibold text-foreground mb-1">{key}:</p>
-            <p className="text-muted-foreground whitespace-pre-wrap">{row[key]}</p>
+        {displayFields.map((f) => (
+          <div key={f.key}>
+            <p className="font-semibold text-foreground mb-1">{f.label}:</p>
+            <p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p>
           </div>
         ))}
       </div>
     );
   };
+
+  const editingFields = editingItem ? getFieldsForSource(editingItem.source) : [];
 
   const features = [
     {
@@ -181,7 +368,6 @@ const Index = () => {
       description: "Consultez vos données organisées de manière claire et professionnelle",
     },
   ];
-
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted/20">
@@ -236,8 +422,11 @@ const Index = () => {
               columns={getDisplayColumns()}
               searchFields={[]}
               loading={false}
-              onEdit={() => {}}
-              onDelete={() => {}}
+              onEdit={(item: SearchResultItem) => handleEdit(item)}
+              onDelete={(index: number) => {
+                const item = searchResults[index];
+                if (item) handleDelete(item);
+              }}
               onAdd={() => {}}
               renderExpandedContent={renderExpandedContent}
               hideAddButton={true}
@@ -270,6 +459,36 @@ const Index = () => {
           </p>
         </div>
       </div>
+
+      {/* Edit Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Modifier l'élément ({editingItem?.source})</DialogTitle>
+          </DialogHeader>
+          {editingItem && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                {editingFields.map(f => (
+                  <div key={f.key} className="space-y-2">
+                    <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+                    <Input
+                      id={f.key}
+                      value={editingItem[f.key] || ""}
+                      onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })}
+                      className="text-sm"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
+            <Button onClick={handleSave}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
