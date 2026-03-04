@@ -8,6 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const fields = [
   { key: "affectation_generale", label: "Affectation générale" },
@@ -29,7 +33,20 @@ const CentresCouts = () => {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [uoOptions, setUoOptions] = useState<string[]>([]);
+  const [openCombobox, setOpenCombobox] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
+
+  const comboboxFields = ["affectation_generale", "composante_direction", "uo_affectation_principale"];
+
+  useEffect(() => {
+    fetchAllRows("uo", "libelle_long").then(({ data: rows }) => {
+      if (rows) {
+        const labels = rows.map((r: any) => r.libelle_long).filter(Boolean).sort();
+        setUoOptions([...new Set(labels)] as string[]);
+      }
+    });
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -90,8 +107,48 @@ const CentresCouts = () => {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
           {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-2 gap-4">
-            {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
-              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" /></div>))}
+            {fields.map(f => {
+              if (comboboxFields.includes(f.key)) {
+                return (
+                  <div key={f.key} className="space-y-2">
+                    <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+                    <Popover open={openCombobox[f.key] || false} onOpenChange={(open) => setOpenCombobox(prev => ({ ...prev, [f.key]: open }))}>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" role="combobox" className="w-full justify-between text-sm font-normal h-9 truncate">
+                          <span className="truncate">{editingItem[f.key] || "Sélectionner..."}</span>
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[400px] p-0" align="start">
+                        <Command>
+                          <CommandInput placeholder="Rechercher une UO..." />
+                          <CommandList className="max-h-[200px]">
+                            <CommandEmpty>Aucune UO trouvée.</CommandEmpty>
+                            <CommandGroup>
+                              {uoOptions.map(opt => (
+                                <CommandItem key={opt} value={opt} onSelect={(val) => {
+                                  setEditingItem({ ...editingItem, [f.key]: val });
+                                  setOpenCombobox(prev => ({ ...prev, [f.key]: false }));
+                                }}>
+                                  <Check className={cn("mr-2 h-4 w-4", editingItem[f.key] === opt ? "opacity-100" : "opacity-0")} />
+                                  <span className="truncate">{opt}</span>
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                );
+              }
+              return (
+                <div key={f.key} className="space-y-2">
+                  <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+                  <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" />
+                </div>
+              );
+            })}
           </div></div>)}
           <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
