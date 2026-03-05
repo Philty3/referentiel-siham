@@ -75,6 +75,7 @@ const Reference3 = () => {
           { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
           { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
           { key: "population", label: "Population", width: "w-[120px]" },
+          { key: "texte", label: "Texte", width: "w-[250px]" },
         ]}
         searchFields={["code", "libelle_court", "libelle_long", "population"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
