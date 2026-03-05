@@ -144,9 +144,9 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   return (
     <div className="mx-auto w-full max-w-[99vw] px-2 py-4">
       <Card className="overflow-hidden shadow-lg">
-        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-4 py-3 flex items-center justify-between">
+        <div className="border-b bg-gradient-to-r from-primary/10 to-accent/10 px-3 sm:px-4 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
-            <h2 className="text-xl font-bold text-foreground">{title}</h2>
+            <h2 className="text-base sm:text-xl font-bold text-foreground">{title}</h2>
             <p className="mt-0.5 text-xs text-muted-foreground">
               {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
             </p>
@@ -328,17 +328,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
         {/* Pagination Controls */}
         {!loading && filteredData.length > 0 && (
-          <div className="border-t bg-muted/20 px-4 py-3 flex items-center justify-between">
+          <div className="border-t bg-muted/20 px-3 sm:px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div className="text-xs text-muted-foreground">
-              Affichage de {startIndex + 1} à {Math.min(endIndex, filteredData.length)} sur {filteredData.length} entrées
+              {startIndex + 1}-{Math.min(endIndex, filteredData.length)} / {filteredData.length}
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap justify-center gap-1 sm:gap-2">
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => goToPage(1)}
                 disabled={currentPage === 1}
-                className="h-8 text-xs"
+                className="h-8 text-xs hidden sm:inline-flex"
               >
                 Première
               </Button>
@@ -349,7 +349,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                 disabled={currentPage === 1}
                 className="h-8 text-xs"
               >
-                Précédent
+                ←
               </Button>
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -383,14 +383,14 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                 disabled={currentPage === totalPages}
                 className="h-8 text-xs"
               >
-                Suivant
+                →
               </Button>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => goToPage(totalPages)}
                 disabled={currentPage === totalPages}
-                className="h-8 text-xs"
+                className="h-8 text-xs hidden sm:inline-flex"
               >
                 Dernière
               </Button>

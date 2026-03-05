@@ -97,7 +97,7 @@ const CentresCouts = () => {
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
         onExport={() => exportPageToExcel(data, "Centres de coûts", "Centres_couts", [])}
         renderExpandedContent={(row: Item) => (
-          <div className="grid grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             {fields.map(f => (
               <div key={f.key}>
                 <p className="font-semibold text-foreground mb-1">{f.label}:</p>
@@ -107,9 +107,9 @@ const CentresCouts = () => {
           </div>
         )} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
-          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-2 gap-4">
+          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {fields.map(f => {
               if (comboboxFields.includes(f.key)) {
                 return (
