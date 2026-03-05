@@ -73,40 +73,46 @@ export type Database = {
       }
       centres_couts: {
         Row: {
-          affectation_generale: string | null
-          centre_financier: string | null
-          code_centre_cout: string | null
-          code_uo_affectation: string | null
-          composante_direction: string | null
+          cas_usage: string | null
+          code: string | null
+          commentaires: string | null
           created_at: string
-          designation: string | null
+          date_debut: string | null
+          date_fin: string | null
           id: string
+          libelle_court: string | null
+          libelle_long: string | null
           population: string | null
-          uo_affectation_principale: string | null
+          population_particuliere: string | null
+          texte: string | null
         }
         Insert: {
-          affectation_generale?: string | null
-          centre_financier?: string | null
-          code_centre_cout?: string | null
-          code_uo_affectation?: string | null
-          composante_direction?: string | null
+          cas_usage?: string | null
+          code?: string | null
+          commentaires?: string | null
           created_at?: string
-          designation?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
           id?: string
+          libelle_court?: string | null
+          libelle_long?: string | null
           population?: string | null
-          uo_affectation_principale?: string | null
+          population_particuliere?: string | null
+          texte?: string | null
         }
         Update: {
-          affectation_generale?: string | null
-          centre_financier?: string | null
-          code_centre_cout?: string | null
-          code_uo_affectation?: string | null
-          composante_direction?: string | null
+          cas_usage?: string | null
+          code?: string | null
+          commentaires?: string | null
           created_at?: string
-          designation?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
           id?: string
+          libelle_court?: string | null
+          libelle_long?: string | null
           population?: string | null
-          uo_affectation_principale?: string | null
+          population_particuliere?: string | null
+          texte?: string | null
         }
         Relationships: []
       }

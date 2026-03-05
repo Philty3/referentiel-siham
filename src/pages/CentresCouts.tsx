@@ -8,20 +8,18 @@ import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const fields = [
-  { key: "affectation_generale", label: "Affectation générale" },
-  { key: "composante_direction", label: "Composante / Direction" },
-  { key: "uo_affectation_principale", label: "UO - Affectation principale" },
-  { key: "code_uo_affectation", label: "Code UO - Affectation principale" },
+  { key: "code", label: "Code" },
+  { key: "libelle_long", label: "Libellé long" },
+  { key: "libelle_court", label: "Libellé court" },
+  { key: "date_debut", label: "Date de début" },
+  { key: "date_fin", label: "Date de fin" },
   { key: "population", label: "Population" },
-  { key: "code_centre_cout", label: "Centre de coût (code)" },
-  { key: "designation", label: "Désignation" },
-  { key: "centre_financier", label: "Centre financier" },
+  { key: "cas_usage", label: "Cas d'usage" },
+  { key: "population_particuliere", label: "Population particulière" },
+  { key: "texte", label: "Texte" },
+  { key: "commentaires", label: "Commentaires" },
 ] as const;
 type F = typeof fields[number]["key"];
 type Item = { id?: string } & Record<F, string>;
@@ -33,69 +31,11 @@ const CentresCouts = () => {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [allUoRows, setAllUoRows] = useState<{ libelle_long: string; code_uo: string; niveau: string; code_uo_mere: string }[]>([]);
-  const [openCombobox, setOpenCombobox] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
-
-  const comboboxFields = ["affectation_generale", "composante_direction", "uo_affectation_principale"];
-
-  useEffect(() => {
-    fetchAllRows("uo", "libelle_long").then(({ data: rows }) => {
-      if (rows) {
-        const allRows = rows.map((r: any) => ({
-          libelle_long: r.libelle_long || "",
-          code_uo: r.code_uo || "",
-          niveau: r.niveau || "",
-          code_uo_mere: r.code_uo_mere || "",
-        })).filter(r => r.libelle_long);
-        setAllUoRows(allRows);
-      }
-    });
-  }, []);
-
-  // Get all descendant code_uo of a given parent code_uo
-  const getDescendantCodes = (parentCode: string): Set<string> => {
-    const descendants = new Set<string>();
-    const queue = [parentCode];
-    while (queue.length > 0) {
-      const current = queue.shift()!;
-      for (const uo of allUoRows) {
-        if (uo.code_uo_mere === current && !descendants.has(uo.code_uo)) {
-          descendants.add(uo.code_uo);
-          queue.push(uo.code_uo);
-        }
-      }
-    }
-    return descendants;
-  };
-
-  // Options for affectation_generale: only level 2
-  const affectationGeneraleOptions = [...new Set(
-    allUoRows.filter(r => r.niveau === "Niveau 2").map(r => r.libelle_long)
-  )].sort();
-
-  // Options for composante_direction and uo_affectation_principale:
-  // levels 3,4,5,6 that are descendants of the selected level 2 in affectation_generale
-  const getFilteredUoOptions = (): string[] => {
-    if (!editingItem?.affectation_generale) return [];
-    const selectedLevel2 = allUoRows.find(r => r.niveau === "Niveau 2" && r.libelle_long === editingItem.affectation_generale);
-    if (!selectedLevel2) return [];
-    const descendantCodes = getDescendantCodes(selectedLevel2.code_uo);
-    return [...new Set(
-      allUoRows
-        .filter(r => ["Niveau 3", "Niveau 4", "Niveau 5", "Niveau 6"].includes(r.niveau) && descendantCodes.has(r.code_uo))
-        .map(r => r.libelle_long)
-    )].sort();
-  };
-
-  const getOptionsForField = (fieldKey: string): string[] => {
-    if (fieldKey === "affectation_generale") return affectationGeneraleOptions;
-    return getFilteredUoOptions();
-  };
 
   const fetchData = async () => {
     setLoading(true);
-    const { data: rows, error } = await fetchAllRows("centres_couts", "code_centre_cout");
+    const { data: rows, error } = await fetchAllRows("centres_couts", "code");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
     setLoading(false);
@@ -128,14 +68,14 @@ const CentresCouts = () => {
     <>
       <DataTableWithPagination title="Centres de coûts" data={data}
         columns={[
-          { key: "affectation_generale", label: "Affectation générale", width: "w-[200px]" },
-          { key: "composante_direction", label: "Composante / Direction", width: "w-[220px]" },
-          { key: "code_centre_cout", label: "Code CC", width: "w-[140px]" },
-          { key: "designation", label: "Désignation", width: "w-[200px]" },
+          { key: "code", label: "Code", width: "w-[100px]" },
+          { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
+          { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
+          { key: "date_debut", label: "Date début", width: "w-[120px]" },
+          { key: "date_fin", label: "Date fin", width: "w-[120px]" },
           { key: "population", label: "Population", width: "w-[100px]" },
-          { key: "centre_financier", label: "Centre financier", width: "w-[130px]" },
         ]}
-        searchFields={["affectation_generale", "composante_direction", "uo_affectation_principale", "code_uo_affectation", "population", "code_centre_cout", "designation", "centre_financier"]}
+        searchFields={fields.map(f => f.key)}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
         onExport={() => exportPageToExcel(data, "Centres de coûts", "Centres_couts", [])}
         renderExpandedContent={(row: Item) => (
@@ -152,59 +92,17 @@ const CentresCouts = () => {
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
           {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {fields.map(f => {
-              if (comboboxFields.includes(f.key)) {
-                return (
-                  <div key={f.key} className="space-y-2">
-                    <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
-                    <Popover open={openCombobox[f.key] || false} onOpenChange={(open) => setOpenCombobox(prev => ({ ...prev, [f.key]: open }))}>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" role="combobox" className="w-full justify-between text-sm font-normal h-9 truncate">
-                          <span className="truncate">{editingItem[f.key] || "Sélectionner..."}</span>
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[400px] p-0" align="start">
-                        <Command>
-                          <CommandInput placeholder="Rechercher une UO..." />
-                          <CommandList className="max-h-[200px]">
-                            <CommandEmpty>Aucune UO trouvée.</CommandEmpty>
-                            <CommandGroup>
-                              {getOptionsForField(f.key).map(opt => (
-                              <CommandItem key={opt} value={opt} onSelect={(val) => {
-                                  const updates: Partial<Item> = { [f.key]: val };
-                                  if (f.key === "uo_affectation_principale") {
-                                    const match = allUoRows.find(r => r.libelle_long === val);
-                                    if (match) updates.code_uo_affectation = match.code_uo;
-                                  }
-                                  if (f.key === "affectation_generale") {
-                                    // Reset dependent fields when affectation changes
-                                    updates.composante_direction = "";
-                                    updates.uo_affectation_principale = "";
-                                    updates.code_uo_affectation = "";
-                                  }
-                                  setEditingItem({ ...editingItem, ...updates });
-                                  setOpenCombobox(prev => ({ ...prev, [f.key]: false }));
-                                }}>
-                                  <Check className={cn("mr-2 h-4 w-4", editingItem[f.key] === opt ? "opacity-100" : "opacity-0")} />
-                                  <span className="truncate">{opt}</span>
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                );
-              }
-              return (
-                <div key={f.key} className="space-y-2">
-                  <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+            {fields.map(f => (
+              <div key={f.key} className={`space-y-2 ${["cas_usage", "texte"].includes(f.key) ? "sm:col-span-2" : ""}`}>
+                <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+                {["cas_usage", "texte", "commentaires"].includes(f.key) ? (
+                  <textarea id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })}
+                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+                ) : (
                   <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" />
-                </div>
-              );
-            })}
+                )}
+              </div>
+            ))}
           </div></div>)}
           <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
