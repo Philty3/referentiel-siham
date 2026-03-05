@@ -71,19 +71,19 @@ const CentresCouts = () => {
 
   // Options for affectation_generale: only level 2
   const affectationGeneraleOptions = [...new Set(
-    allUoRows.filter(r => r.niveau === "2").map(r => r.libelle_long)
+    allUoRows.filter(r => r.niveau === "Niveau 2").map(r => r.libelle_long)
   )].sort();
 
   // Options for composante_direction and uo_affectation_principale:
   // levels 3,4,5,6 that are descendants of the selected level 2 in affectation_generale
   const getFilteredUoOptions = (): string[] => {
     if (!editingItem?.affectation_generale) return [];
-    const selectedLevel2 = allUoRows.find(r => r.niveau === "2" && r.libelle_long === editingItem.affectation_generale);
+    const selectedLevel2 = allUoRows.find(r => r.niveau === "Niveau 2" && r.libelle_long === editingItem.affectation_generale);
     if (!selectedLevel2) return [];
     const descendantCodes = getDescendantCodes(selectedLevel2.code_uo);
     return [...new Set(
       allUoRows
-        .filter(r => ["3", "4", "5", "6"].includes(r.niveau) && descendantCodes.has(r.code_uo))
+        .filter(r => ["Niveau 3", "Niveau 4", "Niveau 5", "Niveau 6"].includes(r.niveau) && descendantCodes.has(r.code_uo))
         .map(r => r.libelle_long)
     )].sort();
   };
