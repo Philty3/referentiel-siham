@@ -188,8 +188,22 @@ const CentresCouts = () => {
             <Input value={editingItem.code_uo_affectation || ""} readOnly className="text-sm bg-muted" />
           </div>
 
+          {/* Population - select BIATSS ou Enseignant */}
+          <div className="space-y-2">
+            <Label className="text-xs">Population</Label>
+            <select
+              value={editingItem.population || ""}
+              onChange={e => setEditingItem({ ...editingItem, population: e.target.value })}
+              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <option value="">Sélectionner...</option>
+              <option value="BIATSS">BIATSS</option>
+              <option value="Enseignant">Enseignant</option>
+            </select>
+          </div>
+
           {/* Remaining simple fields */}
-          {(["population", "code_centre_cout", "designation", "centre_financier"] as F[]).map(key => {
+          {(["code_centre_cout", "designation", "centre_financier"] as F[]).map(key => {
             const f = fields.find(fi => fi.key === key)!;
             return (
               <div key={key} className="space-y-2">
