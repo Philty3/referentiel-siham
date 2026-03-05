@@ -19,6 +19,7 @@ export type Database = {
           article: string | null
           code: string | null
           code_article: string | null
+          code_up_cite: boolean
           code_visa: string | null
           created_at: string
           id: string
@@ -37,6 +38,7 @@ export type Database = {
           article?: string | null
           code?: string | null
           code_article?: string | null
+          code_up_cite?: boolean
           code_visa?: string | null
           created_at?: string
           id?: string
@@ -55,6 +57,7 @@ export type Database = {
           article?: string | null
           code?: string | null
           code_article?: string | null
+          code_up_cite?: boolean
           code_visa?: string | null
           created_at?: string
           id?: string
@@ -113,6 +116,7 @@ export type Database = {
       conges: {
         Row: {
           code: string | null
+          code_up_cite: boolean
           created_at: string
           date_debut_validite: string | null
           date_fin_validite: string | null
@@ -123,6 +127,7 @@ export type Database = {
         }
         Insert: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_debut_validite?: string | null
           date_fin_validite?: string | null
@@ -133,6 +138,7 @@ export type Database = {
         }
         Update: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_debut_validite?: string | null
           date_fin_validite?: string | null
@@ -152,6 +158,7 @@ export type Database = {
           code_cisirh: string | null
           code_libelle_harpege: string | null
           code_siham: string | null
+          code_up_cite: boolean
           created_at: string
           date_deb: string | null
           date_fin: string | null
@@ -185,6 +192,7 @@ export type Database = {
           code_cisirh?: string | null
           code_libelle_harpege?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb?: string | null
           date_fin?: string | null
@@ -218,6 +226,7 @@ export type Database = {
           code_cisirh?: string | null
           code_libelle_harpege?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb?: string | null
           date_fin?: string | null
@@ -251,6 +260,7 @@ export type Database = {
           code: string | null
           code_categorie_statutaire: string | null
           code_filiere: string | null
+          code_up_cite: boolean
           corps_extinction: string | null
           created_at: string
           date_debut_validite: string | null
@@ -270,6 +280,7 @@ export type Database = {
           code?: string | null
           code_categorie_statutaire?: string | null
           code_filiere?: string | null
+          code_up_cite?: boolean
           corps_extinction?: string | null
           created_at?: string
           date_debut_validite?: string | null
@@ -289,6 +300,7 @@ export type Database = {
           code?: string | null
           code_categorie_statutaire?: string | null
           code_filiere?: string | null
+          code_up_cite?: boolean
           corps_extinction?: string | null
           created_at?: string
           date_debut_validite?: string | null
@@ -308,6 +320,7 @@ export type Database = {
       diplomes: {
         Row: {
           code: string | null
+          code_up_cite: boolean
           created_at: string
           date_deb_validite: string | null
           date_fin_validite: string | null
@@ -320,6 +333,7 @@ export type Database = {
         }
         Insert: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb_validite?: string | null
           date_fin_validite?: string | null
@@ -332,6 +346,7 @@ export type Database = {
         }
         Update: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb_validite?: string | null
           date_fin_validite?: string | null
@@ -349,6 +364,7 @@ export type Database = {
           classification_emploi: string | null
           cle: string | null
           code_plus_utiliser: string | null
+          code_up_cite: boolean
           created_at: string
           date_effet: string | null
           emploi: string | null
@@ -359,6 +375,7 @@ export type Database = {
           classification_emploi?: string | null
           cle?: string | null
           code_plus_utiliser?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_effet?: string | null
           emploi?: string | null
@@ -369,6 +386,7 @@ export type Database = {
           classification_emploi?: string | null
           cle?: string | null
           code_plus_utiliser?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_effet?: string | null
           emploi?: string | null
@@ -383,6 +401,7 @@ export type Database = {
           adresse: string | null
           code_postal: string | null
           code_uai: string | null
+          code_up_cite: boolean
           created_at: string
           email: string | null
           id: string
@@ -396,6 +415,7 @@ export type Database = {
           adresse?: string | null
           code_postal?: string | null
           code_uai?: string | null
+          code_up_cite?: boolean
           created_at?: string
           email?: string | null
           id?: string
@@ -409,6 +429,7 @@ export type Database = {
           adresse?: string | null
           code_postal?: string | null
           code_uai?: string | null
+          code_up_cite?: boolean
           created_at?: string
           email?: string | null
           id?: string
@@ -428,6 +449,7 @@ export type Database = {
           code_filiere: string | null
           code_groupe_hierarchique: string | null
           code_tresorerie_generale: string | null
+          code_up_cite: boolean
           corps_cadre_emploi: string | null
           created_at: string
           date_debut_validite: string | null
@@ -447,6 +469,7 @@ export type Database = {
           code_filiere?: string | null
           code_groupe_hierarchique?: string | null
           code_tresorerie_generale?: string | null
+          code_up_cite?: boolean
           corps_cadre_emploi?: string | null
           created_at?: string
           date_debut_validite?: string | null
@@ -466,6 +489,7 @@ export type Database = {
           code_filiere?: string | null
           code_groupe_hierarchique?: string | null
           code_tresorerie_generale?: string | null
+          code_up_cite?: boolean
           corps_cadre_emploi?: string | null
           created_at?: string
           date_debut_validite?: string | null
@@ -485,6 +509,7 @@ export type Database = {
           cas_utilisation: string | null
           code_cisirh: string | null
           code_siham: string | null
+          code_up_cite: boolean
           created_at: string
           grade_tg: string | null
           id: string
@@ -500,6 +525,7 @@ export type Database = {
           cas_utilisation?: string | null
           code_cisirh?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           grade_tg?: string | null
           id?: string
@@ -515,6 +541,7 @@ export type Database = {
           cas_utilisation?: string | null
           code_cisirh?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           grade_tg?: string | null
           id?: string
@@ -530,6 +557,7 @@ export type Database = {
       modalites: {
         Row: {
           code: string | null
+          code_up_cite: boolean
           created_at: string
           date_deb_validite: string | null
           date_fin_validite: string | null
@@ -545,6 +573,7 @@ export type Database = {
         }
         Insert: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb_validite?: string | null
           date_fin_validite?: string | null
@@ -560,6 +589,7 @@ export type Database = {
         }
         Update: {
           code?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb_validite?: string | null
           date_fin_validite?: string | null
@@ -579,6 +609,7 @@ export type Database = {
         Row: {
           cas_usage: string | null
           code: string | null
+          code_up_cite: boolean
           commentaires: string | null
           created_at: string
           date_debut: string | null
@@ -593,6 +624,7 @@ export type Database = {
         Insert: {
           cas_usage?: string | null
           code?: string | null
+          code_up_cite?: boolean
           commentaires?: string | null
           created_at?: string
           date_debut?: string | null
@@ -607,6 +639,7 @@ export type Database = {
         Update: {
           cas_usage?: string | null
           code?: string | null
+          code_up_cite?: boolean
           commentaires?: string | null
           created_at?: string
           date_debut?: string | null
@@ -704,6 +737,7 @@ export type Database = {
           code_cisirh: string | null
           code_libelle_harpege: string | null
           code_siham: string | null
+          code_up_cite: boolean
           created_at: string
           date_deb: string | null
           date_fin: string | null
@@ -736,6 +770,7 @@ export type Database = {
           code_cisirh?: string | null
           code_libelle_harpege?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb?: string | null
           date_fin?: string | null
@@ -768,6 +803,7 @@ export type Database = {
           code_cisirh?: string | null
           code_libelle_harpege?: string | null
           code_siham?: string | null
+          code_up_cite?: boolean
           created_at?: string
           date_deb?: string | null
           date_fin?: string | null

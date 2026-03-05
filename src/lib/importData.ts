@@ -128,9 +128,16 @@ export async function importTable(
 
     if (rows.length === 0) return { success: true, count: 0 };
 
-    onProgress?.(`Suppression des anciennes données...`);
-    // Clear existing data
-    await supabase.from(mapping.table as any).delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    onProgress?.(`Suppression des anciennes données (sauf éléments UP Cité)...`);
+    // Clear existing data except items marked as code_up_cite
+    const tablesToProtect = ["uo", "centres_couts"];
+    if (tablesToProtect.includes(mapping.table)) {
+      // For uo and centres_couts, delete all (no code_up_cite column)
+      await supabase.from(mapping.table as any).delete().neq("id", "00000000-0000-0000-0000-000000000000");
+    } else {
+      // For other tables, preserve items marked as code_up_cite
+      await supabase.from(mapping.table as any).delete().eq("code_up_cite", false);
+    }
 
     onProgress?.(`Insertion de ${rows.length} lignes...`);
     // Insert in batches of 500
