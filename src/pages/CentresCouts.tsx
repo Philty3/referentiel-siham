@@ -33,8 +33,7 @@ const CentresCouts = () => {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [uoOptions, setUoOptions] = useState<string[]>([]);
-  const [uoRows, setUoRows] = useState<{ libelle_long: string; code_uo: string }[]>([]);
+  const [allUoRows, setAllUoRows] = useState<{ libelle_long: string; code_uo: string; niveau: string; code_uo_mere: string }[]>([]);
   const [openCombobox, setOpenCombobox] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
@@ -43,13 +42,56 @@ const CentresCouts = () => {
   useEffect(() => {
     fetchAllRows("uo", "libelle_long").then(({ data: rows }) => {
       if (rows) {
-        const allRows = rows.map((r: any) => ({ libelle_long: r.libelle_long || "", code_uo: r.code_uo || "" })).filter(r => r.libelle_long);
-        setUoRows(allRows);
-        const labels = [...new Set(allRows.map(r => r.libelle_long))].sort();
-        setUoOptions(labels as string[]);
+        const allRows = rows.map((r: any) => ({
+          libelle_long: r.libelle_long || "",
+          code_uo: r.code_uo || "",
+          niveau: r.niveau || "",
+          code_uo_mere: r.code_uo_mere || "",
+        })).filter(r => r.libelle_long);
+        setAllUoRows(allRows);
       }
     });
   }, []);
+
+  // Get all descendant code_uo of a given parent code_uo
+  const getDescendantCodes = (parentCode: string): Set<string> => {
+    const descendants = new Set<string>();
+    const queue = [parentCode];
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      for (const uo of allUoRows) {
+        if (uo.code_uo_mere === current && !descendants.has(uo.code_uo)) {
+          descendants.add(uo.code_uo);
+          queue.push(uo.code_uo);
+        }
+      }
+    }
+    return descendants;
+  };
+
+  // Options for affectation_generale: only level 2
+  const affectationGeneraleOptions = [...new Set(
+    allUoRows.filter(r => r.niveau === "2").map(r => r.libelle_long)
+  )].sort();
+
+  // Options for composante_direction and uo_affectation_principale:
+  // levels 3,4,5,6 that are descendants of the selected level 2 in affectation_generale
+  const getFilteredUoOptions = (): string[] => {
+    if (!editingItem?.affectation_generale) return [];
+    const selectedLevel2 = allUoRows.find(r => r.niveau === "2" && r.libelle_long === editingItem.affectation_generale);
+    if (!selectedLevel2) return [];
+    const descendantCodes = getDescendantCodes(selectedLevel2.code_uo);
+    return [...new Set(
+      allUoRows
+        .filter(r => ["3", "4", "5", "6"].includes(r.niveau) && descendantCodes.has(r.code_uo))
+        .map(r => r.libelle_long)
+    )].sort();
+  };
+
+  const getOptionsForField = (fieldKey: string): string[] => {
+    if (fieldKey === "affectation_generale") return affectationGeneraleOptions;
+    return getFilteredUoOptions();
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -128,12 +170,18 @@ const CentresCouts = () => {
                           <CommandList className="max-h-[200px]">
                             <CommandEmpty>Aucune UO trouvée.</CommandEmpty>
                             <CommandGroup>
-                              {uoOptions.map(opt => (
+                              {getOptionsForField(f.key).map(opt => (
                               <CommandItem key={opt} value={opt} onSelect={(val) => {
                                   const updates: Partial<Item> = { [f.key]: val };
                                   if (f.key === "uo_affectation_principale") {
-                                    const match = uoRows.find(r => r.libelle_long === val);
+                                    const match = allUoRows.find(r => r.libelle_long === val);
                                     if (match) updates.code_uo_affectation = match.code_uo;
+                                  }
+                                  if (f.key === "affectation_generale") {
+                                    // Reset dependent fields when affectation changes
+                                    updates.composante_direction = "";
+                                    updates.uo_affectation_principale = "";
+                                    updates.code_uo_affectation = "";
                                   }
                                   setEditingItem({ ...editingItem, ...updates });
                                   setOpenCombobox(prev => ({ ...prev, [f.key]: false }));
