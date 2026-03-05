@@ -80,6 +80,7 @@ export type Database = {
           centre_financier: string | null
           code_centre_cout: string | null
           code_uo_affectation: string | null
+          commentaire: string | null
           composante_direction: string | null
           created_at: string
           designation: string | null
@@ -92,6 +93,7 @@ export type Database = {
           centre_financier?: string | null
           code_centre_cout?: string | null
           code_uo_affectation?: string | null
+          commentaire?: string | null
           composante_direction?: string | null
           created_at?: string
           designation?: string | null
@@ -104,6 +106,7 @@ export type Database = {
           centre_financier?: string | null
           code_centre_cout?: string | null
           code_uo_affectation?: string | null
+          commentaire?: string | null
           composante_direction?: string | null
           created_at?: string
           designation?: string | null

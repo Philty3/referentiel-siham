@@ -1,0 +1,1 @@
+ALTER TABLE public.centres_couts ADD COLUMN commentaire text DEFAULT NULL;
