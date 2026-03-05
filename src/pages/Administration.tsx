@@ -74,8 +74,7 @@ const tableConfigs = [
   },
   {
     table: "centres_couts", label: "Centres de coûts", minColumns: 1,
-    columns: ["code","libelle_long","libelle_court","date_debut","date_fin","population","cas_usage","population_particuliere","texte","commentaires"],
-    dateColumns: [3, 4],
+    columns: ["affectation_generale","composante_direction","uo_affectation_principale","code_uo_affectation","population","code_centre_cout","designation","centre_financier"],
   },
 ];
 
