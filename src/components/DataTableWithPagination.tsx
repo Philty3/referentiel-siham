@@ -63,6 +63,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [currentPage, setCurrentPage] = useState(1);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showFavoritesFirst, setShowFavoritesFirst] = useState(false);
+  const [showUpCiteFirst, setShowUpCiteFirst] = useState(false);
   const { toast } = useToast();
 
   // Clé pour le localStorage basée sur le titre
@@ -130,9 +131,20 @@ export function DataTableWithPagination<T extends Record<string, any>>({
       });
     }
 
+    // Trier les codes UP Cité en premier si activé
+    if (showUpCiteFirst) {
+      result.sort((a, b) => {
+        const aUp = !!a.code_up_cite;
+        const bUp = !!b.code_up_cite;
+        if (aUp && !bUp) return -1;
+        if (!aUp && bUp) return 1;
+        return 0;
+      });
+    }
+
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields, showFavoritesFirst, favorites]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, favorites]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -200,6 +212,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                 <Star className={`h-4 w-4 ${showFavoritesFirst ? 'fill-current' : ''}`} />
                 Favoris en premier
               </Button>
+              {showUpCiteIcon && (
+                <Button
+                  size="sm"
+                  variant={showUpCiteFirst ? "default" : "outline"}
+                  onClick={() => setShowUpCiteFirst(!showUpCiteFirst)}
+                  className="h-9 gap-2 whitespace-nowrap"
+                >
+                  <img src={logoUpCite} alt="UP Cité" className="h-4 w-4" />
+                  Codes UP Cité
+                </Button>
+              )}
             </div>
           </div>
         )}
