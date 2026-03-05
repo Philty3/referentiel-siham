@@ -33,9 +33,9 @@ const mappings: TableMapping[] = [
     columns: ["code","libelle","libelle_complementaire","type_arrete_decision","type_population","numero_ordre","code_visa","visa","type_population_2","numero_ordre_2","code_article","article","processus","octroi_renouvellement"],
   },
   {
-    table: "positions", file: "/data/positions.xlsx", minColumns: 10,
-    columns: ["code","libelle_court","libelle_long","libelle_long_bis","position_statutaire","temoin_position_entree_sortie","temoin_lien_enfant_obligatoire","tem_exclusion_inclusion_reglem","date_debut_validite","date_fin_validite"],
-    dateColumns: [8, 9],
+    table: "positions", file: "/data/positions.xlsx", minColumns: 1,
+    columns: ["code","libelle_long","libelle_court","date_debut","date_fin","population","cas_usage","population_particuliere","texte","commentaires"],
+    dateColumns: [3, 4],
   },
   {
     table: "corps", file: "/data/corps.xlsx", minColumns: 15,
