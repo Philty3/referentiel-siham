@@ -4,22 +4,29 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 
 const fields = [
-  { key: "code", label: "Code" }, { key: "libelle_court", label: "Libellé court" }, { key: "libelle_long", label: "Libellé long" },
-  { key: "libelle_long_bis", label: "Libellé long (bis)" }, { key: "position_statutaire", label: "Position statutaire" },
-  { key: "temoin_position_entree_sortie", label: "Témoin position entrée/sortie" },
-  { key: "temoin_lien_enfant_obligatoire", label: "Témoin lien enfant obligatoire" },
-  { key: "tem_exclusion_inclusion_reglem", label: "Tém exclusion/inclusion réglem." },
-  { key: "date_debut_validite", label: "Date début validité" }, { key: "date_fin_validite", label: "Date fin validité" },
+  { key: "code", label: "Code" },
+  { key: "libelle_long", label: "Libellé long" },
+  { key: "libelle_court", label: "Libellé court" },
+  { key: "date_debut", label: "Date de début" },
+  { key: "date_fin", label: "Date de fin" },
+  { key: "population", label: "Population" },
+  { key: "cas_usage", label: "Cas d'usage" },
+  { key: "population_particuliere", label: "Population particulière" },
+  { key: "texte", label: "Texte" },
+  { key: "commentaires", label: "Commentaires" },
 ] as const;
 type F = typeof fields[number]["key"];
 type Item = { id?: string } & Record<F, string>;
 const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Item;
+
+const longTextFields = ["cas_usage", "texte", "commentaires", "population_particuliere"];
 
 const Reference3 = () => {
   const [data, setData] = useState<Item[]>([]);
@@ -63,17 +70,37 @@ const Reference3 = () => {
   return (
     <>
       <DataTableWithPagination title="Positions" data={data}
-        columns={[{ key: "code", label: "Code", width: "w-[150px]" }, { key: "libelle_court", label: "Libellé court", width: "w-[180px]" }, { key: "libelle_long", label: "Libellé long", width: "w-[250px]" }, { key: "position_statutaire", label: "Position statutaire", width: "w-[160px]" }]}
-        searchFields={["code", "libelle_court", "libelle_long", "position_statutaire"]}
+        columns={[
+          { key: "code", label: "Code", width: "w-[120px]" },
+          { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
+          { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
+          { key: "population", label: "Population", width: "w-[120px]" },
+        ]}
+        searchFields={["code", "libelle_court", "libelle_long", "population"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
-        onExport={() => exportPageToExcel(data, "Positions", "Positions", ["date_debut_validite", "date_fin_validite"])}
-        renderExpandedContent={(row: Item) => (<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
+        onExport={() => exportPageToExcel(data, "Positions", "Positions", ["date_debut", "date_fin"])}
+        renderExpandedContent={(row: Item) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            {fields.map(f => (
+              <div key={f.key} className={longTextFields.includes(f.key) ? "sm:col-span-2" : ""}>
+                <p className="font-semibold text-foreground mb-1">{f.label}:</p>
+                <p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p>
+              </div>
+            ))}
+          </div>
+        )} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
           {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
-              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" /></div>))}
+            {fields.map(f => (<div key={f.key} className={`space-y-2 ${longTextFields.includes(f.key) ? "sm:col-span-2" : ""}`}>
+              <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
+              {longTextFields.includes(f.key) ? (
+                <Textarea id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" rows={3} />
+              ) : (
+                <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" />
+              )}
+            </div>))}
           </div></div>)}
           <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>

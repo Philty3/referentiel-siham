@@ -583,46 +583,46 @@ export type Database = {
       }
       positions: {
         Row: {
+          cas_usage: string | null
           code: string | null
+          commentaires: string | null
           created_at: string
-          date_debut_validite: string | null
-          date_fin_validite: string | null
+          date_debut: string | null
+          date_fin: string | null
           id: string
           libelle_court: string | null
           libelle_long: string | null
-          libelle_long_bis: string | null
-          position_statutaire: string | null
-          tem_exclusion_inclusion_reglem: string | null
-          temoin_lien_enfant_obligatoire: string | null
-          temoin_position_entree_sortie: string | null
+          population: string | null
+          population_particuliere: string | null
+          texte: string | null
         }
         Insert: {
+          cas_usage?: string | null
           code?: string | null
+          commentaires?: string | null
           created_at?: string
-          date_debut_validite?: string | null
-          date_fin_validite?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
           id?: string
           libelle_court?: string | null
           libelle_long?: string | null
-          libelle_long_bis?: string | null
-          position_statutaire?: string | null
-          tem_exclusion_inclusion_reglem?: string | null
-          temoin_lien_enfant_obligatoire?: string | null
-          temoin_position_entree_sortie?: string | null
+          population?: string | null
+          population_particuliere?: string | null
+          texte?: string | null
         }
         Update: {
+          cas_usage?: string | null
           code?: string | null
+          commentaires?: string | null
           created_at?: string
-          date_debut_validite?: string | null
-          date_fin_validite?: string | null
+          date_debut?: string | null
+          date_fin?: string | null
           id?: string
           libelle_court?: string | null
           libelle_long?: string | null
-          libelle_long_bis?: string | null
-          position_statutaire?: string | null
-          tem_exclusion_inclusion_reglem?: string | null
-          temoin_lien_enfant_obligatoire?: string | null
-          temoin_position_entree_sortie?: string | null
+          population?: string | null
+          population_particuliere?: string | null
+          texte?: string | null
         }
         Relationships: []
       }
