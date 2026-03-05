@@ -169,31 +169,34 @@ export const Navigation = () => {
               <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
             </Button>
             {dropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 rounded-xl border bg-popover/98 backdrop-blur-xl shadow-2xl z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
-                   style={{ width: 'min(90vw, 720px)' }}>
-                <div className="p-4">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-1">Référentiels disponibles</p>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {navItems.map((item) => (
-                      <NavLink
-                        key={item.path}
-                        to={item.path}
-                        onClick={() => setDropdownOpen(false)}
-                        className={({ isActive }) =>
-                          `group flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                            isActive
-                              ? "bg-primary text-primary-foreground shadow-md"
-                              : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-0.5"
-                          }`
-                        }
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                        {item.name}
-                      </NavLink>
-                    ))}
+              <>
+                <div className="fixed inset-0 top-16 bg-foreground/30 backdrop-blur-sm z-40 animate-in fade-in-0 duration-200" onClick={() => setDropdownOpen(false)} />
+                <div className="absolute right-0 top-full mt-2 rounded-xl border bg-secondary shadow-2xl z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
+                     style={{ width: 'min(90vw, 720px)' }}>
+                  <div className="p-4">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-1">Référentiels disponibles</p>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {navItems.map((item) => (
+                        <NavLink
+                          key={item.path}
+                          to={item.path}
+                          onClick={() => setDropdownOpen(false)}
+                          className={({ isActive }) =>
+                            `group flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                              isActive
+                                ? "bg-primary text-primary-foreground shadow-md"
+                                : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-0.5"
+                            }`
+                          }
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
+                          {item.name}
+                        </NavLink>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
           
