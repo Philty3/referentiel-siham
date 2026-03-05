@@ -336,7 +336,7 @@ const Index = () => {
       .map(k => ({ key: k, label: k }));
 
     return (
-      <div className="grid grid-cols-2 gap-4 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
         {displayFields.map((f) => (
           <div key={f.key}>
             <p className="font-semibold text-foreground mb-1">{f.label}:</p>
@@ -369,26 +369,26 @@ const Index = () => {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted/20">
-      <div className="container mx-auto max-w-7xl px-4 py-12">
+      <div className="container mx-auto max-w-7xl px-3 sm:px-4 py-6 sm:py-12">
         {/* Hero Section */}
-        <div className="mb-16 text-center">
-          <div className="mb-6 inline-flex items-center justify-center rounded-full bg-primary/10 p-4">
-            <FileSpreadsheet className="h-16 w-16 text-primary" />
+        <div className="mb-8 sm:mb-16 text-center">
+          <div className="mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full bg-primary/10 p-3 sm:p-4">
+            <FileSpreadsheet className="h-10 w-10 sm:h-16 sm:w-16 text-primary" />
           </div>
-          <h1 className="mb-4 text-5xl font-bold text-foreground">
+          <h1 className="mb-3 sm:mb-4 text-3xl sm:text-5xl font-bold text-foreground">
             Référentiel SIHAM
           </h1>
-          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
+          <p className="mx-auto max-w-2xl text-base sm:text-xl text-muted-foreground">
             Plateforme de consultation des référentiels principaux SIHAM.
             Accédez facilement à vos données de référence.
           </p>
         </div>
 
         {/* Search Section */}
-        <div className="mb-12">
-          <Card className="border-2 p-6">
-            <h2 className="mb-4 text-2xl font-bold text-foreground">Rechercher dans tous les référentiels</h2>
-            <div className="flex gap-4 mb-6">
+        <div className="mb-6 sm:mb-12">
+          <Card className="border-2 p-3 sm:p-6">
+            <h2 className="mb-3 sm:mb-4 text-lg sm:text-2xl font-bold text-foreground">Rechercher dans tous les référentiels</h2>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4 sm:mb-6">
               <Input
                 type="text"
                 placeholder="Entrez un terme à rechercher (code, libellé, etc.)..."
@@ -450,9 +450,9 @@ const Index = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 rounded-lg bg-gradient-to-r from-primary to-accent p-8 text-center text-white">
-          <h2 className="mb-4 text-3xl font-bold">Prêt à explorer vos référentiels ?</h2>
-          <p className="mb-6 text-lg opacity-90">
+        <div className="mt-8 sm:mt-16 rounded-lg bg-gradient-to-r from-primary to-accent p-4 sm:p-8 text-center text-white">
+          <h2 className="mb-3 sm:mb-4 text-xl sm:text-3xl font-bold">Prêt à explorer vos référentiels ?</h2>
+          <p className="mb-4 sm:mb-6 text-sm sm:text-lg opacity-90">
             Utilisez le menu de navigation ci-dessus pour accéder aux différents référentiels
           </p>
         </div>
@@ -460,13 +460,13 @@ const Index = () => {
 
       {/* Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Modifier l'élément ({editingItem?.source})</DialogTitle>
           </DialogHeader>
           {editingItem && (
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {editingFields.map(f => (
                   <div key={f.key} className="space-y-2">
                     <Label htmlFor={f.key} className="text-xs">{f.label}</Label>
