@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,8 +21,8 @@ const fields = [
   { key: "service_statutaire", label: "Service statutaire" },
 ] as const;
 type F = typeof fields[number]["key"];
-type Item = { id?: string } & Record<F, string>;
-const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Item;
+type Item = { id?: string; code_up_cite?: boolean } & Record<F, string>;
+const emptyItem = { ...Object.fromEntries(fields.map(f => [f.key, ""])), code_up_cite: false } as unknown as Item;
 
 const Reference4 = () => {
   const [data, setData] = useState<Item[]>([]);
@@ -35,7 +36,7 @@ const Reference4 = () => {
     setLoading(true);
     const { data: rows, error } = await fetchAllRows("corps", "code");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
-    else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
+    else setData((rows || []).map(r => { const item: any = { id: r.id, code_up_cite: !!(r as any).code_up_cite }; fields.forEach(f => item[f.key] = (r as any)[f.key] || ""); return item; }));
     setLoading(false);
   };
   useEffect(() => { fetchData(); }, []);
@@ -45,11 +46,11 @@ const Reference4 = () => {
   const handleSave = async () => {
     if (!editingItem) return; const { id, ...payload } = editingItem;
     if (editingIndex !== null && id) {
-      const { error } = await supabase.from("corps").update(payload).eq("id", id);
+      const { error } = await supabase.from("corps").update(payload as any).eq("id", id);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Modifications enregistrées" });
     } else {
-      const { error } = await supabase.from("corps").insert(payload);
+      const { error } = await supabase.from("corps").insert(payload as any);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Élément ajouté" });
     }
@@ -68,12 +69,18 @@ const Reference4 = () => {
         columns={[{ key: "code", label: "Code", width: "w-[150px]" }, { key: "libelle", label: "Libellé", width: "w-[180px]" }, { key: "libelle_long", label: "Libellé long", width: "w-[250px]" }, { key: "filiere", label: "Filière", width: "w-[160px]" }]}
         searchFields={["code", "libelle", "libelle_long", "filiere", "categorie_statutaire"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd}
+        showUpCiteIcon
         onExport={() => exportPageToExcel(data, "Corps", "Corps", ["date_debut_validite", "date_fin_validite"])}
         renderExpandedContent={(row: Item) => (<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">{fields.map(f => (<div key={f.key}><p className="font-semibold text-foreground mb-1">{f.label}:</p><p className="text-muted-foreground whitespace-pre-wrap">{row[f.key]}</p></div>))}</div>)} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
-          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {editingItem && (<div className="grid gap-4 py-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox id="code_up_cite" checked={!!editingItem.code_up_cite} onCheckedChange={(checked) => setEditingItem({ ...editingItem, code_up_cite: !!checked })} />
+              <Label htmlFor="code_up_cite" className="text-sm font-medium">Code UP Cité</Label>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
               <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => setEditingItem({ ...editingItem, [f.key]: e.target.value })} className="text-sm" /></div>))}
           </div></div>)}

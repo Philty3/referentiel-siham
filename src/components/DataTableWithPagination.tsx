@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download } from "lucide-react";
+import logoUpCite from "@/assets/logo-up-cite.png";
 import { useToast } from "@/hooks/use-toast";
 
 interface Column {
@@ -37,6 +38,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   hideAddButton?: boolean;
   hideSearchField?: boolean;
   onExport?: () => void;
+  showUpCiteIcon?: boolean;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -53,6 +55,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   hideAddButton = false,
   hideSearchField = false,
   onExport,
+  showUpCiteIcon = false,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -304,7 +307,12 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                                 colIndex === 0 ? 'sticky left-[160px] z-10 bg-background font-medium whitespace-nowrap' : 'whitespace-normal break-words'
                               } ${column.truncate ? 'max-w-xs truncate' : ''}`}
                             >
-                              {row[column.key]}
+                              <span className="inline-flex items-center gap-1">
+                                {colIndex === 0 && showUpCiteIcon && row.code_up_cite && (
+                                  <img src={logoUpCite} alt="UP Cité" className="h-4 w-4 inline-block flex-shrink-0" />
+                                )}
+                                {row[column.key]}
+                              </span>
                             </TableCell>
                           ))}
                         </TableRow>

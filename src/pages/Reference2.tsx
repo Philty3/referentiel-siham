@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 
-interface Vacataire { id?: string;
+interface Vacataire { id?: string; code_up_cite?: boolean;
   code_siham: string; categorie_siham: string; libelle_court_siham: string; libelle_long_siham: string;
   date_deb: string; date_fin: string; references_reglementaires: string; cas_utilisation: string;
   permanent_temporaire: string; regle_durees: string; type_contrat: string; cat_fp: string;
@@ -36,7 +37,7 @@ const fields: { key: keyof Vacataire; label: string }[] = [
   { key: "code_libelle_harpege", label: "Code/Libellé Harpège" }, { key: "rg_pour_rdd", label: "RG pour RDD" },
   { key: "code_cisirh", label: "Code CISIRH" }, { key: "libelle_cisirh", label: "Libellé CISIRH" },
 ];
-const emptyItem = Object.fromEntries(fields.map(f => [f.key, ""])) as unknown as Vacataire;
+const emptyItem = { ...Object.fromEntries(fields.map(f => [f.key, ""])), code_up_cite: false } as unknown as Vacataire;
 
 const Reference2 = () => {
   const [data, setData] = useState<Vacataire[]>([]);
@@ -50,7 +51,7 @@ const Reference2 = () => {
     setLoading(true);
     const { data: rows, error } = await fetchAllRows("vacataires", "code_siham");
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
-    else setData((rows || []).map(r => { const item: any = { id: r.id }; fields.forEach(f => item[f.key] = r[f.key as keyof typeof r] || ""); return item; }));
+    else setData((rows || []).map(r => { const item: any = { id: r.id, code_up_cite: !!(r as any).code_up_cite }; fields.forEach(f => item[f.key] = r[f.key as keyof typeof r] || ""); return item; }));
     setLoading(false);
   };
   useEffect(() => { fetchData(); }, []);
@@ -60,11 +61,11 @@ const Reference2 = () => {
   const handleSave = async () => {
     if (!editingItem) return; const { id, ...payload } = editingItem;
     if (editingIndex !== null && id) {
-      const { error } = await supabase.from("vacataires").update(payload).eq("id", id);
+      const { error } = await supabase.from("vacataires").update(payload as any).eq("id", id);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Modifications enregistrées" });
     } else {
-      const { error } = await supabase.from("vacataires").insert(payload);
+      const { error } = await supabase.from("vacataires").insert(payload as any);
       if (error) { toast({ title: "Erreur", description: error.message, variant: "destructive" }); return; }
       toast({ title: "Élément ajouté" });
     }
@@ -95,13 +96,19 @@ const Reference2 = () => {
       <DataTableWithPagination title="Vacataires" data={data} columns={columns}
         searchFields={["code_siham", "categorie_siham", "libelle_court_siham", "libelle_long_siham", "code_cisirh"]}
         loading={loading} onEdit={handleEdit} onDelete={handleDelete} onAdd={handleAdd} renderExpandedContent={renderExpandedContent}
+        showUpCiteIcon
         onExport={() => exportPageToExcel(data, "Vacataires", "Vacataires", ["date_deb", "date_fin"])} />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editingIndex !== null ? "Modifier" : "Ajouter"}</DialogTitle></DialogHeader>
-          {editingItem && (<div className="grid gap-4 py-4"><div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {editingItem && (<div className="grid gap-4 py-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox id="code_up_cite" checked={!!editingItem.code_up_cite} onCheckedChange={(checked) => setEditingItem({ ...editingItem, code_up_cite: !!checked })} />
+              <Label htmlFor="code_up_cite" className="text-sm font-medium">Code UP Cité</Label>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {fields.map(f => (<div key={f.key} className="space-y-2"><Label htmlFor={f.key} className="text-xs">{f.label}</Label>
-              <Input id={f.key} value={editingItem[f.key] || ""} onChange={(e) => handleInputChange(f.key, e.target.value)} className="text-sm" /></div>))}
+              <Input id={f.key} value={String(editingItem[f.key] || "")} onChange={(e) => handleInputChange(f.key, e.target.value)} className="text-sm" /></div>))}
           </div></div>)}
           <DialogFooter><Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button><Button onClick={handleSave}>Enregistrer</Button></DialogFooter>
         </DialogContent>
