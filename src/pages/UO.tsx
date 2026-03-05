@@ -145,6 +145,7 @@ const UOPage = () => {
     { key: "code_uo", label: "Code UO", width: "w-[150px]" },
     { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
     { key: "libelle_long", label: "Libellé long", width: "w-[250px]" },
+    { key: "responsable_administratif", label: "Responsable administratif", width: "w-[220px]" },
     { key: "statut", label: "Statut", width: "w-[100px]" },
   ];
 
