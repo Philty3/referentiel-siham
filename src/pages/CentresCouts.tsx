@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +23,7 @@ const fields = [
   { key: "code_centre_cout", label: "Centre de coût (code)" },
   { key: "designation", label: "Désignation" },
   { key: "centre_financier", label: "Centre financier" },
+  { key: "commentaire", label: "Commentaire" },
 ] as const;
 type F = typeof fields[number]["key"];
 type Item = { id?: string } & Record<F, string>;
@@ -196,6 +198,10 @@ const CentresCouts = () => {
               </div>
             );
           })}
+        </div>
+        <div className="space-y-2">
+          <Label className="text-xs">Commentaire</Label>
+          <Textarea value={editingItem.commentaire || ""} onChange={e => setEditingItem({ ...editingItem, commentaire: e.target.value })} className="text-sm" rows={3} />
         </div>
       </div>
     );
