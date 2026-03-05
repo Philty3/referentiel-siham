@@ -307,9 +307,9 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                                 colIndex === 0 ? 'sticky left-[160px] z-10 bg-background font-medium whitespace-nowrap' : 'whitespace-normal break-words'
                               } ${column.truncate ? 'max-w-xs truncate' : ''}`}
                             >
-                              <span className="inline-flex items-center gap-1">
+                              <span className="relative inline-flex items-center">
                                 {colIndex === 0 && showUpCiteIcon && row.code_up_cite && (
-                                  <img src={logoUpCite} alt="UP Cité" className="h-4 w-4 inline-block flex-shrink-0" />
+                                  <img src={logoUpCite} alt="UP Cité" className="absolute -left-5 h-4 w-4 flex-shrink-0" />
                                 )}
                                 {row[column.key]}
                               </span>
