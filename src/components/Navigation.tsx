@@ -169,27 +169,30 @@ export const Navigation = () => {
               <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
             </Button>
             {dropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-56 rounded-md border bg-popover shadow-lg z-50">
-                <ScrollArea className="h-[360px]">
-                  <div className="p-2 flex flex-col gap-0.5">
+              <div className="absolute right-0 top-full mt-2 rounded-xl border bg-popover/98 backdrop-blur-xl shadow-2xl z-50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
+                   style={{ width: 'min(90vw, 720px)' }}>
+                <div className="p-4">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-1">Référentiels disponibles</p>
+                  <div className="grid grid-cols-3 gap-1.5">
                     {navItems.map((item) => (
                       <NavLink
                         key={item.path}
                         to={item.path}
                         onClick={() => setDropdownOpen(false)}
                         className={({ isActive }) =>
-                          `block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                          `group flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                             isActive
-                              ? "bg-primary text-primary-foreground"
-                              : "text-popover-foreground hover:bg-muted"
+                              ? "bg-primary text-primary-foreground shadow-md"
+                              : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-0.5"
                           }`
                         }
                       >
+                        <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
                         {item.name}
                       </NavLink>
                     ))}
                   </div>
-                </ScrollArea>
+                </div>
               </div>
             )}
           </div>
