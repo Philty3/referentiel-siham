@@ -443,6 +443,27 @@ export type Database = {
         }
         Relationships: []
       }
+      favorites: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          table_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          table_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
       grades: {
         Row: {
           age_limite_depart_retraite: string | null
