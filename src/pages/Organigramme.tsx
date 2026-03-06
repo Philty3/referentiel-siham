@@ -2,7 +2,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare, FileDown } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -647,6 +649,40 @@ const Organigramme = () => {
     await loadData();
   };
 
+  const treeContentRef = useRef<HTMLDivElement>(null);
+
+  const handleExportPDF = async () => {
+    const el = viewMode === "tree" ? treeContentRef.current : containerRef.current;
+    if (!el) {
+      toast({ title: "Erreur", description: "Passez en vue Arbre pour exporter en PDF.", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Export en cours...", description: "Génération du PDF, veuillez patienter." });
+    try {
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const orientation = imgWidth > imgHeight ? "landscape" : "portrait";
+      const pdf = new jsPDF({
+        orientation,
+        unit: "px",
+        format: [imgWidth, imgHeight],
+      });
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.save("organigramme-uo.pdf");
+      toast({ title: "PDF exporté avec succès" });
+    } catch (err) {
+      console.error(err);
+      toast({ title: "Erreur", description: "Échec de l'export PDF.", variant: "destructive" });
+    }
+  };
+
   const toggleNode = useCallback((code: string) => {
     setExpandedNodes((prev) => {
       const next = new Set(prev);
@@ -766,6 +802,9 @@ const Organigramme = () => {
             </Button>
           )}
           <div className="h-6 w-px bg-border mx-1" />
+          <Button variant="outline" size="sm" onClick={handleExportPDF} className="gap-1.5">
+            <FileDown className="h-3.5 w-3.5" /> Export PDF
+          </Button>
           <Button variant="outline" size="sm" onClick={expandAll}>Tout déplier</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Tout replier</Button>
           <div className="h-6 w-px bg-border mx-1" />
@@ -842,6 +881,7 @@ const Organigramme = () => {
                 onWheel={handleWheel}
               >
                 <div
+                  ref={treeContentRef}
                   className="inline-flex flex-col items-center gap-0 min-w-max"
                   style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
                 >
