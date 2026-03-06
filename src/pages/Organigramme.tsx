@@ -2,9 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare, FileDown } from "lucide-react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -649,112 +647,6 @@ const Organigramme = () => {
     await loadData();
   };
 
-  const treeContentRef = useRef<HTMLDivElement>(null);
-
-  const handleExportPDF = async () => {
-    const treeEl = treeContentRef.current;
-    const scrollEl = containerRef.current;
-    if (viewMode !== "tree" || !treeEl || !scrollEl) {
-      toast({ title: "Erreur", description: "Passez en vue Arbre pour exporter en PDF.", variant: "destructive" });
-      return;
-    }
-    toast({ title: "Export en cours...", description: "Génération du PDF, veuillez patienter." });
-    try {
-      // Save original styles
-      const origOverflow = scrollEl.style.overflow;
-      const origHeight = scrollEl.style.height;
-      const origMaxHeight = scrollEl.style.maxHeight;
-      const origTransform = treeEl.style.transform;
-      const origTransformOrigin = treeEl.style.transformOrigin;
-
-      // Temporarily expand container to full size & reset zoom for clean capture
-      scrollEl.style.overflow = "visible";
-      scrollEl.style.height = "auto";
-      scrollEl.style.maxHeight = "none";
-      treeEl.style.transform = "scale(1)";
-      treeEl.style.transformOrigin = "top left";
-
-      // Wait for reflow
-      await new Promise(r => setTimeout(r, 200));
-
-      // Measure actual content size
-      const contentWidth = treeEl.scrollWidth;
-      const contentHeight = treeEl.scrollHeight;
-
-      // jsPDF max is 14400 userUnit. Scale down html2canvas if needed.
-      const MAX_PDF = 14300;
-      const scaleForWidth = contentWidth > MAX_PDF ? MAX_PDF / contentWidth : 1;
-      const scaleForHeight = contentHeight > MAX_PDF ? MAX_PDF / contentHeight : 1;
-      const captureScale = Math.min(scaleForWidth, scaleForHeight, 1);
-
-      const canvas = await html2canvas(treeEl, {
-        scale: captureScale,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-        width: contentWidth,
-        height: contentHeight,
-        windowWidth: contentWidth + 100,
-        windowHeight: contentHeight + 100,
-      });
-
-      // Restore original styles
-      scrollEl.style.overflow = origOverflow;
-      scrollEl.style.height = origHeight;
-      scrollEl.style.maxHeight = origMaxHeight;
-      treeEl.style.transform = origTransform;
-      treeEl.style.transformOrigin = origTransformOrigin;
-
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-
-      // Split into A4 landscape pages if image is very large
-      const A4_W = 841.89; // A4 landscape width in pt
-      const A4_H = 595.28; // A4 landscape height in pt
-      const margin = 20;
-      const usableW = A4_W - margin * 2;
-      const usableH = A4_H - margin * 2;
-
-      // Scale image to fit page width, then paginate vertically
-      const ratio = usableW / imgWidth;
-      const scaledH = imgHeight * ratio;
-      const totalPages = Math.ceil(scaledH / usableH);
-
-      const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
-
-      for (let page = 0; page < totalPages; page++) {
-        if (page > 0) pdf.addPage("a4", "landscape");
-
-        // Create a temporary canvas for this page slice
-        const sliceCanvas = document.createElement("canvas");
-        const srcY = Math.round((page * usableH / ratio));
-        const srcH = Math.min(Math.round(usableH / ratio), imgHeight - srcY);
-        sliceCanvas.width = imgWidth;
-        sliceCanvas.height = srcH;
-        const ctx = sliceCanvas.getContext("2d");
-        if (ctx) {
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-          ctx.drawImage(canvas, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
-        }
-        const sliceData = sliceCanvas.toDataURL("image/jpeg", 0.92);
-        const sliceScaledH = srcH * ratio;
-        pdf.addImage(sliceData, "JPEG", margin, margin, usableW, sliceScaledH);
-
-        // Page number
-        pdf.setFontSize(8);
-        pdf.setTextColor(150);
-        pdf.text(`Page ${page + 1} / ${totalPages}`, A4_W - margin - 60, A4_H - 10);
-      }
-
-      pdf.save("organigramme-uo.pdf");
-      toast({ title: "PDF exporté avec succès", description: `${totalPages} page(s) générée(s)` });
-    } catch (err) {
-      console.error(err);
-      toast({ title: "Erreur", description: "Échec de l'export PDF.", variant: "destructive" });
-    }
-  };
-
   const toggleNode = useCallback((code: string) => {
     setExpandedNodes((prev) => {
       const next = new Set(prev);
@@ -874,9 +766,6 @@ const Organigramme = () => {
             </Button>
           )}
           <div className="h-6 w-px bg-border mx-1" />
-          <Button variant="outline" size="sm" onClick={handleExportPDF} className="gap-1.5">
-            <FileDown className="h-3.5 w-3.5" /> Export PDF
-          </Button>
           <Button variant="outline" size="sm" onClick={expandAll}>Tout déplier</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Tout replier</Button>
           <div className="h-6 w-px bg-border mx-1" />
@@ -953,7 +842,6 @@ const Organigramme = () => {
                 onWheel={handleWheel}
               >
                 <div
-                  ref={treeContentRef}
                   className="inline-flex flex-col items-center gap-0 min-w-max"
                   style={{ transform: `scale(${zoom})`, transformOrigin: "top left" }}
                 >
