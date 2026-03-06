@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import {
   Table,
@@ -66,30 +67,40 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [showUpCiteFirst, setShowUpCiteFirst] = useState(false);
   const { toast } = useToast();
 
-  // Clé pour le localStorage basée sur le titre
-  const storageKey = `favorites-${title.toLowerCase().replace(/\s+/g, '-')}`;
+  // Clé pour la table basée sur le titre
+  const tableName = `favorites-${title.toLowerCase().replace(/\s+/g, '-')}`;
 
-  // Charger les favoris depuis localStorage
+  // Charger les favoris depuis la base de données
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey);
-    if (stored) {
-      try {
-        setFavorites(new Set(JSON.parse(stored)));
-      } catch (e) {
-        console.error('Erreur lors du chargement des favoris:', e);
+    const loadFavorites = async () => {
+      const { data: rows, error } = await supabase
+        .from('favorites')
+        .select('item_id')
+        .eq('table_name', tableName);
+      if (!error && rows) {
+        setFavorites(new Set(rows.map((r: any) => r.item_id)));
       }
-    }
-  }, [storageKey]);
+    };
+    loadFavorites();
+  }, [tableName]);
 
-  // Sauvegarder les favoris dans localStorage
-  const saveFavorites = (newFavorites: Set<string>) => {
-    localStorage.setItem(storageKey, JSON.stringify(Array.from(newFavorites)));
-    setFavorites(newFavorites);
-  };
+  // Sauvegarder un favori dans la base de données
+  const saveFavorite = useCallback(async (itemId: string, add: boolean) => {
+    if (add) {
+      await supabase.from('favorites').upsert(
+        { table_name: tableName, item_id: itemId },
+        { onConflict: 'table_name,item_id' }
+      );
+    } else {
+      await supabase.from('favorites')
+        .delete()
+        .eq('table_name', tableName)
+        .eq('item_id', itemId);
+    }
+  }, [tableName]);
 
   // Générer un ID unique pour un item
   const getItemId = (item: T, index: number) => {
-    // Utiliser les premières colonnes comme identifiant unique
     const firstColumn = columns[0]?.key;
     return `${item[firstColumn]}-${index}`;
   };
@@ -97,12 +108,14 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   // Toggle favori
   const toggleFavorite = (itemId: string) => {
     const newFavorites = new Set(favorites);
-    if (newFavorites.has(itemId)) {
-      newFavorites.delete(itemId);
-    } else {
+    const adding = !newFavorites.has(itemId);
+    if (adding) {
       newFavorites.add(itemId);
+    } else {
+      newFavorites.delete(itemId);
     }
-    saveFavorites(newFavorites);
+    setFavorites(newFavorites);
+    saveFavorite(itemId, adding);
   };
 
   useEffect(() => {
