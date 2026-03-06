@@ -255,39 +255,34 @@ const TreeBranch = ({
   const colorStyle = colorInfo ? getNodeColorStyle(colorInfo.color, colorInfo.depth, isSelected, isHighlighted) : undefined;
 
   return (
-    <div className="flex flex-col items-center">
-      <OrgNodeCard
-        node={node}
-        isExpanded={isExpanded}
-        onToggle={() => toggleNode(node.code_uo)}
-        onSelect={() => setSelectedNode(node.code_uo === selectedNode ? null : node.code_uo)}
-        isSelected={isSelected}
-        isHighlighted={isHighlighted}
-        depth={depth}
-        colorStyle={colorStyle}
-        selectionMode={selectionMode}
-        isChecked={checkedNodes?.has(node.code_uo)}
-        onCheck={onCheck}
-      />
+    <div className="flex items-start">
+      <div className="flex flex-col items-center">
+        <OrgNodeCard
+          node={node}
+          isExpanded={isExpanded}
+          onToggle={() => toggleNode(node.code_uo)}
+          onSelect={() => setSelectedNode(node.code_uo === selectedNode ? null : node.code_uo)}
+          isSelected={isSelected}
+          isHighlighted={isHighlighted}
+          depth={depth}
+          colorStyle={colorStyle}
+          selectionMode={selectionMode}
+          isChecked={checkedNodes?.has(node.code_uo)}
+          onCheck={onCheck}
+        />
+      </div>
       
       {hasChildren && isExpanded && (
-        <>
-          <div className="w-px h-4 bg-border" />
-          {node.children.length > 1 && (
-            <div className="relative w-full flex justify-center">
-              <div 
-                className="h-px bg-border absolute top-0"
-                style={{
-                  left: `${100 / (node.children.length * 2)}%`,
-                  right: `${100 / (node.children.length * 2)}%`,
-                }}
-              />
-            </div>
-          )}
-          <div className="flex gap-3 pt-0">
+        <div className="flex items-start">
+          <div className="flex flex-col justify-center self-stretch">
+            <div className="h-px w-4 bg-border mt-5" />
+          </div>
+          <div className="flex flex-col gap-2">
             {node.children.map((child) => (
-              <div key={child.code_uo} className="flex flex-col items-center">
-                <div className="w-px h-4 bg-border" />
+              <div key={child.code_uo} className="flex items-start">
+                <div className="flex flex-col justify-center self-stretch">
+                  <div className="h-px w-4 bg-border" />
+                </div>
                 <TreeBranch
                   node={child}
                   expandedNodes={expandedNodes}
@@ -304,7 +299,7 @@ const TreeBranch = ({
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
