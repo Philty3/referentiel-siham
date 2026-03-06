@@ -652,19 +652,47 @@ const Organigramme = () => {
   const treeContentRef = useRef<HTMLDivElement>(null);
 
   const handleExportPDF = async () => {
-    const el = viewMode === "tree" ? treeContentRef.current : containerRef.current;
-    if (!el) {
+    const treeEl = treeContentRef.current;
+    const scrollEl = containerRef.current;
+    if (viewMode !== "tree" || !treeEl || !scrollEl) {
       toast({ title: "Erreur", description: "Passez en vue Arbre pour exporter en PDF.", variant: "destructive" });
       return;
     }
     toast({ title: "Export en cours...", description: "Génération du PDF, veuillez patienter." });
     try {
-      const canvas = await html2canvas(el, {
-        scale: 2,
+      // Save original styles
+      const origOverflow = scrollEl.style.overflow;
+      const origHeight = scrollEl.style.height;
+      const origMaxHeight = scrollEl.style.maxHeight;
+      const origTransform = treeEl.style.transform;
+      const origTransformOrigin = treeEl.style.transformOrigin;
+
+      // Temporarily expand container to full size & reset zoom for clean capture
+      scrollEl.style.overflow = "visible";
+      scrollEl.style.height = "auto";
+      scrollEl.style.maxHeight = "none";
+      treeEl.style.transform = "scale(1)";
+      treeEl.style.transformOrigin = "top left";
+
+      // Wait for reflow
+      await new Promise(r => setTimeout(r, 100));
+
+      const canvas = await html2canvas(treeEl, {
+        scale: 1.5,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
+        windowWidth: treeEl.scrollWidth + 100,
+        windowHeight: treeEl.scrollHeight + 100,
       });
+
+      // Restore original styles
+      scrollEl.style.overflow = origOverflow;
+      scrollEl.style.height = origHeight;
+      scrollEl.style.maxHeight = origMaxHeight;
+      treeEl.style.transform = origTransform;
+      treeEl.style.transformOrigin = origTransformOrigin;
+
       const imgData = canvas.toDataURL("image/png");
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
@@ -672,9 +700,9 @@ const Organigramme = () => {
       const pdf = new jsPDF({
         orientation,
         unit: "px",
-        format: [imgWidth, imgHeight],
+        format: [imgWidth + 40, imgHeight + 40],
       });
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
       pdf.save("organigramme-uo.pdf");
       toast({ title: "PDF exporté avec succès" });
     } catch (err) {
