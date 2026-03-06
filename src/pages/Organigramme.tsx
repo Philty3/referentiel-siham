@@ -675,15 +675,27 @@ const Organigramme = () => {
       treeEl.style.transformOrigin = "top left";
 
       // Wait for reflow
-      await new Promise(r => setTimeout(r, 100));
+      await new Promise(r => setTimeout(r, 200));
+
+      // Measure actual content size
+      const contentWidth = treeEl.scrollWidth;
+      const contentHeight = treeEl.scrollHeight;
+
+      // jsPDF max is 14400 userUnit. Scale down html2canvas if needed.
+      const MAX_PDF = 14300;
+      const scaleForWidth = contentWidth > MAX_PDF ? MAX_PDF / contentWidth : 1;
+      const scaleForHeight = contentHeight > MAX_PDF ? MAX_PDF / contentHeight : 1;
+      const captureScale = Math.min(scaleForWidth, scaleForHeight, 1);
 
       const canvas = await html2canvas(treeEl, {
-        scale: 1,
+        scale: captureScale,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
-        windowWidth: treeEl.scrollWidth + 100,
-        windowHeight: treeEl.scrollHeight + 100,
+        width: contentWidth,
+        height: contentHeight,
+        windowWidth: contentWidth + 100,
+        windowHeight: contentHeight + 100,
       });
 
       // Restore original styles
@@ -693,18 +705,50 @@ const Organigramme = () => {
       treeEl.style.transform = origTransform;
       treeEl.style.transformOrigin = origTransformOrigin;
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.92);
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
-      const orientation = imgWidth > imgHeight ? "landscape" : "portrait";
-      const pdf = new jsPDF({
-        orientation,
-        unit: "px",
-        format: [imgWidth + 40, imgHeight + 40],
-      });
-      pdf.addImage(imgData, "JPEG", 20, 20, imgWidth, imgHeight);
+
+      // Split into A4 landscape pages if image is very large
+      const A4_W = 841.89; // A4 landscape width in pt
+      const A4_H = 595.28; // A4 landscape height in pt
+      const margin = 20;
+      const usableW = A4_W - margin * 2;
+      const usableH = A4_H - margin * 2;
+
+      // Scale image to fit page width, then paginate vertically
+      const ratio = usableW / imgWidth;
+      const scaledH = imgHeight * ratio;
+      const totalPages = Math.ceil(scaledH / usableH);
+
+      const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
+
+      for (let page = 0; page < totalPages; page++) {
+        if (page > 0) pdf.addPage("a4", "landscape");
+
+        // Create a temporary canvas for this page slice
+        const sliceCanvas = document.createElement("canvas");
+        const srcY = Math.round((page * usableH / ratio));
+        const srcH = Math.min(Math.round(usableH / ratio), imgHeight - srcY);
+        sliceCanvas.width = imgWidth;
+        sliceCanvas.height = srcH;
+        const ctx = sliceCanvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+          ctx.drawImage(canvas, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
+        }
+        const sliceData = sliceCanvas.toDataURL("image/jpeg", 0.92);
+        const sliceScaledH = srcH * ratio;
+        pdf.addImage(sliceData, "JPEG", margin, margin, usableW, sliceScaledH);
+
+        // Page number
+        pdf.setFontSize(8);
+        pdf.setTextColor(150);
+        pdf.text(`Page ${page + 1} / ${totalPages}`, A4_W - margin - 60, A4_H - 10);
+      }
+
       pdf.save("organigramme-uo.pdf");
-      toast({ title: "PDF exporté avec succès" });
+      toast({ title: "PDF exporté avec succès", description: `${totalPages} page(s) générée(s)` });
     } catch (err) {
       console.error(err);
       toast({ title: "Erreur", description: "Échec de l'export PDF.", variant: "destructive" });
