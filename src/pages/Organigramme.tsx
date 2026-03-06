@@ -678,7 +678,7 @@ const Organigramme = () => {
       await new Promise(r => setTimeout(r, 100));
 
       const canvas = await html2canvas(treeEl, {
-        scale: 1.5,
+        scale: 1,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
@@ -693,7 +693,7 @@ const Organigramme = () => {
       treeEl.style.transform = origTransform;
       treeEl.style.transformOrigin = origTransformOrigin;
 
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/jpeg", 0.92);
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
       const orientation = imgWidth > imgHeight ? "landscape" : "portrait";
@@ -702,7 +702,7 @@ const Organigramme = () => {
         unit: "px",
         format: [imgWidth + 40, imgHeight + 40],
       });
-      pdf.addImage(imgData, "PNG", 20, 20, imgWidth, imgHeight);
+      pdf.addImage(imgData, "JPEG", 20, 20, imgWidth, imgHeight);
       pdf.save("organigramme-uo.pdf");
       toast({ title: "PDF exporté avec succès" });
     } catch (err) {
