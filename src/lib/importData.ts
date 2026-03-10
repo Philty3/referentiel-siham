@@ -72,7 +72,7 @@ const mappings: TableMapping[] = [
     columns: ["code_uai","nom_etablissement","type_etablissement","adresse","code_postal","ville","academie","telephone","email"],
   },
   {
-    table: "uo", file: "/data/uo.xlsx", sheet: 1, minColumns: 1,
+    table: "uo", file: "/data/uo.xlsx", sheet: 0, minColumns: 1,
     columns: ["code_uo","libelle_long","libelle_court","code_uo_mere","type","niveau","code_uai","statut","responsable_composante","responsable_administratif","numero_voie","complement_adresse","adresse","code_postal","ville","code_uo_p5_p7","code_uo_bis","code_uo_site_associe","groupe_eval","groupe_phare"],
   },
   {
