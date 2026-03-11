@@ -692,6 +692,7 @@ export type Database = {
           groupe_eval: string | null
           groupe_phare: string | null
           id: string
+          is_highlighted: boolean
           libelle_court: string | null
           libelle_long: string | null
           niveau: string | null
@@ -716,6 +717,7 @@ export type Database = {
           groupe_eval?: string | null
           groupe_phare?: string | null
           id?: string
+          is_highlighted?: boolean
           libelle_court?: string | null
           libelle_long?: string | null
           niveau?: string | null
@@ -740,6 +742,7 @@ export type Database = {
           groupe_eval?: string | null
           groupe_phare?: string | null
           id?: string
+          is_highlighted?: boolean
           libelle_court?: string | null
           libelle_long?: string | null
           niveau?: string | null

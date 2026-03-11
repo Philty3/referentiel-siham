@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { supabase } from "@/integrations/supabase/client";
 import { formatExcelDate } from "@/lib/dateValidator";
 
@@ -98,6 +99,13 @@ export async function importTable(
 
   try {
     onProgress?.(`Lecture du fichier ${mapping.file}...`);
+
+    // Special handling for UO: use ExcelJS to detect red rows
+    if (tableName === "uo") {
+      const { importUOWithStyles } = await import("@/lib/importUOWithStyles");
+      return importUOWithStyles(onProgress);
+    }
+
     let jsonData = await readExcelFile(mapping.file, mapping.sheet || 0);
 
     // Merge extra files if any
@@ -132,10 +140,8 @@ export async function importTable(
     // Clear existing data except items marked as code_up_cite
     const tablesToProtect = ["uo", "centres_couts"];
     if (tablesToProtect.includes(mapping.table)) {
-      // For uo and centres_couts, delete all (no code_up_cite column)
       await supabase.from(mapping.table as any).delete().neq("id", "00000000-0000-0000-0000-000000000000");
     } else {
-      // For other tables, preserve items marked as code_up_cite
       await supabase.from(mapping.table as any).delete().eq("code_up_cite", false);
     }
 

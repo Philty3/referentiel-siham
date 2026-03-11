@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download } from "lucide-react";
+import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download, Circle } from "lucide-react";
 import logoUpCite from "@/assets/logo-up-cite.png";
 import { useToast } from "@/hooks/use-toast";
 
@@ -40,6 +40,8 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   hideSearchField?: boolean;
   onExport?: () => void;
   showUpCiteIcon?: boolean;
+  showHighlighted?: boolean;
+  highlightedField?: string;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -57,6 +59,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   hideSearchField = false,
   onExport,
   showUpCiteIcon = false,
+  showHighlighted = false,
+  highlightedField,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,6 +69,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showFavoritesFirst, setShowFavoritesFirst] = useState(false);
   const [showUpCiteFirst, setShowUpCiteFirst] = useState(false);
+  const [showHighlightedOnly, setShowHighlightedOnly] = useState(false);
   const { toast } = useToast();
 
   // Clé pour la table basée sur le titre
@@ -130,6 +135,11 @@ export function DataTableWithPagination<T extends Record<string, any>>({
       );
     }
 
+    // Filtrer uniquement les lignes surlignées si activé
+    if (showHighlightedOnly && highlightedField) {
+      result = result.filter((item) => !!item[highlightedField]);
+    }
+
     // Trier les favoris en premier si activé
     if (showFavoritesFirst) {
       result.sort((a, b) => {
@@ -157,7 +167,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, favorites]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -236,6 +246,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                   Codes UP Cité
                 </Button>
               )}
+              {showHighlighted && highlightedField && (
+                <Button
+                  size="sm"
+                  variant={showHighlightedOnly ? "default" : "outline"}
+                  onClick={() => setShowHighlightedOnly(!showHighlightedOnly)}
+                  className="h-9 gap-2 whitespace-nowrap"
+                >
+                  <Circle className="h-3 w-3 fill-destructive text-destructive" />
+                  Lignes signalées
+                </Button>
+              )}
             </div>
           </div>
         )}
@@ -292,7 +313,10 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
                         >
                           <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-center justify-center gap-1">
+                              {showHighlighted && highlightedField && row[highlightedField] && (
+                                <Circle className="h-2.5 w-2.5 fill-destructive text-destructive flex-shrink-0" />
+                              )}
                               <Checkbox
                                 checked={isFavorite}
                                 onCheckedChange={(checked) => {

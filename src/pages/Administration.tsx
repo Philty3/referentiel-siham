@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, Trash2, PlusCircle, LogOut, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { formatExcelDate } from "@/lib/dateValidator";
 
 const tableConfigs = [
@@ -119,6 +120,72 @@ const Administration = () => {
 
     try {
       const buffer = await file.arrayBuffer();
+
+      // Special handling for UO table: use ExcelJS to detect red rows
+      if (table === "uo") {
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer);
+        const worksheet = workbook.worksheets[0];
+        if (!worksheet) throw new Error("Aucune feuille trouvée");
+
+        const rows: Record<string, any>[] = [];
+        worksheet.eachRow((row, rowNumber) => {
+          if (rowNumber === 1) return;
+          const values = row.values as any[];
+          const cellValues = values.slice(1);
+          if (cellValues.length < 1) return;
+
+          const obj: Record<string, any> = {};
+          config.columns.forEach((col, idx) => {
+            const val = cellValues[idx];
+            obj[col] = val != null ? String(val) : null;
+          });
+
+          // Detect red rows
+          let hasRed = false;
+          row.eachCell({ includeEmpty: false }, (cell) => {
+            const fontColor = cell.font?.color?.argb;
+            if (fontColor) {
+              const upper = fontColor.toUpperCase();
+              if (upper.includes("FF0000") || upper.includes("CC0000") || upper.includes("FFFF0000")) hasRed = true;
+            }
+            const fill = cell.fill;
+            if (fill && fill.type === "pattern" && (fill as any).fgColor?.argb) {
+              const upper = (fill as any).fgColor.argb.toUpperCase();
+              if (upper.includes("FF0000") || upper.includes("CC0000") || upper.includes("FFFF0000")) hasRed = true;
+            }
+          });
+          obj.is_highlighted = hasRed;
+          rows.push(obj);
+        });
+
+        if (rows.length === 0) {
+          updateState(table, { status: "error", message: "Aucune donnée trouvée dans le fichier" });
+          return;
+        }
+
+        if (mode === "replace") {
+          updateState(table, { status: "loading", message: "Suppression des données existantes..." });
+          const { error: delError } = await supabase.from(table as any).delete().neq("id", "00000000-0000-0000-0000-000000000000");
+          if (delError) throw new Error(delError.message);
+        }
+
+        updateState(table, { status: "loading", message: `Insertion de ${rows.length} lignes...` });
+        const batchSize = 500;
+        for (let i = 0; i < rows.length; i += batchSize) {
+          const batch = rows.slice(i, i + batchSize);
+          const { error } = await supabase.from(table as any).insert(batch as any);
+          if (error) throw new Error(error.message);
+          updateState(table, { status: "loading", message: `${Math.min(i + batchSize, rows.length)}/${rows.length} lignes insérées...` });
+        }
+
+        updateState(table, { status: "success", message: `✅ ${rows.length} lignes ${mode === "replace" ? "importées (remplacement)" : "ajoutées"}` });
+        toast({ title: "Import réussi", description: `${config.label}: ${rows.length} lignes ${mode === "replace" ? "importées" : "ajoutées"}` });
+        setPendingAction(null);
+        return;
+      }
+
+      // Standard handling for other tables
       const workbook = XLSX.read(buffer, { type: "array" });
       const sheetIndex = config.sheet ?? 0;
       const sheetName = workbook.SheetNames[sheetIndex] || workbook.SheetNames[0];

@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
+import { importUOWithStyles } from "@/lib/importUOWithStyles";
 
 interface UOItem {
   id?: string;
@@ -31,6 +32,7 @@ interface UOItem {
   code_uo_site_associe: string;
   groupe_eval: string;
   groupe_phare: string;
+  is_highlighted?: boolean;
 }
 
 const emptyItem: UOItem = {
@@ -48,6 +50,7 @@ const UOPage = () => {
   const [editingItem, setEditingItem] = useState<UOItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
 
   const fetchData = async () => {
@@ -80,13 +83,65 @@ const UOPage = () => {
           code_uo_site_associe: r.code_uo_site_associe || "",
           groupe_eval: r.groupe_eval || "",
           groupe_phare: r.groupe_phare || "",
+          is_highlighted: r.is_highlighted || false,
         }))
       );
     }
     setLoading(false);
   };
 
-  useEffect(() => { fetchData(); }, []);
+  const triggerImport = async () => {
+    setIsImporting(true);
+    const result = await importUOWithStyles((msg) => {
+      console.log("UO Import:", msg);
+    });
+    if (result.success) {
+      toast({ title: "Import UO réussi", description: `${result.count} lignes importées avec détection des lignes rouges.` });
+      await fetchData();
+    } else {
+      toast({ title: "Erreur d'import", description: result.error, variant: "destructive" });
+    }
+    setIsImporting(false);
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: rows } = await fetchAllRows("uo", "code_uo");
+      if (!rows || rows.length === 0) {
+        // Auto-import from public/data/uo.xlsx
+        await triggerImport();
+      } else {
+        setData(
+          rows.map((r) => ({
+            id: r.id,
+            code_uo: r.code_uo || "",
+            libelle_long: r.libelle_long || "",
+            libelle_court: r.libelle_court || "",
+            code_uo_mere: r.code_uo_mere || "",
+            type: r.type || "",
+            niveau: r.niveau || "",
+            code_uai: r.code_uai || "",
+            statut: r.statut || "",
+            responsable_composante: r.responsable_composante || "",
+            responsable_administratif: r.responsable_administratif || "",
+            numero_voie: r.numero_voie || "",
+            complement_adresse: r.complement_adresse || "",
+            adresse: r.adresse || "",
+            code_postal: r.code_postal || "",
+            ville: r.ville || "",
+            code_uo_p5_p7: r.code_uo_p5_p7 || "",
+            code_uo_bis: r.code_uo_bis || "",
+            code_uo_site_associe: r.code_uo_site_associe || "",
+            groupe_eval: r.groupe_eval || "",
+            groupe_phare: r.groupe_phare || "",
+            is_highlighted: r.is_highlighted || false,
+          }))
+        );
+        setLoading(false);
+      }
+    };
+    init();
+  }, []);
 
   const handleAdd = () => {
     setEditingItem({ ...emptyItem });
@@ -210,6 +265,8 @@ const UOPage = () => {
         onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
         onExport={() => exportPageToExcel(data, "UO", "UO")}
+        showHighlighted={true}
+        highlightedField="is_highlighted"
       />
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -225,7 +282,7 @@ const UOPage = () => {
                     <Label htmlFor={key} className="text-xs">{label}</Label>
                     <Input
                       id={key}
-                      value={editingItem[key] || ""}
+                      value={String(editingItem[key] || "")}
                       onChange={(e) => handleInputChange(key, e.target.value)}
                       className="text-sm"
                     />
