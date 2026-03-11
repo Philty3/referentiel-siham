@@ -90,9 +90,10 @@ const UOPage = () => {
   };
 
   useEffect(() => {
-    fetchData().then(() => {
-      // Auto-import if table is empty
-    });
+    const init = async () => {
+      await fetchData();
+    };
+    init();
   }, []);
 
   const handleAdd = () => {
