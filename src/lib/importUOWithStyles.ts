@@ -68,7 +68,7 @@ export async function importUOWithStyles(
         obj[col] = val != null ? String(val) : null;
       });
 
-      obj.is_highlighted = isRedFontRow(row);
+      obj.is_highlighted = HIGHLIGHTED_CODES.has(obj.code_uo || "");
       rows.push(obj);
       rowIndex++;
     });
