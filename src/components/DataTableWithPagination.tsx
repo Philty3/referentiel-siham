@@ -69,6 +69,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showFavoritesFirst, setShowFavoritesFirst] = useState(false);
   const [showUpCiteFirst, setShowUpCiteFirst] = useState(false);
+  const [showHighlightedOnly, setShowHighlightedOnly] = useState(false);
   const { toast } = useToast();
 
   // Clé pour la table basée sur le titre
