@@ -50,6 +50,7 @@ const UOPage = () => {
   const [editingItem, setEditingItem] = useState<UOItem | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
 
   const fetchData = async () => {
