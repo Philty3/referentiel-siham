@@ -378,7 +378,10 @@ const TreeListItem = ({
         ) : (
           <Minus className="h-3.5 w-3.5 text-muted-foreground/40 flex-shrink-0 ml-0.5" />
         )}
-        <span className="font-mono text-[10px] text-muted-foreground w-24 flex-shrink-0">{node.code_uo}</span>
+        <span className="font-mono text-[10px] text-muted-foreground w-24 flex-shrink-0 flex items-center gap-1">
+          {node.is_highlighted && <Circle className="h-2 w-2 fill-destructive text-destructive flex-shrink-0" />}
+          {node.code_uo}
+        </span>
         <span className="truncate">{node.libelle_long || node.libelle_court}</span>
         {hasChildren && (
           <span className="text-[10px] text-muted-foreground ml-auto flex-shrink-0">({node.children.length})</span>
