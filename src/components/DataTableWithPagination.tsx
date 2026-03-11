@@ -313,7 +313,10 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
                         >
                           <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
-                            <div className="flex items-center justify-center">
+                            <div className="flex items-center justify-center gap-1">
+                              {showHighlighted && highlightedField && row[highlightedField] && (
+                                <Circle className="h-2.5 w-2.5 fill-destructive text-destructive flex-shrink-0" />
+                              )}
                               <Checkbox
                                 checked={isFavorite}
                                 onCheckedChange={(checked) => {
