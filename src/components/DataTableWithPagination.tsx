@@ -135,6 +135,11 @@ export function DataTableWithPagination<T extends Record<string, any>>({
       );
     }
 
+    // Filtrer uniquement les lignes surlignées si activé
+    if (showHighlightedOnly && highlightedField) {
+      result = result.filter((item) => !!item[highlightedField]);
+    }
+
     // Trier les favoris en premier si activé
     if (showFavoritesFirst) {
       result.sort((a, b) => {
@@ -162,7 +167,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, favorites]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
