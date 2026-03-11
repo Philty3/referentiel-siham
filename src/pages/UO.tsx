@@ -229,7 +229,7 @@ const UOPage = () => {
                     <Label htmlFor={key} className="text-xs">{label}</Label>
                     <Input
                       id={key}
-                      value={editingItem[key] || ""}
+                      value={String(editingItem[key] || "")}
                       onChange={(e) => handleInputChange(key, e.target.value)}
                       className="text-sm"
                     />
