@@ -246,6 +246,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                   Codes UP Cité
                 </Button>
               )}
+              {showHighlighted && highlightedField && (
+                <Button
+                  size="sm"
+                  variant={showHighlightedOnly ? "default" : "outline"}
+                  onClick={() => setShowHighlightedOnly(!showHighlightedOnly)}
+                  className="h-9 gap-2 whitespace-nowrap"
+                >
+                  <Circle className="h-3 w-3 fill-destructive text-destructive" />
+                  Lignes signalées
+                </Button>
+              )}
             </div>
           </div>
         )}
