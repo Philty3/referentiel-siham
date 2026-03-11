@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Upload, Trash2, PlusCircle, LogOut, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { formatExcelDate } from "@/lib/dateValidator";
 
 const tableConfigs = [
