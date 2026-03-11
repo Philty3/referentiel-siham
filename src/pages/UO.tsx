@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
+import { importUOWithStyles } from "@/lib/importUOWithStyles";
 
 interface UOItem {
   id?: string;
