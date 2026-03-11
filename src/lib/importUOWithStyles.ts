@@ -8,29 +8,19 @@ const UO_COLUMNS = [
   "code_uo_p5_p7", "code_uo_bis", "code_uo_site_associe", "groupe_eval", "groupe_phare",
 ];
 
-function isRedRow(row: ExcelJS.Row): boolean {
-  // Check if any cell in the row has red font or red fill
-  let hasRed = false;
+function isRedFontRow(row: ExcelJS.Row): boolean {
+  // Only flag rows where the FONT color is red (optionally strikethrough)
+  let hasRedFont = false;
   row.eachCell({ includeEmpty: false }, (cell) => {
-    // Check font color
-    const fontColor = cell.font?.color;
-    if (fontColor?.argb) {
-      const argb = fontColor.argb.toUpperCase();
-      // Red-ish colors: FF0000, CC0000, etc.
+    const font = cell.font;
+    if (font?.color?.argb) {
+      const argb = font.color.argb.toUpperCase();
       if (argb.includes("FF0000") || argb.includes("CC0000") || argb.includes("FF3333") || argb.includes("FFFF0000")) {
-        hasRed = true;
-      }
-    }
-    // Check fill color
-    const fill = cell.fill;
-    if (fill && fill.type === "pattern" && fill.fgColor?.argb) {
-      const argb = fill.fgColor.argb.toUpperCase();
-      if (argb.includes("FF0000") || argb.includes("CC0000") || argb.includes("FF3333") || argb.includes("FFFF0000")) {
-        hasRed = true;
+        hasRedFont = true;
       }
     }
   });
-  return hasRed;
+  return hasRedFont;
 }
 
 export async function importUOWithStyles(
@@ -68,7 +58,7 @@ export async function importUOWithStyles(
         obj[col] = val != null ? String(val) : null;
       });
 
-      obj.is_highlighted = isRedRow(row);
+      obj.is_highlighted = isRedFontRow(row);
       rows.push(obj);
       rowIndex++;
     });
