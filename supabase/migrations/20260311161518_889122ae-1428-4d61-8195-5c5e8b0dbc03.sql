@@ -1,0 +1,1 @@
+ALTER TABLE public.uo ADD COLUMN IF NOT EXISTS is_highlighted boolean NOT NULL DEFAULT false;
