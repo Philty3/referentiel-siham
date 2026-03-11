@@ -203,7 +203,10 @@ const OrgNodeCard = ({
           </button>
         )}
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-mono text-muted-foreground leading-tight">{node.code_uo}</p>
+          <p className="text-[10px] font-mono text-muted-foreground leading-tight flex items-center gap-1">
+            {node.is_highlighted && <Circle className="h-2 w-2 fill-destructive text-destructive flex-shrink-0" />}
+            {node.code_uo}
+          </p>
           <p className="text-xs font-semibold text-foreground leading-tight mt-0.5 line-clamp-2">
             {node.libelle_long || node.libelle_court}
           </p>
