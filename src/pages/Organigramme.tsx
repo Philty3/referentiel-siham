@@ -439,7 +439,7 @@ const Organigramme = () => {
 
     const nodeMap = new Map<string, UONode>();
     (rows || []).forEach((r: any) => {
-      const node: UONode = { id: r.id, children: [] } as any;
+      const node: UONode = { id: r.id, is_highlighted: r.is_highlighted || false, children: [] } as any;
       uoFields.forEach(f => { (node as any)[f.key] = r[f.key] || ""; });
       nodeMap.set(node.code_uo, node);
     });
