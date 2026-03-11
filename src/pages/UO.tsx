@@ -212,6 +212,8 @@ const UOPage = () => {
         onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
         onExport={() => exportPageToExcel(data, "UO", "UO")}
+        showHighlighted={true}
+        highlightedField="is_highlighted"
       />
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
