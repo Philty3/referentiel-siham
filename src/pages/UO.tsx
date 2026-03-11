@@ -31,6 +31,7 @@ interface UOItem {
   code_uo_site_associe: string;
   groupe_eval: string;
   groupe_phare: string;
+  is_highlighted?: boolean;
 }
 
 const emptyItem: UOItem = {
