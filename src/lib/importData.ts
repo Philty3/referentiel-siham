@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { supabase } from "@/integrations/supabase/client";
 import { formatExcelDate } from "@/lib/dateValidator";
 
