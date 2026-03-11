@@ -58,7 +58,7 @@ export async function importUOWithStyles(
         obj[col] = val != null ? String(val) : null;
       });
 
-      obj.is_highlighted = isRedRow(row);
+      obj.is_highlighted = isRedFontRow(row);
       rows.push(obj);
       rowIndex++;
     });
