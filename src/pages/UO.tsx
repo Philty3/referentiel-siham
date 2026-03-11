@@ -89,7 +89,11 @@ const UOPage = () => {
     setLoading(false);
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    fetchData().then(() => {
+      // Auto-import if table is empty
+    });
+  }, []);
 
   const handleAdd = () => {
     setEditingItem({ ...emptyItem });
