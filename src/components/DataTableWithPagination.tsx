@@ -40,6 +40,8 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   hideSearchField?: boolean;
   onExport?: () => void;
   showUpCiteIcon?: boolean;
+  showHighlighted?: boolean;
+  highlightedField?: string;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
