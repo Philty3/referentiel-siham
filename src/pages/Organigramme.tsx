@@ -63,32 +63,33 @@ const emptyUO: Omit<UONode, "children"> = Object.fromEntries(
   uoFields.map(f => [f.key, ""])
 ) as any;
 
-// Palette pastel bleu/teal pour les branches de niveau 2 (HSL) - lisible avec texte noir
+// Palette de couleurs distinctes pour chaque branche de niveau 2 (HSL: hue, saturation%, lightness%)
+// Couleurs suffisamment saturées au niveau 2, puis éclaircies aux niveaux suivants
 const BRANCH_COLORS: [number, number, number][] = [
-  [197, 60, 82],   // bleu canard clair
-  [225, 50, 85],   // bleu nuit pastel
-  [220, 55, 83],   // bleu royal pastel
-  [210, 60, 84],   // bleu vif pastel
-  [200, 55, 82],   // bleu azur pastel
-  [207, 50, 83],   // bleu ciel pastel
-  [214, 55, 85],   // bleu cobalt pastel
-  [195, 50, 82],   // bleu cyan pastel
-  [222, 45, 86],   // bleu lavande
-  [160, 40, 84],   // vert-bleu pastel
-  [174, 45, 82],   // teal pastel
-  [190, 45, 84],   // bleu-gris pastel
-  [165, 45, 83],   // menthe pastel
-  [185, 50, 85],   // cyan pastel
-  [175, 40, 84],   // turquoise pastel
-  [180, 45, 83],   // aigue-marine pastel
-  [205, 45, 84],   // acier pastel
-  [215, 50, 86],   // pervenche pastel
-  [192, 45, 83],   // bleu poudre
-  [170, 40, 84],   // jade pastel
-  [200, 40, 85],   // bleu cendré
-  [188, 45, 83],   // bleu nordique
-  [210, 45, 86],   // bleu glacier
-  [195, 50, 84],   // bleu arctique
+  [210, 65, 72],   // bleu
+  [340, 60, 72],   // rose
+  [160, 55, 68],   // vert émeraude
+  [30, 65, 72],    // orange
+  [270, 50, 74],   // violet
+  [180, 55, 68],   // teal
+  [50, 60, 70],    // jaune doré
+  [0, 55, 72],     // rouge brique
+  [140, 50, 70],   // vert sauge
+  [300, 45, 74],   // magenta
+  [190, 60, 70],   // cyan
+  [20, 60, 72],    // corail
+  [240, 50, 74],   // indigo
+  [90, 45, 70],    // vert lime
+  [320, 50, 74],   // fuchsia
+  [170, 50, 68],   // menthe
+  [40, 55, 70],    // ambre
+  [260, 45, 74],   // lavande
+  [120, 45, 68],   // vert forêt
+  [350, 55, 74],   // framboise
+  [200, 55, 72],   // bleu acier
+  [60, 50, 68],    // olive doré
+  [280, 45, 74],   // prune
+  [150, 50, 68],   // jade
 ];
 
 // Build a map: code_uo -> { color (HSL tuple), depth } where color comes from the niveau 2 ancestor
@@ -112,14 +113,17 @@ function buildColorMap(roots: UONode[]): Map<string, { color: [number, number, n
   return map;
 }
 
-// Dégrade la couleur pastel du niveau 2 vers le blanc selon la profondeur
+// Éclaircit progressivement la couleur de base selon la profondeur par rapport au niveau 2
+// Niveau 2 = couleur de base, niveau 3 = plus clair, niveau 4 = encore plus clair, etc.
 function degradeColor(base: [number, number, number], depth: number): [number, number, number] {
+  // depth 1 = niveau 2 (la branche elle-même), depth 2 = niveau 3, etc.
   const depthFromBranch = Math.max(0, depth - 1);
-  const factor = Math.min(depthFromBranch * 0.15, 0.6);
+  // Chaque niveau ajoute ~8% de clarté, réduit la saturation de ~12%
+  const factor = Math.min(depthFromBranch * 0.18, 0.72);
   const h = base[0];
-  const s = base[1] * (1 - factor * 0.5);
-  const l = base[2] + (100 - base[2]) * factor;
-  return [h, Math.max(10, s), Math.min(97, l)];
+  const s = base[1] * (1 - factor * 0.6);
+  const l = base[2] + (96 - base[2]) * factor;
+  return [h, Math.max(8, s), Math.min(96, l)];
 }
 
 function getNodeColorStyle(color: [number, number, number], depth: number, isSelected: boolean, isHighlighted: boolean) {
