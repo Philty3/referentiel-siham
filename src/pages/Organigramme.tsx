@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare } from "lucide-react";
+import { ChevronDown, ChevronRight, Search, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Pencil, Trash2, ArrowUp, X, CheckSquare, Circle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -32,6 +32,7 @@ interface UONode {
   code_uo_site_associe: string;
   groupe_eval: string;
   groupe_phare: string;
+  is_highlighted?: boolean;
   children: UONode[];
 }
 
@@ -202,7 +203,10 @@ const OrgNodeCard = ({
           </button>
         )}
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-mono text-muted-foreground leading-tight">{node.code_uo}</p>
+          <p className="text-[10px] font-mono text-muted-foreground leading-tight flex items-center gap-1">
+            {node.is_highlighted && <Circle className="h-2 w-2 fill-destructive text-destructive flex-shrink-0" />}
+            {node.code_uo}
+          </p>
           <p className="text-xs font-semibold text-foreground leading-tight mt-0.5 line-clamp-2">
             {node.libelle_long || node.libelle_court}
           </p>
@@ -374,7 +378,10 @@ const TreeListItem = ({
         ) : (
           <Minus className="h-3.5 w-3.5 text-muted-foreground/40 flex-shrink-0 ml-0.5" />
         )}
-        <span className="font-mono text-[10px] text-muted-foreground w-24 flex-shrink-0">{node.code_uo}</span>
+        <span className="font-mono text-[10px] text-muted-foreground w-24 flex-shrink-0 flex items-center gap-1">
+          {node.is_highlighted && <Circle className="h-2 w-2 fill-destructive text-destructive flex-shrink-0" />}
+          {node.code_uo}
+        </span>
         <span className="truncate">{node.libelle_long || node.libelle_court}</span>
         {hasChildren && (
           <span className="text-[10px] text-muted-foreground ml-auto flex-shrink-0">({node.children.length})</span>
@@ -438,7 +445,7 @@ const Organigramme = () => {
 
     const nodeMap = new Map<string, UONode>();
     (rows || []).forEach((r: any) => {
-      const node: UONode = { id: r.id, children: [] } as any;
+      const node: UONode = { id: r.id, is_highlighted: r.is_highlighted || false, children: [] } as any;
       uoFields.forEach(f => { (node as any)[f.key] = r[f.key] || ""; });
       nodeMap.set(node.code_uo, node);
     });
