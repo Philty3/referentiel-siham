@@ -81,6 +81,7 @@ const UOPage = () => {
           code_uo_site_associe: r.code_uo_site_associe || "",
           groupe_eval: r.groupe_eval || "",
           groupe_phare: r.groupe_phare || "",
+          is_highlighted: r.is_highlighted || false,
         }))
       );
     }
