@@ -252,6 +252,7 @@ export const Navigation = () => {
               {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
             </Button>
 
+            {isAdmin ? (
               <NavLink to="/administration">
                 <Button
                   variant="outline"
