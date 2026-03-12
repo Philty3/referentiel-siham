@@ -104,7 +104,7 @@ export const Navigation = () => {
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 w-full glass-strong border-b transition-all duration-500 ${
+        className={`sticky top-0 z-50 w-full border-b bg-card transition-all duration-500 ${
           scrolled
             ? "border-primary/30 shadow-[0_4px_30px_-4px_hsl(var(--neon-cyan)/0.2)]"
             : "border-border/50"
