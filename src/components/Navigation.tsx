@@ -290,7 +290,7 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-primary/10 glass-strong animate-accordion-down">
+          <div className="lg:hidden border-t border-primary/10 bg-card animate-accordion-down">
             <div className="p-4 border-b border-primary/10">
               <p className="text-xs font-display font-semibold text-primary tracking-[0.15em] uppercase">
                 Menu du référentiel
