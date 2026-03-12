@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FileSpreadsheet, Database, Search, FileText } from "lucide-react";
+import { Database, Search, FileText } from "lucide-react";
+import logoSiham from "@/assets/logo-siham.png";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -373,7 +374,7 @@ const Index = () => {
         {/* Hero Section */}
         <div className="mb-8 sm:mb-16 text-center">
           <div className="mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full bg-primary/10 p-3 sm:p-4">
-            <FileSpreadsheet className="h-10 w-10 sm:h-16 sm:w-16 text-primary" />
+            <img src={logoSiham} alt="Logo SIHAM" className="h-10 w-10 sm:h-16 sm:w-16" />
           </div>
           <h1 className="mb-3 sm:mb-4 text-3xl sm:text-5xl font-bold text-foreground">
             Référentiel SIHAM
