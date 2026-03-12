@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "sans-serif"],
-        body: ["Rajdhani", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        display: ["Orbitron", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        body: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        mono: ["Menlo", "Monaco", "Courier New", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",
