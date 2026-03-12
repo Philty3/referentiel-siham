@@ -242,7 +242,16 @@ export const Navigation = () => {
               {isExporting ? "Export..." : "Export"}
             </Button>
 
-            {isAdmin ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDark(!isDark)}
+              className="gap-2 font-body font-semibold tracking-wide border-primary/20 hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-all duration-300"
+              title={isDark ? "Mode clair" : "Mode sombre"}
+            >
+              {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            </Button>
+
               <NavLink to="/administration">
                 <Button
                   variant="outline"
