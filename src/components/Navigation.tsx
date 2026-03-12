@@ -148,14 +148,14 @@ export const Navigation = () => {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 ${
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 overflow-hidden ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-md"
                   : "text-foreground hover:bg-muted hover:shadow-sm"
               }`
             }
           >
-            Accueil
+            <span className="relative z-10">Accueil</span>
           </NavLink>
         </div>
         
