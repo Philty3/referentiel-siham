@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FileSpreadsheet, Database, Search, FileText } from "lucide-react";
+import { Database, Search, FileText } from "lucide-react";
+import logoSiham from "@/assets/logo-siham.png";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
