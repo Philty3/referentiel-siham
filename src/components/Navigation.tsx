@@ -128,14 +128,17 @@ export const Navigation = () => {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 animate-fade-in">
           <div className="flex items-center gap-2">
-            <video 
-              ref={videoRef}
-              src={logoVideo}
-              autoPlay
-              muted
-              playsInline
-              className={`h-14 w-14 object-cover rounded-full transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
-            />
+            <div className="relative group">
+              <div className={`absolute -inset-1 rounded-full bg-gradient-to-r from-primary via-accent to-primary opacity-60 blur-sm group-hover:opacity-100 transition-all duration-500 animate-[spin_6s_linear_infinite] ${scrolled ? "opacity-40" : ""}`} />
+              <video 
+                ref={videoRef}
+                src={logoVideo}
+                autoPlay
+                muted
+                playsInline
+                className={`relative h-14 w-14 object-cover rounded-full ring-2 ring-card transition-all duration-500 ${scrolled ? "scale-90" : "group-hover:scale-105"}`}
+              />
+            </div>
             <span className={`text-xl font-bold text-foreground transition-all duration-300 ${scrolled ? "text-lg" : ""}`}>
               Référentiel SIHAM
             </span>
@@ -145,14 +148,14 @@ export const Navigation = () => {
           <NavLink
             to="/"
             className={({ isActive }) =>
-              `px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 ${
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:scale-105 overflow-hidden ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-md"
                   : "text-foreground hover:bg-muted hover:shadow-sm"
               }`
             }
           >
-            Accueil
+            <span className="relative z-10">Accueil</span>
           </NavLink>
         </div>
         
@@ -182,15 +185,16 @@ export const Navigation = () => {
                           to={item.path}
                           onClick={() => setDropdownOpen(false)}
                           className={({ isActive }) =>
-                            `group flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                            `group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 overflow-hidden ${
                               isActive
                                 ? "bg-primary text-primary-foreground shadow-md"
-                                : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-0.5"
+                                : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-1"
                             }`
                           }
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                          {item.name}
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300 shrink-0" />
+                          <span className="relative z-10">{item.name}</span>
+                          <span className="absolute inset-y-0 left-0 w-0 bg-accent/5 group-hover:w-full transition-all duration-300 rounded-lg" />
                         </NavLink>
                       ))}
                     </div>
