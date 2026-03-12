@@ -176,7 +176,7 @@ export const Navigation = () => {
                     onClick={() => setDropdownOpen(false)}
                   />
                   <div
-                    className="absolute right-0 top-full mt-3 rounded-xl glass-strong border border-primary/20 shadow-[0_8px_40px_-8px_hsl(var(--neon-cyan)/0.2)] z-50 animate-fade-in-up overflow-hidden"
+                    className="absolute right-0 top-full mt-3 rounded-xl bg-card border border-primary/20 shadow-[0_8px_40px_-8px_hsl(var(--neon-cyan)/0.2)] z-50 animate-fade-in-up overflow-hidden"
                     style={{ width: "min(90vw, 720px)" }}
                   >
                     {/* Top glow bar */}
