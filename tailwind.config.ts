@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Orbitron", "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        display: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
         body: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
         mono: ["Menlo", "Monaco", "Courier New", "monospace"],
       },
