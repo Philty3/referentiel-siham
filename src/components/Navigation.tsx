@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X, ChevronDown, Lock, LogIn, Hexagon, Zap } from "lucide-react";
+import { Download, Menu, X, ChevronDown, Lock, LogIn, Hexagon, Zap, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
