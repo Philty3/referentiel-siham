@@ -128,17 +128,14 @@ export const Navigation = () => {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 animate-fade-in">
           <div className="flex items-center gap-2">
-            <div className="relative group">
-              <div className={`absolute -inset-1 rounded-full bg-gradient-to-r from-primary via-accent to-primary opacity-60 blur-sm group-hover:opacity-100 transition-all duration-500 animate-[spin_6s_linear_infinite] ${scrolled ? "opacity-40" : ""}`} />
-              <video 
-                ref={videoRef}
-                src={logoVideo}
-                autoPlay
-                muted
-                playsInline
-                className={`relative h-14 w-14 object-cover rounded-full ring-2 ring-card transition-all duration-500 ${scrolled ? "scale-90" : "group-hover:scale-105"}`}
-              />
-            </div>
+            <video 
+              ref={videoRef}
+              src={logoVideo}
+              autoPlay
+              muted
+              playsInline
+              className={`h-14 w-14 object-cover rounded-full transition-transform duration-300 ${scrolled ? "scale-90" : ""}`}
+            />
             <span className={`text-xl font-bold text-foreground transition-all duration-300 ${scrolled ? "text-lg" : ""}`}>
               Référentiel SIHAM
             </span>
