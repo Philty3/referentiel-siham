@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Download, Menu, X, ChevronDown, Lock, LogIn, Hexagon, Zap } from "lucide-react";
+import { Download, Menu, X, ChevronDown, Lock, LogIn, Hexagon, Zap, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportAllDataToExcel } from "@/lib/exportToExcel";
 import { useToast } from "@/hooks/use-toast";
@@ -40,6 +40,23 @@ export const Navigation = () => {
   const [isReversing, setIsReversing] = useState(false);
   const [loginDialogOpen, setLoginDialogOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -104,7 +121,7 @@ export const Navigation = () => {
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 w-full glass-strong border-b transition-all duration-500 ${
+        className={`sticky top-0 z-50 w-full border-b bg-card transition-all duration-500 ${
           scrolled
             ? "border-primary/30 shadow-[0_4px_30px_-4px_hsl(var(--neon-cyan)/0.2)]"
             : "border-border/50"
@@ -176,7 +193,7 @@ export const Navigation = () => {
                     onClick={() => setDropdownOpen(false)}
                   />
                   <div
-                    className="absolute right-0 top-full mt-3 rounded-xl glass-strong border border-primary/20 shadow-[0_8px_40px_-8px_hsl(var(--neon-cyan)/0.2)] z-50 animate-fade-in-up overflow-hidden"
+                    className="absolute right-0 top-full mt-3 rounded-xl bg-card border border-primary/20 shadow-[0_8px_40px_-8px_hsl(var(--neon-cyan)/0.2)] z-50 animate-fade-in-up overflow-hidden"
                     style={{ width: "min(90vw, 720px)" }}
                   >
                     {/* Top glow bar */}
@@ -225,6 +242,16 @@ export const Navigation = () => {
               {isExporting ? "Export..." : "Export"}
             </Button>
 
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDark(!isDark)}
+              className="gap-2 font-body font-semibold tracking-wide border-primary/20 hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-all duration-300"
+              title={isDark ? "Mode clair" : "Mode sombre"}
+            >
+              {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            </Button>
+
             {isAdmin ? (
               <NavLink to="/administration">
                 <Button
@@ -263,7 +290,7 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-primary/10 glass-strong animate-accordion-down">
+          <div className="lg:hidden border-t border-primary/10 bg-card animate-accordion-down">
             <div className="p-4 border-b border-primary/10">
               <p className="text-xs font-display font-semibold text-primary tracking-[0.15em] uppercase">
                 Menu du référentiel

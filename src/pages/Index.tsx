@@ -317,7 +317,6 @@ const Index = () => {
   const stats = [
     { label: "Référentiels", value: "15+" },
     { label: "Tables", value: "9" },
-    { label: "Temps réel", value: "24/7" },
   ];
 
   return (
