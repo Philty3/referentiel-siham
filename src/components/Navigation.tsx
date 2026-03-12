@@ -185,15 +185,16 @@ export const Navigation = () => {
                           to={item.path}
                           onClick={() => setDropdownOpen(false)}
                           className={({ isActive }) =>
-                            `group flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                            `group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 overflow-hidden ${
                               isActive
                                 ? "bg-primary text-primary-foreground shadow-md"
-                                : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-0.5"
+                                : "text-popover-foreground hover:bg-accent/10 hover:text-accent hover:translate-x-1"
                             }`
                           }
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
-                          {item.name}
+                          <span className="w-1.5 h-1.5 rounded-full bg-current opacity-40 group-hover:opacity-100 group-hover:scale-150 transition-all duration-300 shrink-0" />
+                          <span className="relative z-10">{item.name}</span>
+                          <span className="absolute inset-y-0 left-0 w-0 bg-accent/5 group-hover:w-full transition-all duration-300 rounded-lg" />
                         </NavLink>
                       ))}
                     </div>
