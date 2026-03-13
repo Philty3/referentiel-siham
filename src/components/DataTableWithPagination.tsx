@@ -62,6 +62,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   showUpCiteIcon = false,
   showHighlighted = false,
   highlightedField,
+  extraToolbarContent,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
