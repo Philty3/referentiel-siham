@@ -42,6 +42,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   showUpCiteIcon?: boolean;
   showHighlighted?: boolean;
   highlightedField?: string;
+  extraToolbarContent?: React.ReactNode;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
