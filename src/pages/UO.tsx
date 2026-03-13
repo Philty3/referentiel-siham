@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { exportPageToExcel } from "@/lib/exportToExcel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -9,6 +9,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
+import { RefreshCw } from "lucide-react";
 
 interface UOItem {
   id?: string;
@@ -44,6 +45,78 @@ const emptyItem: UOItem = {
   groupe_eval: "", groupe_phare: "",
 };
 
+// Autocomplete input component for responsable fields
+function AutocompleteInput({
+  value,
+  onChange,
+  suggestions,
+  id,
+  className,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  suggestions: string[];
+  id?: string;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState(value);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { setInputValue(value); }, [value]);
+
+  const filtered = useMemo(() => {
+    if (!inputValue) return suggestions;
+    const lower = inputValue.toLowerCase();
+    return suggestions.filter((s) => s.toLowerCase().includes(lower));
+  }, [inputValue, suggestions]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="relative">
+      <Input
+        id={id}
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        className={className}
+        autoComplete="off"
+      />
+      {open && filtered.length > 0 && (
+        <div className="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-md border bg-popover shadow-lg">
+          {filtered.map((s) => (
+            <button
+              key={s}
+              type="button"
+              className="w-full px-3 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+              onClick={() => {
+                setInputValue(s);
+                onChange(s);
+                setOpen(false);
+              }}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const UOPage = () => {
   const [data, setData] = useState<UOItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +124,21 @@ const UOPage = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  // Bulk replace state
+  const [isReplaceDialogOpen, setIsReplaceDialogOpen] = useState(false);
+  const [replaceOldName, setReplaceOldName] = useState("");
+  const [replaceNewName, setReplaceNewName] = useState("");
+  const [isReplacing, setIsReplacing] = useState(false);
   const { toast } = useToast();
+
+  // Extract unique responsable administratif names
+  const responsableNames = useMemo(() => {
+    const names = new Set<string>();
+    data.forEach((d) => {
+      if (d.responsable_administratif?.trim()) names.add(d.responsable_administratif.trim());
+    });
+    return Array.from(names).sort((a, b) => a.localeCompare(b, "fr"));
+  }, [data]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -108,7 +195,6 @@ const UOPage = () => {
     const init = async () => {
       const { data: rows } = await fetchAllRows("uo", "code_uo");
       if (!rows || rows.length === 0) {
-        // Auto-import from public/data/uo.xlsx
         await triggerImport();
       } else {
         setData(
@@ -196,6 +282,51 @@ const UOPage = () => {
     if (editingItem) setEditingItem({ ...editingItem, [field]: value });
   };
 
+  // Bulk replace responsable administratif
+  const handleBulkReplace = async () => {
+    if (!replaceOldName.trim() || !replaceNewName.trim()) {
+      toast({ title: "Erreur", description: "Veuillez remplir les deux champs.", variant: "destructive" });
+      return;
+    }
+    setIsReplacing(true);
+    const matchingIds = data
+      .filter((d) => d.responsable_administratif === replaceOldName.trim())
+      .map((d) => d.id)
+      .filter(Boolean) as string[];
+
+    if (matchingIds.length === 0) {
+      toast({ title: "Aucune correspondance", description: `Aucune UO trouvée avec le responsable "${replaceOldName}".`, variant: "destructive" });
+      setIsReplacing(false);
+      return;
+    }
+
+    // Update in batches of 100
+    let errors = 0;
+    for (let i = 0; i < matchingIds.length; i += 100) {
+      const batch = matchingIds.slice(i, i + 100);
+      const { error } = await supabase
+        .from("uo")
+        .update({ responsable_administratif: replaceNewName.trim() } as any)
+        .in("id", batch);
+      if (error) errors++;
+    }
+
+    if (errors > 0) {
+      toast({ title: "Erreur partielle", description: "Certaines mises à jour ont échoué.", variant: "destructive" });
+    } else {
+      toast({
+        title: "Remplacement effectué",
+        description: `${matchingIds.length} UO mise(s) à jour : "${replaceOldName}" → "${replaceNewName}".`,
+      });
+    }
+
+    setIsReplaceDialogOpen(false);
+    setReplaceOldName("");
+    setReplaceNewName("");
+    setIsReplacing(false);
+    fetchData();
+  };
+
   const columns = [
     { key: "code_uo", label: "Code UO", width: "w-[150px]" },
     { key: "libelle_court", label: "Libellé court", width: "w-[180px]" },
@@ -252,13 +383,23 @@ const UOPage = () => {
     { key: "groupe_phare", label: "Groupe PhaRe" },
   ];
 
+  // Count UOs per responsable for the replace dialog
+  const uoCountByResponsable = useMemo(() => {
+    const counts: Record<string, number> = {};
+    data.forEach((d) => {
+      const name = d.responsable_administratif?.trim();
+      if (name) counts[name] = (counts[name] || 0) + 1;
+    });
+    return counts;
+  }, [data]);
+
   return (
     <>
       <DataTableWithPagination
         title="UO (Unités Organisationnelles)"
         data={data}
         columns={columns}
-        searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville"]}
+        searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -267,8 +408,20 @@ const UOPage = () => {
         onExport={() => exportPageToExcel(data, "UO", "UO")}
         showHighlighted={true}
         highlightedField="is_highlighted"
+        extraToolbarContent={
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-9 gap-1.5 whitespace-nowrap"
+            onClick={() => setIsReplaceDialogOpen(true)}
+          >
+            <RefreshCw className="h-4 w-4" />
+            Remplacer un responsable
+          </Button>
+        }
       />
 
+      {/* Edit / Add dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -280,12 +433,22 @@ const UOPage = () => {
                 {fields.map(({ key, label }) => (
                   <div key={key} className="space-y-2">
                     <Label htmlFor={key} className="text-xs">{label}</Label>
-                    <Input
-                      id={key}
-                      value={String(editingItem[key] || "")}
-                      onChange={(e) => handleInputChange(key, e.target.value)}
-                      className="text-sm"
-                    />
+                    {key === "responsable_administratif" ? (
+                      <AutocompleteInput
+                        id={key}
+                        value={String(editingItem[key] || "")}
+                        onChange={(val) => handleInputChange(key, val)}
+                        suggestions={responsableNames}
+                        className="text-sm"
+                      />
+                    ) : (
+                      <Input
+                        id={key}
+                        value={String(editingItem[key] || "")}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        className="text-sm"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -294,6 +457,49 @@ const UOPage = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
             <Button onClick={handleSave}>Enregistrer</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk replace responsable dialog */}
+      <Dialog open={isReplaceDialogOpen} onOpenChange={setIsReplaceDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Remplacer un responsable administratif</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Remplacez un nom de responsable administratif par un nouveau nom sur toutes les UO concernées.
+          </p>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label className="text-xs">Ancien nom à remplacer</Label>
+              <AutocompleteInput
+                value={replaceOldName}
+                onChange={setReplaceOldName}
+                suggestions={responsableNames}
+                className="text-sm"
+              />
+              {replaceOldName && uoCountByResponsable[replaceOldName.trim()] && (
+                <p className="text-xs text-muted-foreground">
+                  {uoCountByResponsable[replaceOldName.trim()]} UO avec ce responsable
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label className="text-xs">Nouveau nom</Label>
+              <AutocompleteInput
+                value={replaceNewName}
+                onChange={setReplaceNewName}
+                suggestions={responsableNames}
+                className="text-sm"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsReplaceDialogOpen(false)}>Annuler</Button>
+            <Button onClick={handleBulkReplace} disabled={isReplacing}>
+              {isReplacing ? "Remplacement en cours…" : "Remplacer"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
