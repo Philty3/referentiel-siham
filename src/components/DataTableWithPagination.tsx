@@ -42,6 +42,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   showUpCiteIcon?: boolean;
   showHighlighted?: boolean;
   highlightedField?: string;
+  extraToolbarContent?: React.ReactNode;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -61,6 +62,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   showUpCiteIcon = false,
   showHighlighted = false,
   highlightedField,
+  extraToolbarContent,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -189,7 +191,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
               {filteredData.length} entrées {filteredData.length !== data.length && `sur ${data.length}`}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            {extraToolbarContent}
             {onExport && (
               <Button
                 onClick={onExport}
