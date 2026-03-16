@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import {
@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download, Circle } from "lucide-react";
+import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download, Circle, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import logoUpCite from "@/assets/logo-up-cite.png";
 import { useToast } from "@/hooks/use-toast";
 
@@ -43,6 +43,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   showHighlighted?: boolean;
   highlightedField?: string;
   extraToolbarContent?: React.ReactNode;
+  externalFilter?: (item: T) => boolean;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
@@ -63,6 +64,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   showHighlighted = false,
   highlightedField,
   extraToolbarContent,
+  externalFilter,
 }: DataTableWithPaginationProps<T>) {
   const [filteredData, setFilteredData] = useState<T[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,6 +74,8 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   const [showFavoritesFirst, setShowFavoritesFirst] = useState(false);
   const [showUpCiteFirst, setShowUpCiteFirst] = useState(false);
   const [showHighlightedOnly, setShowHighlightedOnly] = useState(false);
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
 
   // Clé pour la table basée sur le titre
@@ -125,8 +129,27 @@ export function DataTableWithPagination<T extends Record<string, any>>({
     saveFavorite(itemId, adding);
   };
 
+  const handleSort = (columnKey: string) => {
+    if (sortColumn === columnKey) {
+      if (sortDirection === "asc") {
+        setSortDirection("desc");
+      } else {
+        setSortColumn(null);
+        setSortDirection("asc");
+      }
+    } else {
+      setSortColumn(columnKey);
+      setSortDirection("asc");
+    }
+  };
+
   useEffect(() => {
     let result = [...data];
+
+    // External filter
+    if (externalFilter) {
+      result = result.filter(externalFilter);
+    }
 
     // Filtrer par recherche
     if (searchTerm) {
@@ -140,6 +163,16 @@ export function DataTableWithPagination<T extends Record<string, any>>({
     // Filtrer uniquement les lignes surlignées si activé
     if (showHighlightedOnly && highlightedField) {
       result = result.filter((item) => !!item[highlightedField]);
+    }
+
+    // Sort by column
+    if (sortColumn) {
+      result.sort((a, b) => {
+        const aVal = String(a[sortColumn] || "").toLowerCase();
+        const bVal = String(b[sortColumn] || "").toLowerCase();
+        const cmp = aVal.localeCompare(bVal, "fr");
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
     }
 
     // Trier les favoris en premier si activé
@@ -169,7 +202,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites, sortColumn, sortDirection, externalFilter]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -284,9 +317,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
                         colIndex === 0 ? 'sticky left-[160px] z-10 bg-muted/50 font-bold' : 'font-semibold'
-                      } px-2 py-1 text-xs`}
+                      } px-2 py-1 text-xs cursor-pointer select-none hover:bg-muted/70 transition-colors`}
+                      onClick={() => handleSort(column.key)}
                     >
-                      {column.label}
+                      <span className="inline-flex items-center gap-1">
+                        {column.label}
+                        {sortColumn === column.key ? (
+                          sortDirection === "asc" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
+                        ) : (
+                          <ArrowUpDown className="h-3 w-3 opacity-30" />
+                        )}
+                      </span>
                     </TableHead>
                   ))}
                 </TableRow>

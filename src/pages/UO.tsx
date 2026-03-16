@@ -129,6 +129,7 @@ const UOPage = () => {
   const [replaceOldName, setReplaceOldName] = useState("");
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
+  const [showNoResponsable, setShowNoResponsable] = useState(false);
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
@@ -400,6 +401,7 @@ const UOPage = () => {
         data={data}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
+        externalFilter={showNoResponsable ? (item: UOItem) => !item.responsable_administratif?.trim() : undefined}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -409,15 +411,25 @@ const UOPage = () => {
         showHighlighted={true}
         highlightedField="is_highlighted"
         extraToolbarContent={
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-9 gap-1.5 whitespace-nowrap"
-            onClick={() => setIsReplaceDialogOpen(true)}
-          >
-            <RefreshCw className="h-4 w-4" />
-            Remplacer un responsable
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant={showNoResponsable ? "default" : "outline"}
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => setShowNoResponsable(!showNoResponsable)}
+            >
+              UO sans responsable
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => setIsReplaceDialogOpen(true)}
+            >
+              <RefreshCw className="h-4 w-4" />
+              Remplacer un responsable
+            </Button>
+          </div>
         }
       />
 
