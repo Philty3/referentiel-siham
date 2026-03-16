@@ -129,8 +129,27 @@ export function DataTableWithPagination<T extends Record<string, any>>({
     saveFavorite(itemId, adding);
   };
 
+  const handleSort = (columnKey: string) => {
+    if (sortColumn === columnKey) {
+      if (sortDirection === "asc") {
+        setSortDirection("desc");
+      } else {
+        setSortColumn(null);
+        setSortDirection("asc");
+      }
+    } else {
+      setSortColumn(columnKey);
+      setSortDirection("asc");
+    }
+  };
+
   useEffect(() => {
     let result = [...data];
+
+    // External filter
+    if (externalFilter) {
+      result = result.filter(externalFilter);
+    }
 
     // Filtrer par recherche
     if (searchTerm) {
@@ -144,6 +163,16 @@ export function DataTableWithPagination<T extends Record<string, any>>({
     // Filtrer uniquement les lignes surlignées si activé
     if (showHighlightedOnly && highlightedField) {
       result = result.filter((item) => !!item[highlightedField]);
+    }
+
+    // Sort by column
+    if (sortColumn) {
+      result.sort((a, b) => {
+        const aVal = String(a[sortColumn] || "").toLowerCase();
+        const bVal = String(b[sortColumn] || "").toLowerCase();
+        const cmp = aVal.localeCompare(bVal, "fr");
+        return sortDirection === "asc" ? cmp : -cmp;
+      });
     }
 
     // Trier les favoris en premier si activé
@@ -173,7 +202,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
 
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites]);
+  }, [searchTerm, data, searchFields, showFavoritesFirst, showUpCiteFirst, showHighlightedOnly, favorites, sortColumn, sortDirection, externalFilter]);
 
   // Pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
