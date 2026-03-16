@@ -9,7 +9,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, UserX } from "lucide-react";
 
 interface UOItem {
   id?: string;
