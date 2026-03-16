@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download, Circle } from "lucide-react";
+import { Search, Edit, Trash2, ChevronDown, Plus, Star, Download, Circle, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import logoUpCite from "@/assets/logo-up-cite.png";
 import { useToast } from "@/hooks/use-toast";
 
