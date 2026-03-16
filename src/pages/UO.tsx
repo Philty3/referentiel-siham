@@ -395,11 +395,14 @@ const UOPage = () => {
     return counts;
   }, [data]);
 
+  const noRespCount = useMemo(() => data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "").length, [data]);
+  const displayedData = filterNoResp ? data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "") : data;
+
   return (
     <>
       <DataTableWithPagination
         title="UO (Unités Organisationnelles)"
-        data={data}
+        data={displayedData}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
         loading={loading}
@@ -414,27 +417,12 @@ const UOPage = () => {
           <div className="flex gap-2">
             <Button
               size="sm"
-              variant={searchFields.includes("responsable_administratif") ? "outline" : "secondary"}
+              variant={filterNoResp ? "default" : "outline"}
               className="h-9 gap-1.5 whitespace-nowrap"
-              onClick={() => {
-                const filtered = data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "");
-                if (filtered.length > 0) {
-                  setSearchFields(["responsable_administratif"]);
-                  const searchInput = document.querySelector<HTMLInputElement>('[placeholder*="Rechercher"]');
-                  if (searchInput) {
-                    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
-                    nativeInputValueSetter?.call(searchInput, '§§EMPTY§§');
-                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                  }
-                }
-                toast({
-                  title: `${filtered.length} UO sans responsable administratif`,
-                  description: filtered.length > 0 ? "Filtrage appliqué" : "Toutes les UO ont un responsable",
-                });
-              }}
+              onClick={() => setFilterNoResp(prev => !prev)}
             >
               <UserX className="h-4 w-4" />
-              UO sans responsable
+              UO sans responsable ({noRespCount})
             </Button>
             <Button
               size="sm"
