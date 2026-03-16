@@ -129,6 +129,7 @@ const UOPage = () => {
   const [replaceOldName, setReplaceOldName] = useState("");
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
+  const [showNoResponsable, setShowNoResponsable] = useState(false);
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
