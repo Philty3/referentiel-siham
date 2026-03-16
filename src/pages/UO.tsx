@@ -9,7 +9,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, UserX } from "lucide-react";
 
 interface UOItem {
   id?: string;
@@ -129,6 +129,8 @@ const UOPage = () => {
   const [replaceOldName, setReplaceOldName] = useState("");
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
+  const [filterNoResp, setFilterNoResp] = useState(false);
+
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
@@ -393,11 +395,14 @@ const UOPage = () => {
     return counts;
   }, [data]);
 
+  const noRespCount = useMemo(() => data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "").length, [data]);
+  const displayedData = filterNoResp ? data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "") : data;
+
   return (
     <>
       <DataTableWithPagination
         title="UO (Unités Organisationnelles)"
-        data={data}
+        data={displayedData}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
         loading={loading}
@@ -409,15 +414,26 @@ const UOPage = () => {
         showHighlighted={true}
         highlightedField="is_highlighted"
         extraToolbarContent={
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-9 gap-1.5 whitespace-nowrap"
-            onClick={() => setIsReplaceDialogOpen(true)}
-          >
-            <RefreshCw className="h-4 w-4" />
-            Remplacer un responsable
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant={filterNoResp ? "default" : "outline"}
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => setFilterNoResp(prev => !prev)}
+            >
+              <UserX className="h-4 w-4" />
+              UO sans responsable ({noRespCount})
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => setIsReplaceDialogOpen(true)}
+            >
+              <RefreshCw className="h-4 w-4" />
+              Remplacer un responsable
+            </Button>
+          </div>
         }
       />
 
