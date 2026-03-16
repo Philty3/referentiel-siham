@@ -409,15 +409,41 @@ const UOPage = () => {
         showHighlighted={true}
         highlightedField="is_highlighted"
         extraToolbarContent={
-          <Button
-            size="sm"
-            variant="outline"
-            className="h-9 gap-1.5 whitespace-nowrap"
-            onClick={() => setIsReplaceDialogOpen(true)}
-          >
-            <RefreshCw className="h-4 w-4" />
-            Remplacer un responsable
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant={searchFields.includes("responsable_administratif") ? "outline" : "secondary"}
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => {
+                const filtered = data.filter(d => !d.responsable_administratif || d.responsable_administratif.trim() === "");
+                if (filtered.length > 0) {
+                  setSearchFields(["responsable_administratif"]);
+                  const searchInput = document.querySelector<HTMLInputElement>('[placeholder*="Rechercher"]');
+                  if (searchInput) {
+                    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set;
+                    nativeInputValueSetter?.call(searchInput, '§§EMPTY§§');
+                    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                  }
+                }
+                toast({
+                  title: `${filtered.length} UO sans responsable administratif`,
+                  description: filtered.length > 0 ? "Filtrage appliqué" : "Toutes les UO ont un responsable",
+                });
+              }}
+            >
+              <UserX className="h-4 w-4" />
+              UO sans responsable
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => setIsReplaceDialogOpen(true)}
+            >
+              <RefreshCw className="h-4 w-4" />
+              Remplacer un responsable
+            </Button>
+          </div>
         }
       />
 
