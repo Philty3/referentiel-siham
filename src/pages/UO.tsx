@@ -401,6 +401,7 @@ const UOPage = () => {
         data={data}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
+        externalFilter={showNoResponsable ? (item: UOItem) => !item.responsable_administratif?.trim() : undefined}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
