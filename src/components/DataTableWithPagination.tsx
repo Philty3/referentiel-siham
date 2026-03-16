@@ -317,9 +317,17 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
                         colIndex === 0 ? 'sticky left-[160px] z-10 bg-muted/50 font-bold' : 'font-semibold'
-                      } px-2 py-1 text-xs`}
+                      } px-2 py-1 text-xs cursor-pointer select-none hover:bg-muted/70 transition-colors`}
+                      onClick={() => handleSort(column.key)}
                     >
-                      {column.label}
+                      <span className="inline-flex items-center gap-1">
+                        {column.label}
+                        {sortColumn === column.key ? (
+                          sortDirection === "asc" ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />
+                        ) : (
+                          <ArrowUpDown className="h-3 w-3 opacity-30" />
+                        )}
+                      </span>
                     </TableHead>
                   ))}
                 </TableRow>
