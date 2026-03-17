@@ -382,8 +382,23 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           key={index}
                           className="hover:bg-muted/30 transition-colors cursor-pointer"
                           onClick={() => setExpandedRow(isExpanded ? null : rowId)}
-                        >
-                          <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
+                         >
+                          {showSelection && (
+                            <TableCell className="sticky left-0 z-10 bg-background px-2 py-0.5">
+                              <Checkbox
+                                checked={selectedItems?.has(itemId) || false}
+                                onCheckedChange={(checked) => {
+                                  if (!onSelectionChange) return;
+                                  const newSet = new Set(selectedItems);
+                                  if (checked) newSet.add(itemId); else newSet.delete(itemId);
+                                  onSelectionChange(newSet);
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="h-4 w-4"
+                              />
+                            </TableCell>
+                          )}
+                          <TableCell className={`sticky ${showSelection ? 'left-[40px]' : 'left-0'} z-10 bg-background px-2 py-0.5`}>
                             <div className="flex items-center justify-center gap-1">
                               {showHighlighted && highlightedField && row[highlightedField] && (
                                 <Circle className="h-2.5 w-2.5 fill-destructive text-destructive flex-shrink-0" />
@@ -398,7 +413,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                               />
                             </div>
                           </TableCell>
-                          <TableCell className="sticky left-[60px] z-10 bg-background px-2 py-0.5">
+                          <TableCell className={`sticky ${showSelection ? 'left-[100px]' : 'left-[60px]'} z-10 bg-background px-2 py-0.5`}>
                             <div className="flex gap-0.5">
                               <Button
                                 size="sm"
