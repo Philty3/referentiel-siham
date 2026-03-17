@@ -436,8 +436,8 @@ const UOPage = () => {
       // Build a map: normalized name → matricule
       const nameToMatricule = new Map<string, string>();
       for (const row of rows) {
-        const nom = (row["Prénom Nom"] || "").trim();
-        const matricule = (row["Numéro de dossier"] || "").trim();
+        const nom = (row["Prénom Nom"] || row["Prenom Nom"] || "").trim();
+        const matricule = (row["Matricule responsable"] || row["Numéro de dossier"] || "").trim();
         if (nom && matricule) {
           nameToMatricule.set(normalize(nom), matricule);
         }
