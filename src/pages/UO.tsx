@@ -440,8 +440,30 @@ const UOPage = () => {
         onExport={() => exportPageToExcel(data, "UO", "UO")}
         showHighlighted={true}
         highlightedField="is_highlighted"
+        showSelection={true}
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
         extraToolbarContent={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => handleExportZ0B(false)}
+            >
+              <Download className="h-4 w-4" />
+              Export Z0B (tout)
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => handleExportZ0B(true)}
+              disabled={selectedItems.size === 0}
+            >
+              <Download className="h-4 w-4" />
+              Export Z0B ({selectedItems.size} sél.)
+            </Button>
             <Button
               size="sm"
               variant={showNoResponsable ? "default" : "outline"}
