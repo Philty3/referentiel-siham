@@ -543,6 +543,23 @@ const UOPage = () => {
               <RefreshCw className="h-4 w-4" />
               Remplacer un responsable
             </Button>
+            <input
+              ref={matriculeInputRef}
+              type="file"
+              accept=".xlsx,.xls"
+              className="hidden"
+              onChange={handleImportMatricules}
+            />
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => matriculeInputRef.current?.click()}
+              disabled={isImportingMatricules}
+            >
+              <Upload className="h-4 w-4" />
+              {isImportingMatricules ? "Import en cours…" : "Importer matricules"}
+            </Button>
           </div>
         }
       />
