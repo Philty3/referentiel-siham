@@ -532,17 +532,21 @@ const UOPage = () => {
     for (let i = 0; i < matches.length; i += 50) {
       const batch = matches.slice(i, i + 50);
       for (const item of batch) {
-        if (item.id && item.matricule) {
-          const { error } = await supabase.from("uo").update({ matricule_responsable: item.matricule } as any).eq("id", item.id);
-          if (error) errors++;
-          else updated++;
-        }
+        if (!item.id) continue;
+        const updateData: Record<string, string> = {};
+        if (item.matricule) updateData.matricule_responsable = item.matricule;
+        if (item.date_debut) updateData.date_debut_responsable = item.date_debut;
+        if (item.responsable) updateData.responsable_administratif = item.responsable;
+        if (Object.keys(updateData).length === 0) continue;
+        const { error } = await supabase.from("uo").update(updateData as any).eq("id", item.id);
+        if (error) errors++;
+        else updated++;
       }
     }
 
     toast({
-      title: "Import matricules terminé",
-      description: `${updated} UO mise(s) à jour.${errors > 0 ? ` ${errors} erreur(s).` : ""} (${matriculePreview.total} matricules dans le fichier)`,
+      title: "Import terminé",
+      description: `${updated} UO mise(s) à jour.${errors > 0 ? ` ${errors} erreur(s).` : ""} (${matriculePreview.total} lignes dans le fichier)`,
     });
     setMatriculePreview(null);
     setIsImportingMatricules(false);
