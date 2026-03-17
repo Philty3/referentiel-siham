@@ -362,7 +362,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
               <TableBody>
                 {paginatedData.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={columns.length + 2} className="h-20 text-center text-sm text-muted-foreground">
+                    <TableCell colSpan={columns.length + (showSelection ? 3 : 2)} className="h-20 text-center text-sm text-muted-foreground">
                       Aucune donnée trouvée
                     </TableCell>
                   </TableRow>
