@@ -360,6 +360,9 @@ const UOPage = () => {
       <div><p className="font-semibold text-foreground mb-1">Statut:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.statut}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Responsable composante:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_composante}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Responsable administratif:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_administratif}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Matricule responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.matricule_responsable}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Date début responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.date_debut_responsable}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Date fin responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.date_fin_responsable}</p></div>
       <div><p className="font-semibold text-foreground mb-1">N° voie:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.numero_voie}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Complément adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.complement_adresse}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.adresse}</p></div>
