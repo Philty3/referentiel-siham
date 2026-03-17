@@ -141,6 +141,8 @@ const UOPage = () => {
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
   const [showNoResponsable, setShowNoResponsable] = useState(false);
+  const [noResponsableDate, setNoResponsableDate] = useState<Date | undefined>(undefined);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isImportingMatricules, setIsImportingMatricules] = useState(false);
   const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; date_debut: string; id: string }[]; total: number } | null>(null);
