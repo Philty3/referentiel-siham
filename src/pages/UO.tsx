@@ -141,6 +141,8 @@ const UOPage = () => {
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
   const [showNoResponsable, setShowNoResponsable] = useState(false);
+  const [noResponsableDate, setNoResponsableDate] = useState<Date | undefined>(undefined);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isImportingMatricules, setIsImportingMatricules] = useState(false);
   const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; date_debut: string; id: string }[]; total: number } | null>(null);
@@ -591,13 +593,33 @@ const UOPage = () => {
         data={data}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
-        externalFilter={showNoResponsable ? (item: UOItem) => !item.responsable_administratif?.trim() : undefined}
+        externalFilter={showNoResponsable ? (item: UOItem) => {
+          if (!noResponsableDate) return !item.responsable_administratif?.trim();
+          // Show UOs where date_fin_responsable > chosen date
+          if (!item.date_fin_responsable?.trim()) return false;
+          const match = item.date_fin_responsable.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+          if (!match) return false;
+          const dateFin = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+          return dateFin > noResponsableDate;
+        } : undefined}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
-        onExport={() => exportPageToExcel(data, "UO", "UO")}
+        onExport={() => {
+          const filteredForExport = showNoResponsable
+            ? data.filter((item) => {
+                if (!noResponsableDate) return !item.responsable_administratif?.trim();
+                if (!item.date_fin_responsable?.trim()) return false;
+                const match = item.date_fin_responsable.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+                if (!match) return false;
+                const dateFin = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+                return dateFin > noResponsableDate;
+              })
+            : data;
+          exportPageToExcel(filteredForExport, "UO", "UO");
+        }}
         showHighlighted={true}
         highlightedField="is_highlighted"
         showSelection={true}
@@ -624,14 +646,79 @@ const UOPage = () => {
               <Download className="h-4 w-4" />
               Export Resp. ({selectedItems.size} sél.)
             </Button>
-            <Button
-              size="sm"
-              variant={showNoResponsable ? "default" : "outline"}
-              className="h-9 gap-1.5 whitespace-nowrap"
-              onClick={() => setShowNoResponsable(!showNoResponsable)}
-            >
-              UO sans responsable
-            </Button>
+            <Popover open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  size="sm"
+                  variant={showNoResponsable ? "default" : "outline"}
+                  className="h-9 gap-1.5 whitespace-nowrap"
+                >
+                  <CalendarIcon className="h-4 w-4" />
+                  {showNoResponsable
+                    ? noResponsableDate
+                      ? `Date fin > ${format(noResponsableDate, "dd/MM/yyyy")}`
+                      : "UO sans responsable"
+                    : "UO sans responsable"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-3 space-y-2" align="start">
+                <p className="text-sm font-medium">Choisir une date de référence</p>
+                <p className="text-xs text-muted-foreground">
+                  Affiche les UO dont la date fin responsable est postérieure à la date choisie.
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setNoResponsableDate(undefined);
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }}
+                  >
+                    Sans responsable
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setNoResponsableDate(new Date());
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }}
+                  >
+                    Aujourd'hui
+                  </Button>
+                  {showNoResponsable && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => {
+                        setShowNoResponsable(false);
+                        setNoResponsableDate(undefined);
+                        setIsDatePickerOpen(false);
+                      }}
+                    >
+                      Réinitialiser
+                    </Button>
+                  )}
+                </div>
+                <Calendar
+                  mode="single"
+                  selected={noResponsableDate}
+                  onSelect={(date) => {
+                    if (date) {
+                      setNoResponsableDate(date);
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }
+                  }}
+                  locale={fr}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
             <Button
               size="sm"
               variant="outline"
