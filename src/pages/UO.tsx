@@ -719,6 +719,50 @@ const UOPage = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Matricule import confirmation dialog */}
+      <Dialog open={isMatriculeConfirmOpen} onOpenChange={(open) => { if (!open) { setIsMatriculeConfirmOpen(false); setMatriculePreview(null); } }}>
+        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Confirmer l'import des matricules</DialogTitle>
+          </DialogHeader>
+          {matriculePreview && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                <strong>{matriculePreview.total}</strong> matricules dans le fichier — <strong>{matriculePreview.matches.length}</strong> correspondance(s) trouvée(s) avec les UO.
+              </p>
+              {matriculePreview.matches.length > 0 && (
+                <div className="border rounded-md max-h-60 overflow-y-auto">
+                  <table className="w-full text-xs">
+                    <thead className="bg-muted sticky top-0">
+                      <tr>
+                        <th className="text-left p-2">Code UO</th>
+                        <th className="text-left p-2">Responsable</th>
+                        <th className="text-left p-2">Matricule</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {matriculePreview.matches.map((m, i) => (
+                        <tr key={i} className="border-t">
+                          <td className="p-2 font-mono">{m.code_uo}</td>
+                          <td className="p-2">{m.responsable}</td>
+                          <td className="p-2 font-mono">{m.matricule}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setIsMatriculeConfirmOpen(false); setMatriculePreview(null); }}>Annuler</Button>
+            <Button onClick={handleConfirmImportMatricules} disabled={!matriculePreview || matriculePreview.matches.length === 0}>
+              Mettre à jour {matriculePreview?.matches.length || 0} UO
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
