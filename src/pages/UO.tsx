@@ -426,7 +426,7 @@ const UOPage = () => {
       });
     }
     exportZ0B(items);
-    toast({ title: "Export Z0B", description: `${items.length} UO exportée(s).` });
+    toast({ title: "Export Resp.", description: `${items.length} UO exportée(s).` });
   };
 
   return (
