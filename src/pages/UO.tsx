@@ -142,6 +142,8 @@ const UOPage = () => {
   const [isReplacing, setIsReplacing] = useState(false);
   const [showNoResponsable, setShowNoResponsable] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [isImportingMatricules, setIsImportingMatricules] = useState(false);
+  const matriculeInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
