@@ -450,7 +450,7 @@ const UOPage = () => {
       const codeUoCol = findColumn(rows[0], ["code uo", "code_uo"]);
       const matriculeCol = findColumn(rows[0], ["matricule"]);
       const dateDebutCol = findColumn(rows[0], ["date debut", "date_debut"]);
-      const prenomNomCol = findColumn(rows[0], ["prenom nom", "prenom_nom", "nom"]);
+      const prenomNomCol = findColumn(rows[0], ["responsable administratif", "responsable", "prenom nom", "prenom_nom", "nom"]);
 
       if (!codeUoCol) {
         toast({ title: "Erreur", description: `Colonne 'Code UO' introuvable. Colonnes : ${Object.keys(rows[0]).join(", ")}`, variant: "destructive" });
