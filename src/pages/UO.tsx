@@ -10,7 +10,12 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw, Download } from "lucide-react";
+import { RefreshCw, Download, CalendarIcon } from "lucide-react";
+import { format, parse } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface UOItem {
   id?: string;
@@ -421,7 +426,7 @@ const UOPage = () => {
       });
     }
     exportZ0B(items);
-    toast({ title: "Export Z0B", description: `${items.length} UO exportée(s).` });
+    toast({ title: "Export Resp.", description: `${items.length} UO exportée(s).` });
   };
 
   return (
@@ -452,7 +457,7 @@ const UOPage = () => {
               onClick={() => handleExportZ0B(false)}
             >
               <Download className="h-4 w-4" />
-              Export Z0B (tout)
+               Export Resp. (tout)
             </Button>
             <Button
               size="sm"
@@ -462,7 +467,7 @@ const UOPage = () => {
               disabled={selectedItems.size === 0}
             >
               <Download className="h-4 w-4" />
-              Export Z0B ({selectedItems.size} sél.)
+              Export Resp. ({selectedItems.size} sél.)
             </Button>
             <Button
               size="sm"
@@ -494,27 +499,83 @@ const UOPage = () => {
           {editingItem && (
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {fields.map(({ key, label }) => (
-                  <div key={key} className="space-y-2">
-                    <Label htmlFor={key} className="text-xs">{label}</Label>
-                    {key === "responsable_administratif" ? (
-                      <AutocompleteInput
-                        id={key}
-                        value={String(editingItem[key] || "")}
-                        onChange={(val) => handleInputChange(key, val)}
-                        suggestions={responsableNames}
-                        className="text-sm"
-                      />
-                    ) : (
-                      <Input
-                        id={key}
-                        value={String(editingItem[key] || "")}
-                        onChange={(e) => handleInputChange(key, e.target.value)}
-                        className="text-sm"
-                      />
-                    )}
-                  </div>
-                ))}
+                {fields.map(({ key, label }) => {
+                  const isDateField = key === "date_debut_responsable" || key === "date_fin_responsable";
+                  const isResponsable = key === "responsable_administratif";
+
+                  if (isDateField) {
+                    const rawVal = String(editingItem[key] || "");
+                    let selectedDate: Date | undefined;
+                    if (rawVal) {
+                      // Try ISO then DD/MM/YYYY
+                      const isoMatch = rawVal.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                      if (isoMatch) {
+                        selectedDate = new Date(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+                      } else {
+                        const frMatch = rawVal.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+                        if (frMatch) selectedDate = new Date(Number(frMatch[3]), Number(frMatch[2]) - 1, Number(frMatch[1]));
+                      }
+                    }
+
+                    return (
+                      <div key={key} className="space-y-2">
+                        <Label htmlFor={key} className="text-xs">{label}</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-full justify-start text-left font-normal text-sm h-10",
+                                !rawVal && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {selectedDate ? format(selectedDate, "dd/MM/yyyy") : "Choisir une date"}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={selectedDate}
+                              onSelect={(date) => {
+                                if (date) {
+                                  handleInputChange(key, format(date, "yyyy-MM-dd"));
+                                } else {
+                                  handleInputChange(key, "");
+                                }
+                              }}
+                              locale={fr}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div key={key} className="space-y-2">
+                      <Label htmlFor={key} className="text-xs">{label}</Label>
+                      {isResponsable ? (
+                        <AutocompleteInput
+                          id={key}
+                          value={String(editingItem[key] || "")}
+                          onChange={(val) => handleInputChange(key, val)}
+                          suggestions={responsableNames}
+                          className="text-sm"
+                        />
+                      ) : (
+                        <Input
+                          id={key}
+                          value={String(editingItem[key] || "")}
+                          onChange={(e) => handleInputChange(key, e.target.value)}
+                          className="text-sm"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
