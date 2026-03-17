@@ -312,11 +312,33 @@ export function DataTableWithPagination<T extends Record<string, any>>({
             <Table className="text-sm">
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="sticky left-0 z-10 w-[60px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                  {showSelection && (
+                    <TableHead className="sticky left-0 z-10 w-[40px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                      <Checkbox
+                        checked={paginatedData.length > 0 && paginatedData.every((row, idx) => {
+                          const origIdx = data.findIndex(item => JSON.stringify(item) === JSON.stringify(row));
+                          return selectedItems?.has(getItemId(row, origIdx));
+                        })}
+                        onCheckedChange={(checked) => {
+                          if (!onSelectionChange) return;
+                          const newSet = new Set(selectedItems);
+                          paginatedData.forEach((row) => {
+                            const origIdx = data.findIndex(item => JSON.stringify(item) === JSON.stringify(row));
+                            const itemId = getItemId(row, origIdx);
+                            if (checked) newSet.add(itemId); else newSet.delete(itemId);
+                          });
+                          onSelectionChange(newSet);
+                        }}
+                        className="h-4 w-4"
+                      />
+                    </TableHead>
+                  )}
+                  <TableHead className={`sticky ${showSelection ? 'left-[40px]' : 'left-0'} z-10 w-[60px] bg-muted/50 font-bold px-2 py-1 text-xs`}>
                     Fav.
                   </TableHead>
-                  <TableHead className="sticky left-[60px] z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs">
+                  <TableHead className={`sticky ${showSelection ? 'left-[100px]' : 'left-[60px]'} z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs`}>
                     Actions
+                  </TableHead>
                   </TableHead>
                   {columns.map((column, colIndex) => (
                     <TableHead
