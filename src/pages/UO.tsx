@@ -457,7 +457,7 @@ const UOPage = () => {
               onClick={() => handleExportZ0B(false)}
             >
               <Download className="h-4 w-4" />
-              Export Z0B (tout)
+               Export Resp. (tout)
             </Button>
             <Button
               size="sm"
@@ -467,7 +467,7 @@ const UOPage = () => {
               disabled={selectedItems.size === 0}
             >
               <Download className="h-4 w-4" />
-              Export Z0B ({selectedItems.size} sél.)
+              Export Resp. ({selectedItems.size} sél.)
             </Button>
             <Button
               size="sm"
