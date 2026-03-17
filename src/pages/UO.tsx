@@ -790,8 +790,8 @@ const UOPage = () => {
           </DialogHeader>
           {matriculePreview && (
             <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                <strong>{matriculePreview.total}</strong> matricules dans le fichier — <strong>{matriculePreview.matches.length}</strong> correspondance(s) trouvée(s) avec les UO.
+               <p className="text-sm text-muted-foreground">
+                <strong>{matriculePreview.total}</strong> lignes dans le fichier — <strong>{matriculePreview.matches.length}</strong> correspondance(s) par Code UO.
               </p>
               {matriculePreview.matches.length > 0 && (
                 <div className="border rounded-md max-h-60 overflow-y-auto">
@@ -801,6 +801,7 @@ const UOPage = () => {
                         <th className="text-left p-2">Code UO</th>
                         <th className="text-left p-2">Responsable</th>
                         <th className="text-left p-2">Matricule</th>
+                        <th className="text-left p-2">Date début</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -809,6 +810,7 @@ const UOPage = () => {
                           <td className="p-2 font-mono">{m.code_uo}</td>
                           <td className="p-2">{m.responsable}</td>
                           <td className="p-2 font-mono">{m.matricule}</td>
+                          <td className="p-2">{m.date_debut}</td>
                         </tr>
                       ))}
                     </tbody>
