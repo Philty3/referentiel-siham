@@ -607,7 +607,19 @@ const UOPage = () => {
         onDelete={handleDelete}
         onAdd={handleAdd}
         renderExpandedContent={renderExpandedContent}
-        onExport={() => exportPageToExcel(data, "UO", "UO")}
+        onExport={() => {
+          const filteredForExport = showNoResponsable
+            ? data.filter((item) => {
+                if (!noResponsableDate) return !item.responsable_administratif?.trim();
+                if (!item.date_fin_responsable?.trim()) return false;
+                const match = item.date_fin_responsable.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+                if (!match) return false;
+                const dateFin = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+                return dateFin > noResponsableDate;
+              })
+            : data;
+          exportPageToExcel(filteredForExport, "UO", "UO");
+        }}
         showHighlighted={true}
         highlightedField="is_highlighted"
         showSelection={true}
