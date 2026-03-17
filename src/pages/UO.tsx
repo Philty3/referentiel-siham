@@ -656,7 +656,7 @@ const UOPage = () => {
                   <CalendarIcon className="h-4 w-4" />
                   {showNoResponsable
                     ? noResponsableDate
-                      ? `Date fin > ${format(noResponsableDate, "dd/MM/yyyy")}`
+                      ? `Date fin < ${format(noResponsableDate, "dd/MM/yyyy")}`
                       : "UO sans responsable"
                     : "UO sans responsable"}
                 </Button>
