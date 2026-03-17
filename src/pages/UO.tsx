@@ -412,6 +412,18 @@ const UOPage = () => {
     return counts;
   }, [data]);
 
+  const handleExportZ0B = (onlySelected: boolean) => {
+    let items = data;
+    if (onlySelected && selectedItems.size > 0) {
+      items = data.filter((d, idx) => {
+        const itemId = `${d.code_uo}-${idx}`;
+        return selectedItems.has(itemId);
+      });
+    }
+    exportZ0B(items);
+    toast({ title: "Export Z0B", description: `${items.length} UO exportée(s).` });
+  };
+
   return (
     <>
       <DataTableWithPagination
