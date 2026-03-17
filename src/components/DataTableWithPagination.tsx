@@ -339,12 +339,11 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                   <TableHead className={`sticky ${showSelection ? 'left-[100px]' : 'left-[60px]'} z-10 w-[100px] bg-muted/50 font-bold px-2 py-1 text-xs`}>
                     Actions
                   </TableHead>
-                  </TableHead>
                   {columns.map((column, colIndex) => (
                     <TableHead
                       key={column.key}
                       className={`${column.width || 'w-auto'} ${
-                        colIndex === 0 ? 'sticky left-[160px] z-10 bg-muted/50 font-bold' : 'font-semibold'
+                        colIndex === 0 ? `sticky ${showSelection ? 'left-[200px]' : 'left-[160px]'} z-10 bg-muted/50 font-bold` : 'font-semibold'
                       } px-2 py-1 text-xs cursor-pointer select-none hover:bg-muted/70 transition-colors`}
                       onClick={() => handleSort(column.key)}
                     >
