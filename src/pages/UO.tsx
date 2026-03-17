@@ -593,7 +593,15 @@ const UOPage = () => {
         data={data}
         columns={columns}
         searchFields={["code_uo", "libelle_long", "libelle_court", "code_uo_mere", "type", "statut", "ville", "responsable_administratif"]}
-        externalFilter={showNoResponsable ? (item: UOItem) => !item.responsable_administratif?.trim() : undefined}
+        externalFilter={showNoResponsable ? (item: UOItem) => {
+          if (!noResponsableDate) return !item.responsable_administratif?.trim();
+          // Show UOs where date_fin_responsable > chosen date
+          if (!item.date_fin_responsable?.trim()) return false;
+          const match = item.date_fin_responsable.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+          if (!match) return false;
+          const dateFin = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
+          return dateFin > noResponsableDate;
+        } : undefined}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
