@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { parsedMarkdown } from "./data.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -43,8 +44,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const markdown = await Deno.readTextFile(new URL("./data.md", import.meta.url));
-    const lines = markdown.split(/\r?\n/);
+    const lines = parsedMarkdown.split(/\r?\n/);
 
     const excelDateMap = new Map<string, string>();
     let parsedLines = 0;
