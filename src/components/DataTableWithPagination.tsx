@@ -464,7 +464,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                         </TableRow>
                         {isExpanded && (
                           <TableRow className="bg-muted/20">
-                            <TableCell colSpan={columns.length + 2} className="p-0">
+                            <TableCell colSpan={columns.length + (showSelection ? 3 : 2)} className="p-0">
                               <div className="p-4 animate-accordion-down">
                                 {renderExpandedContent(row)}
                               </div>
