@@ -3607,3 +3607,6 @@ const parsedMarkdown = String.raw`# Document parsed from: Web_Intelligence_6.xls
 |SP7VLM0000|||
 |9021100000|PA7000005029|15/12/2017|
 |9029101012|||
+`;
+
+export default parsedMarkdown;
