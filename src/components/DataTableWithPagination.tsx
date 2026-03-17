@@ -450,7 +450,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                             <TableCell
                               key={column.key}
                               className={`px-2 py-0.5 text-xs ${
-                                colIndex === 0 ? 'sticky left-[160px] z-10 bg-background font-medium whitespace-nowrap' : 'whitespace-normal break-words'
+                                colIndex === 0 ? `sticky ${showSelection ? 'left-[200px]' : 'left-[160px]'} z-10 bg-background font-medium whitespace-nowrap` : 'whitespace-normal break-words'
                               } ${column.truncate ? 'max-w-xs truncate' : ''}`}
                             >
                               <span className="relative inline-flex items-center">
