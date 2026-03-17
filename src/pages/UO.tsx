@@ -431,21 +431,49 @@ const UOPage = () => {
       const sheet = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
 
-      const normalize = (s: string) => s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const normalize = (s: string) => (s || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[-'']/g, " ");
+
+      // Detect column names dynamically by normalizing headers
+      const findColumn = (row: Record<string, string>, patterns: string[]) => {
+        for (const key of Object.keys(row)) {
+          const nk = normalize(key);
+          if (patterns.some(p => nk.includes(p))) return key;
+        }
+        return null;
+      };
+
+      let nameCol: string | null = null;
+      let matriculeCol: string | null = null;
+      if (rows.length > 0) {
+        nameCol = findColumn(rows[0], ["prenom nom", "prenom_nom", "nom"]);
+        matriculeCol = findColumn(rows[0], ["matricule"]);
+      }
+
+      if (!nameCol || !matriculeCol) {
+        toast({ title: "Erreur", description: `Colonnes introuvables. Colonnes détectées : ${rows.length > 0 ? Object.keys(rows[0]).join(", ") : "aucune"}`, variant: "destructive" });
+        if (matriculeInputRef.current) matriculeInputRef.current.value = "";
+        return;
+      }
+
+      console.log(`Colonnes détectées - Nom: "${nameCol}", Matricule: "${matriculeCol}"`);
 
       const nameToMatricule = new Map<string, string>();
       for (const row of rows) {
-        const nom = (row["Prénom Nom"] || row["Prenom Nom"] || "").trim();
-        const matricule = (row["Matricule responsable"] || row["Numéro de dossier"] || "").trim();
+        const nom = (row[nameCol!] || "").toString().trim();
+        const matricule = (row[matriculeCol!] || "").toString().trim();
         if (nom && matricule) {
           nameToMatricule.set(normalize(nom), matricule);
         }
       }
 
+      console.log(`${nameToMatricule.size} entrées dans le fichier Excel`);
+
       const matches = data
         .filter((d) => {
           const resp = d.responsable_administratif?.trim();
-          return resp && nameToMatricule.has(normalize(resp));
+          if (!resp) return false;
+          const normalizedResp = normalize(resp);
+          return nameToMatricule.has(normalizedResp);
         })
         .map((d) => ({
           code_uo: d.code_uo,
@@ -453,6 +481,17 @@ const UOPage = () => {
           matricule: nameToMatricule.get(normalize(d.responsable_administratif!)) || "",
           id: d.id || "",
         }));
+
+      console.log(`${matches.length} correspondances trouvées`);
+
+      if (matches.length === 0) {
+        // Show some debug info
+        const sampleUO = data.filter(d => d.responsable_administratif?.trim()).slice(0, 3).map(d => `"${d.responsable_administratif}"`).join(", ");
+        const sampleExcel = Array.from(nameToMatricule.keys()).slice(0, 3).join(", ");
+        toast({ title: "Aucune correspondance", description: `Exemples UO: ${sampleUO} | Exemples Excel: ${sampleExcel}`, variant: "destructive" });
+        if (matriculeInputRef.current) matriculeInputRef.current.value = "";
+        return;
+      }
 
       setMatriculePreview({ matches, total: nameToMatricule.size });
       setIsMatriculeConfirmOpen(true);
