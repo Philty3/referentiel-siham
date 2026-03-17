@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { exportPageToExcel } from "@/lib/exportToExcel";
+import { exportZ0B } from "@/lib/exportZ0B";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Download } from "lucide-react";
 
 interface UOItem {
   id?: string;
@@ -23,6 +24,9 @@ interface UOItem {
   statut: string;
   responsable_composante: string;
   responsable_administratif: string;
+  matricule_responsable: string;
+  date_debut_responsable: string;
+  date_fin_responsable: string;
   numero_voie: string;
   complement_adresse: string;
   adresse: string;
@@ -40,6 +44,7 @@ const emptyItem: UOItem = {
   code_uo: "", libelle_long: "", libelle_court: "", code_uo_mere: "",
   type: "", niveau: "", code_uai: "", statut: "",
   responsable_composante: "", responsable_administratif: "",
+  matricule_responsable: "", date_debut_responsable: "", date_fin_responsable: "",
   numero_voie: "", complement_adresse: "", adresse: "", code_postal: "", ville: "",
   code_uo_p5_p7: "", code_uo_bis: "", code_uo_site_associe: "",
   groupe_eval: "", groupe_phare: "",
