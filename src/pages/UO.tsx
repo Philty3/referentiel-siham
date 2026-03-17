@@ -430,13 +430,16 @@ const UOPage = () => {
       const sheet = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
 
+      // Normalize: lowercase + remove accents
+      const normalize = (s: string) => s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
       // Build a map: normalized name → matricule
       const nameToMatricule = new Map<string, string>();
       for (const row of rows) {
         const nom = (row["Prénom Nom"] || "").trim();
         const matricule = (row["Numéro de dossier"] || "").trim();
         if (nom && matricule) {
-          nameToMatricule.set(nom.toLowerCase(), matricule);
+          nameToMatricule.set(normalize(nom), matricule);
         }
       }
 
@@ -445,14 +448,14 @@ const UOPage = () => {
       let errors = 0;
       const toUpdate = data.filter((d) => {
         const resp = d.responsable_administratif?.trim();
-        return resp && nameToMatricule.has(resp.toLowerCase());
+        return resp && nameToMatricule.has(normalize(resp));
       });
 
       // Update in batches
       for (let i = 0; i < toUpdate.length; i += 50) {
         const batch = toUpdate.slice(i, i + 50);
         for (const item of batch) {
-          const matricule = nameToMatricule.get(item.responsable_administratif.trim().toLowerCase());
+          const matricule = nameToMatricule.get(normalize(item.responsable_administratif!));
           if (item.id && matricule) {
             const { error } = await supabase.from("uo").update({ matricule_responsable: matricule } as any).eq("id", item.id);
             if (error) errors++;
