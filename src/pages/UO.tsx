@@ -420,6 +420,60 @@ const UOPage = () => {
     return counts;
   }, [data]);
 
+  const handleImportMatricules = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsImportingMatricules(true);
+    try {
+      const buffer = await file.arrayBuffer();
+      const wb = XLSX.read(buffer, { type: "array" });
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
+
+      // Build a map: normalized name → matricule
+      const nameToMatricule = new Map<string, string>();
+      for (const row of rows) {
+        const nom = (row["Prénom Nom"] || "").trim();
+        const matricule = (row["Numéro de dossier"] || "").trim();
+        if (nom && matricule) {
+          nameToMatricule.set(nom.toLowerCase(), matricule);
+        }
+      }
+
+      // Match against UO data
+      let updated = 0;
+      let errors = 0;
+      const toUpdate = data.filter((d) => {
+        const resp = d.responsable_administratif?.trim();
+        return resp && nameToMatricule.has(resp.toLowerCase());
+      });
+
+      // Update in batches
+      for (let i = 0; i < toUpdate.length; i += 50) {
+        const batch = toUpdate.slice(i, i + 50);
+        for (const item of batch) {
+          const matricule = nameToMatricule.get(item.responsable_administratif.trim().toLowerCase());
+          if (item.id && matricule) {
+            const { error } = await supabase.from("uo").update({ matricule_responsable: matricule } as any).eq("id", item.id);
+            if (error) errors++;
+            else updated++;
+          }
+        }
+      }
+
+      toast({
+        title: "Import matricules terminé",
+        description: `${updated} UO mise(s) à jour.${errors > 0 ? ` ${errors} erreur(s).` : ""} (${nameToMatricule.size} matricules dans le fichier)`,
+      });
+      fetchData();
+    } catch (err) {
+      console.error("Erreur import matricules:", err);
+      toast({ title: "Erreur", description: "Impossible de lire le fichier.", variant: "destructive" });
+    }
+    setIsImportingMatricules(false);
+    if (matriculeInputRef.current) matriculeInputRef.current.value = "";
+  };
+
   const handleExportZ0B = (onlySelected: boolean) => {
     let items = data;
     if (onlySelected && selectedItems.size > 0) {
