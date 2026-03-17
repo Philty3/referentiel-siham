@@ -44,6 +44,9 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   highlightedField?: string;
   extraToolbarContent?: React.ReactNode;
   externalFilter?: (item: T) => boolean;
+  showSelection?: boolean;
+  selectedItems?: Set<string>;
+  onSelectionChange?: (selectedItems: Set<string>) => void;
 }
 
 export function DataTableWithPagination<T extends Record<string, any>>({
