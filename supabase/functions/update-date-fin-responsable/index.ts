@@ -1,5 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import * as XLSX from "npm:xlsx@0.18.5";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -12,36 +11,13 @@ const normalizeText = (value: unknown) =>
     .replace(/\s+/g, " ")
     .toUpperCase();
 
-const formatDate = (value: unknown): string => {
-  if (value === null || value === undefined || value === "") return "";
+const formatDate = (value: string): string => {
+  const normalized = normalizeText(value).replace(/ /g, "");
+  const match = normalized.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!match) return "";
 
-  if (typeof value === "number" && Number.isFinite(value)) {
-    const excelEpoch = new Date(Date.UTC(1899, 11, 30));
-    const date = new Date(excelEpoch.getTime() + value * 24 * 60 * 60 * 1000);
-    const day = String(date.getUTCDate()).padStart(2, "0");
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const year = date.getUTCFullYear();
-    return `${day}/${month}/${year}`;
-  }
-
-  const text = String(value).trim();
-  if (!text) return "";
-
-  const frenchMatch = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (frenchMatch) {
-    const [, d, m, y] = frenchMatch;
-    return `${d.padStart(2, "0")}/${m.padStart(2, "0")}/${y}`;
-  }
-
-  const parsed = new Date(text);
-  if (!Number.isNaN(parsed.getTime())) {
-    const day = String(parsed.getDate()).padStart(2, "0");
-    const month = String(parsed.getMonth() + 1).padStart(2, "0");
-    const year = parsed.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-
-  return text;
+  const [, day, month, year] = match;
+  return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
 };
 
 const parseFrenchDate = (value: string): number | null => {
@@ -67,71 +43,25 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { fileUrl } = await req.json();
-
-    if (!fileUrl || typeof fileUrl !== "string") {
-      return new Response(JSON.stringify({ error: "fileUrl is required" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const fileResponse = await fetch(fileUrl);
-    if (!fileResponse.ok) {
-      return new Response(
-        JSON.stringify({ error: `Unable to fetch file: ${fileResponse.status}` }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
-
-    const arrayBuffer = await fileResponse.arrayBuffer();
-    const workbook = XLSX.read(new Uint8Array(arrayBuffer), {
-      type: "array",
-      cellDates: true,
-      raw: false,
-    });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, {
-      defval: "",
-      raw: false,
-    });
-
-    const firstRow = rows[0] ?? {};
-    const headers = Object.keys(firstRow);
-    const normalizedHeaders = new Map(headers.map((header) => [normalizeText(header), header]));
-
-    const codeColumn = normalizedHeaders.get("CODE UO");
-    const matriculeColumn = normalizedHeaders.get("MATRICULE RESPONSABLE");
-    const dateFinColumn = normalizedHeaders.get("DATE FIN RESPONSABLE");
-
-    if (!codeColumn || !matriculeColumn || !dateFinColumn) {
-      return new Response(
-        JSON.stringify({
-          error: "Missing required columns",
-          detected_headers: headers,
-        }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
+    const markdown = await Deno.readTextFile(new URL("./data.md", import.meta.url));
+    const lines = markdown.split(/\r?\n/);
 
     const excelDateMap = new Map<string, string>();
-    let excelRowsWithDate = 0;
+    let parsedLines = 0;
     let duplicatePairsResolved = 0;
 
-    for (const row of rows) {
-      const codeUo = normalizeText(row[codeColumn]);
-      const matricule = normalizeText(row[matriculeColumn]);
-      const dateFin = formatDate(row[dateFinColumn]);
+    for (const line of lines) {
+      const match = line.match(/^\|([^|]+)\|([^|]*)\|([^|]*)\|$/);
+      if (!match) continue;
+
+      const codeUo = normalizeText(match[1]);
+      const matricule = normalizeText(match[2]);
+      const dateFin = formatDate(match[3]);
 
       if (!codeUo || !matricule || !dateFin) continue;
+      if (codeUo === "CODE UO" || codeUo.startsWith("-")) continue;
 
-      excelRowsWithDate++;
+      parsedLines++;
       const key = `${codeUo}|${matricule}`;
       const existingDate = excelDateMap.get(key);
 
@@ -149,9 +79,10 @@ Deno.serve(async (req) => {
       }
     }
 
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
 
     const allUo: Array<{
       id: string;
@@ -228,8 +159,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify(
         {
-          total_excel_rows: rows.length,
-          excel_rows_with_date: excelRowsWithDate,
+          parsed_lines_with_date: parsedLines,
           unique_excel_pairs_with_date: excelDateMap.size,
           duplicate_pairs_resolved_using_latest_date: duplicatePairsResolved,
           total_uo_rows_checked: allUo.length,
@@ -241,11 +171,11 @@ Deno.serve(async (req) => {
           sample_failures: failedUpdates.slice(0, 20),
         },
         null,
-        2
+        2,
       ),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     return new Response(
@@ -255,12 +185,12 @@ Deno.serve(async (req) => {
           stack: error instanceof Error ? error.stack : undefined,
         },
         null,
-        2
+        2,
       ),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      },
     );
   }
 });
