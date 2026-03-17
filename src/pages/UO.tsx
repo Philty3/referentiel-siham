@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { exportPageToExcel } from "@/lib/exportToExcel";
+import { exportZ0B } from "@/lib/exportZ0B";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -9,7 +10,7 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Download } from "lucide-react";
 
 interface UOItem {
   id?: string;
@@ -23,6 +24,9 @@ interface UOItem {
   statut: string;
   responsable_composante: string;
   responsable_administratif: string;
+  matricule_responsable: string;
+  date_debut_responsable: string;
+  date_fin_responsable: string;
   numero_voie: string;
   complement_adresse: string;
   adresse: string;
@@ -40,6 +44,7 @@ const emptyItem: UOItem = {
   code_uo: "", libelle_long: "", libelle_court: "", code_uo_mere: "",
   type: "", niveau: "", code_uai: "", statut: "",
   responsable_composante: "", responsable_administratif: "",
+  matricule_responsable: "", date_debut_responsable: "", date_fin_responsable: "",
   numero_voie: "", complement_adresse: "", adresse: "", code_postal: "", ville: "",
   code_uo_p5_p7: "", code_uo_bis: "", code_uo_site_associe: "",
   groupe_eval: "", groupe_phare: "",
@@ -130,6 +135,7 @@ const UOPage = () => {
   const [replaceNewName, setReplaceNewName] = useState("");
   const [isReplacing, setIsReplacing] = useState(false);
   const [showNoResponsable, setShowNoResponsable] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
@@ -161,6 +167,9 @@ const UOPage = () => {
           statut: r.statut || "",
           responsable_composante: r.responsable_composante || "",
           responsable_administratif: r.responsable_administratif || "",
+          matricule_responsable: (r as any).matricule_responsable || "",
+          date_debut_responsable: (r as any).date_debut_responsable || "",
+          date_fin_responsable: (r as any).date_fin_responsable || "",
           numero_voie: r.numero_voie || "",
           complement_adresse: r.complement_adresse || "",
           adresse: r.adresse || "",
@@ -211,6 +220,9 @@ const UOPage = () => {
             statut: r.statut || "",
             responsable_composante: r.responsable_composante || "",
             responsable_administratif: r.responsable_administratif || "",
+            matricule_responsable: (r as any).matricule_responsable || "",
+            date_debut_responsable: (r as any).date_debut_responsable || "",
+            date_fin_responsable: (r as any).date_fin_responsable || "",
             numero_voie: r.numero_voie || "",
             complement_adresse: r.complement_adresse || "",
             adresse: r.adresse || "",
@@ -348,6 +360,9 @@ const UOPage = () => {
       <div><p className="font-semibold text-foreground mb-1">Statut:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.statut}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Responsable composante:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_composante}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Responsable administratif:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.responsable_administratif}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Matricule responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.matricule_responsable}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Date début responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.date_debut_responsable}</p></div>
+      <div><p className="font-semibold text-foreground mb-1">Date fin responsable:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.date_fin_responsable}</p></div>
       <div><p className="font-semibold text-foreground mb-1">N° voie:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.numero_voie}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Complément adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.complement_adresse}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Adresse:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.adresse}</p></div>
@@ -372,6 +387,9 @@ const UOPage = () => {
     { key: "statut", label: "Statut" },
     { key: "responsable_composante", label: "Responsable composante" },
     { key: "responsable_administratif", label: "Responsable administratif" },
+    { key: "matricule_responsable", label: "Matricule responsable" },
+    { key: "date_debut_responsable", label: "Date début responsable" },
+    { key: "date_fin_responsable", label: "Date fin responsable" },
     { key: "numero_voie", label: "N° voie" },
     { key: "complement_adresse", label: "Complément adresse" },
     { key: "adresse", label: "Adresse" },
@@ -394,6 +412,18 @@ const UOPage = () => {
     return counts;
   }, [data]);
 
+  const handleExportZ0B = (onlySelected: boolean) => {
+    let items = data;
+    if (onlySelected && selectedItems.size > 0) {
+      items = data.filter((d, idx) => {
+        const itemId = `${d.code_uo}-${idx}`;
+        return selectedItems.has(itemId);
+      });
+    }
+    exportZ0B(items);
+    toast({ title: "Export Z0B", description: `${items.length} UO exportée(s).` });
+  };
+
   return (
     <>
       <DataTableWithPagination
@@ -410,8 +440,30 @@ const UOPage = () => {
         onExport={() => exportPageToExcel(data, "UO", "UO")}
         showHighlighted={true}
         highlightedField="is_highlighted"
+        showSelection={true}
+        selectedItems={selectedItems}
+        onSelectionChange={setSelectedItems}
         extraToolbarContent={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => handleExportZ0B(false)}
+            >
+              <Download className="h-4 w-4" />
+              Export Z0B (tout)
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-9 gap-1.5 whitespace-nowrap"
+              onClick={() => handleExportZ0B(true)}
+              disabled={selectedItems.size === 0}
+            >
+              <Download className="h-4 w-4" />
+              Export Z0B ({selectedItems.size} sél.)
+            </Button>
             <Button
               size="sm"
               variant={showNoResponsable ? "default" : "outline"}

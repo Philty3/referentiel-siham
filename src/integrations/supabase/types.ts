@@ -689,12 +689,15 @@ export type Database = {
           code_uo_site_associe: string | null
           complement_adresse: string | null
           created_at: string
+          date_debut_responsable: string | null
+          date_fin_responsable: string | null
           groupe_eval: string | null
           groupe_phare: string | null
           id: string
           is_highlighted: boolean
           libelle_court: string | null
           libelle_long: string | null
+          matricule_responsable: string | null
           niveau: string | null
           numero_voie: string | null
           responsable_administratif: string | null
@@ -714,12 +717,15 @@ export type Database = {
           code_uo_site_associe?: string | null
           complement_adresse?: string | null
           created_at?: string
+          date_debut_responsable?: string | null
+          date_fin_responsable?: string | null
           groupe_eval?: string | null
           groupe_phare?: string | null
           id?: string
           is_highlighted?: boolean
           libelle_court?: string | null
           libelle_long?: string | null
+          matricule_responsable?: string | null
           niveau?: string | null
           numero_voie?: string | null
           responsable_administratif?: string | null
@@ -739,12 +745,15 @@ export type Database = {
           code_uo_site_associe?: string | null
           complement_adresse?: string | null
           created_at?: string
+          date_debut_responsable?: string | null
+          date_fin_responsable?: string | null
           groupe_eval?: string | null
           groupe_phare?: string | null
           id?: string
           is_highlighted?: boolean
           libelle_court?: string | null
           libelle_long?: string | null
+          matricule_responsable?: string | null
           niveau?: string | null
           numero_voie?: string | null
           responsable_administratif?: string | null
