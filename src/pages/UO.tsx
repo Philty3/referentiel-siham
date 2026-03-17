@@ -143,7 +143,7 @@ const UOPage = () => {
   const [showNoResponsable, setShowNoResponsable] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isImportingMatricules, setIsImportingMatricules] = useState(false);
-  const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; id: string }[]; total: number } | null>(null);
+  const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; date_debut: string; id: string }[]; total: number } | null>(null);
   const [isMatriculeConfirmOpen, setIsMatriculeConfirmOpen] = useState(false);
   const matriculeInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
