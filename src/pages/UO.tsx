@@ -447,10 +447,27 @@ const UOPage = () => {
         return;
       }
 
-      const codeUoCol = findColumn(rows[0], ["code uo", "code_uo"]);
-      const matriculeCol = findColumn(rows[0], ["matricule"]);
-      const dateDebutCol = findColumn(rows[0], ["date debut", "date_debut"]);
-      const prenomNomCol = findColumn(rows[0], ["responsable administratif", "responsable", "prenom nom", "prenom_nom", "nom"]);
+      // Find columns by exact header name first, then by patterns
+      const headers = Object.keys(rows[0]);
+      const findExactColumn = (patterns: string[]) => {
+        for (const key of headers) {
+          const nk = normalize(key);
+          if (patterns.some(p => nk === p)) return key;
+        }
+        // Fallback to includes
+        for (const key of headers) {
+          const nk = normalize(key);
+          if (patterns.some(p => nk.includes(p))) return key;
+        }
+        return null;
+      };
+
+      const codeUoCol = findExactColumn(["code uo", "code_uo"]);
+      const matriculeCol = findExactColumn(["matricule responsable", "matricule"]);
+      const dateDebutCol = findExactColumn(["date debut responsable", "date debut", "date_debut"]);
+      const prenomNomCol = findExactColumn(["responsable administratif", "prenom nom", "prenom_nom", "nom"]);
+
+      console.log("Colonnes détectées:", { codeUoCol, matriculeCol, dateDebutCol, prenomNomCol });
 
       if (!codeUoCol) {
         toast({ title: "Erreur", description: `Colonne 'Code UO' introuvable. Colonnes : ${Object.keys(rows[0]).join(", ")}`, variant: "destructive" });
