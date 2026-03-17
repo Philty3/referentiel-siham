@@ -143,6 +143,8 @@ const UOPage = () => {
   const [showNoResponsable, setShowNoResponsable] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [isImportingMatricules, setIsImportingMatricules] = useState(false);
+  const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; id: string }[]; total: number } | null>(null);
+  const [isMatriculeConfirmOpen, setIsMatriculeConfirmOpen] = useState(false);
   const matriculeInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -423,17 +425,14 @@ const UOPage = () => {
   const handleImportMatricules = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setIsImportingMatricules(true);
     try {
       const buffer = await file.arrayBuffer();
       const wb = XLSX.read(buffer, { type: "array" });
       const sheet = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
 
-      // Normalize: lowercase + remove accents
       const normalize = (s: string) => s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // Build a map: normalized name → matricule
       const nameToMatricule = new Map<string, string>();
       for (const row of rows) {
         const nom = (row["Prénom Nom"] || row["Prenom Nom"] || "").trim();
@@ -443,38 +442,53 @@ const UOPage = () => {
         }
       }
 
-      // Match against UO data
-      let updated = 0;
-      let errors = 0;
-      const toUpdate = data.filter((d) => {
-        const resp = d.responsable_administratif?.trim();
-        return resp && nameToMatricule.has(normalize(resp));
-      });
+      const matches = data
+        .filter((d) => {
+          const resp = d.responsable_administratif?.trim();
+          return resp && nameToMatricule.has(normalize(resp));
+        })
+        .map((d) => ({
+          code_uo: d.code_uo,
+          responsable: d.responsable_administratif || "",
+          matricule: nameToMatricule.get(normalize(d.responsable_administratif!)) || "",
+          id: d.id || "",
+        }));
 
-      // Update in batches
-      for (let i = 0; i < toUpdate.length; i += 50) {
-        const batch = toUpdate.slice(i, i + 50);
-        for (const item of batch) {
-          const matricule = nameToMatricule.get(normalize(item.responsable_administratif!));
-          if (item.id && matricule) {
-            const { error } = await supabase.from("uo").update({ matricule_responsable: matricule } as any).eq("id", item.id);
-            if (error) errors++;
-            else updated++;
-          }
-        }
-      }
-
-      toast({
-        title: "Import matricules terminé",
-        description: `${updated} UO mise(s) à jour.${errors > 0 ? ` ${errors} erreur(s).` : ""} (${nameToMatricule.size} matricules dans le fichier)`,
-      });
-      fetchData();
+      setMatriculePreview({ matches, total: nameToMatricule.size });
+      setIsMatriculeConfirmOpen(true);
     } catch (err) {
       console.error("Erreur import matricules:", err);
       toast({ title: "Erreur", description: "Impossible de lire le fichier.", variant: "destructive" });
     }
-    setIsImportingMatricules(false);
     if (matriculeInputRef.current) matriculeInputRef.current.value = "";
+  };
+
+  const handleConfirmImportMatricules = async () => {
+    if (!matriculePreview) return;
+    setIsImportingMatricules(true);
+    setIsMatriculeConfirmOpen(false);
+    let updated = 0;
+    let errors = 0;
+    const { matches } = matriculePreview;
+
+    for (let i = 0; i < matches.length; i += 50) {
+      const batch = matches.slice(i, i + 50);
+      for (const item of batch) {
+        if (item.id && item.matricule) {
+          const { error } = await supabase.from("uo").update({ matricule_responsable: item.matricule } as any).eq("id", item.id);
+          if (error) errors++;
+          else updated++;
+        }
+      }
+    }
+
+    toast({
+      title: "Import matricules terminé",
+      description: `${updated} UO mise(s) à jour.${errors > 0 ? ` ${errors} erreur(s).` : ""} (${matriculePreview.total} matricules dans le fichier)`,
+    });
+    setMatriculePreview(null);
+    setIsImportingMatricules(false);
+    fetchData();
   };
 
   const handleExportZ0B = (onlySelected: boolean) => {
@@ -701,6 +715,50 @@ const UOPage = () => {
             <Button variant="outline" onClick={() => setIsReplaceDialogOpen(false)}>Annuler</Button>
             <Button onClick={handleBulkReplace} disabled={isReplacing}>
               {isReplacing ? "Remplacement en cours…" : "Remplacer"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Matricule import confirmation dialog */}
+      <Dialog open={isMatriculeConfirmOpen} onOpenChange={(open) => { if (!open) { setIsMatriculeConfirmOpen(false); setMatriculePreview(null); } }}>
+        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Confirmer l'import des matricules</DialogTitle>
+          </DialogHeader>
+          {matriculePreview && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                <strong>{matriculePreview.total}</strong> matricules dans le fichier — <strong>{matriculePreview.matches.length}</strong> correspondance(s) trouvée(s) avec les UO.
+              </p>
+              {matriculePreview.matches.length > 0 && (
+                <div className="border rounded-md max-h-60 overflow-y-auto">
+                  <table className="w-full text-xs">
+                    <thead className="bg-muted sticky top-0">
+                      <tr>
+                        <th className="text-left p-2">Code UO</th>
+                        <th className="text-left p-2">Responsable</th>
+                        <th className="text-left p-2">Matricule</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {matriculePreview.matches.map((m, i) => (
+                        <tr key={i} className="border-t">
+                          <td className="p-2 font-mono">{m.code_uo}</td>
+                          <td className="p-2">{m.responsable}</td>
+                          <td className="p-2 font-mono">{m.matricule}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setIsMatriculeConfirmOpen(false); setMatriculePreview(null); }}>Annuler</Button>
+            <Button onClick={handleConfirmImportMatricules} disabled={!matriculePreview || matriculePreview.matches.length === 0}>
+              Mettre à jour {matriculePreview?.matches.length || 0} UO
             </Button>
           </DialogFooter>
         </DialogContent>
