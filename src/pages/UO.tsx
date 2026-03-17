@@ -10,7 +10,12 @@ import { DataTableWithPagination } from "@/components/DataTableWithPagination";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchAllRows } from "@/lib/supabaseUtils";
 import { importUOWithStyles } from "@/lib/importUOWithStyles";
-import { RefreshCw, Download } from "lucide-react";
+import { RefreshCw, Download, CalendarIcon } from "lucide-react";
+import { format, parse } from "date-fns";
+import { fr } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 interface UOItem {
   id?: string;
