@@ -22,6 +22,9 @@ interface UONode {
   code_uai: string;
   responsable_composante: string;
   responsable_administratif: string;
+  matricule_responsable: string;
+  date_debut_responsable: string;
+  date_fin_responsable: string;
   numero_voie: string;
   complement_adresse: string;
   adresse: string;
@@ -47,6 +50,9 @@ const uoFields: { key: keyof Omit<UONode, "children" | "id">; label: string }[] 
   { key: "statut", label: "Statut" },
   { key: "responsable_composante", label: "Responsable composante" },
   { key: "responsable_administratif", label: "Responsable administratif" },
+  { key: "matricule_responsable", label: "Matricule responsable" },
+  { key: "date_debut_responsable", label: "Date début responsable" },
+  { key: "date_fin_responsable", label: "Date fin responsable" },
   { key: "numero_voie", label: "N° voie" },
   { key: "complement_adresse", label: "Complément adresse" },
   { key: "adresse", label: "Adresse" },
