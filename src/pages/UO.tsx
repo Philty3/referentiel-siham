@@ -600,7 +600,7 @@ const UOPage = () => {
           const match = item.date_fin_responsable.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
           if (!match) return false;
           const dateFin = new Date(Number(match[3]), Number(match[2]) - 1, Number(match[1]));
-          return dateFin > noResponsableDate;
+          return dateFin < noResponsableDate;
         } : undefined}
         loading={loading}
         onEdit={handleEdit}
