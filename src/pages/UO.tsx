@@ -427,13 +427,12 @@ const UOPage = () => {
     if (!file) return;
     try {
       const buffer = await file.arrayBuffer();
-      const wb = XLSX.read(buffer, { type: "array" });
+      const wb = XLSX.read(buffer, { type: "array", cellDates: false });
       const sheet = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
+      const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet, { raw: false });
 
       const normalize = (s: string) => (s || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[-'']/g, " ");
 
-      // Detect column names dynamically by normalizing headers
       const findColumn = (row: Record<string, string>, patterns: string[]) => {
         for (const key of Object.keys(row)) {
           const nk = normalize(key);
@@ -442,61 +441,81 @@ const UOPage = () => {
         return null;
       };
 
-      let nameCol: string | null = null;
-      let matriculeCol: string | null = null;
-      if (rows.length > 0) {
-        nameCol = findColumn(rows[0], ["prenom nom", "prenom_nom", "nom"]);
-        matriculeCol = findColumn(rows[0], ["matricule"]);
-      }
-
-      if (!nameCol || !matriculeCol) {
-        toast({ title: "Erreur", description: `Colonnes introuvables. Colonnes détectées : ${rows.length > 0 ? Object.keys(rows[0]).join(", ") : "aucune"}`, variant: "destructive" });
+      if (rows.length === 0) {
+        toast({ title: "Erreur", description: "Le fichier est vide.", variant: "destructive" });
         if (matriculeInputRef.current) matriculeInputRef.current.value = "";
         return;
       }
 
-      console.log(`Colonnes détectées - Nom: "${nameCol}", Matricule: "${matriculeCol}"`);
+      const codeUoCol = findColumn(rows[0], ["code uo", "code_uo"]);
+      const matriculeCol = findColumn(rows[0], ["matricule"]);
+      const dateDebutCol = findColumn(rows[0], ["date debut", "date_debut"]);
+      const prenomNomCol = findColumn(rows[0], ["prenom nom", "prenom_nom", "nom"]);
 
-      const nameToMatricule = new Map<string, string>();
+      if (!codeUoCol) {
+        toast({ title: "Erreur", description: `Colonne 'Code UO' introuvable. Colonnes : ${Object.keys(rows[0]).join(", ")}`, variant: "destructive" });
+        if (matriculeInputRef.current) matriculeInputRef.current.value = "";
+        return;
+      }
+
+      // Build a map: code_uo -> { matricule, date_debut, prenom_nom }
+      const excelMap = new Map<string, { matricule: string; date_debut: string; prenom_nom: string }>();
       for (const row of rows) {
-        const nom = (row[nameCol!] || "").toString().trim();
-        const matricule = (row[matriculeCol!] || "").toString().trim();
-        if (nom && matricule) {
-          nameToMatricule.set(normalize(nom), matricule);
+        const code = (row[codeUoCol] || "").toString().trim();
+        if (!code) continue;
+        const matricule = matriculeCol ? (row[matriculeCol] || "").toString().trim() : "";
+        const dateRaw = dateDebutCol ? (row[dateDebutCol] || "").toString().trim() : "";
+        const prenomNom = prenomNomCol ? (row[prenomNomCol] || "").toString().trim() : "";
+        // Only add if there's at least some data to update
+        if (matricule || dateRaw || prenomNom) {
+          // Convert date from M/D/YY or other formats to DD/MM/YYYY
+          let dateFormatted = dateRaw;
+          if (dateRaw) {
+            try {
+              // Try parsing as M/D/YY (US format from Excel)
+              const parts = dateRaw.split("/");
+              if (parts.length === 3) {
+                const month = parts[0].padStart(2, "0");
+                const day = parts[1].padStart(2, "0");
+                let year = parts[2];
+                if (year.length === 2) year = (parseInt(year) > 50 ? "19" : "20") + year;
+                dateFormatted = `${day}/${month}/${year}`;
+              }
+            } catch { dateFormatted = dateRaw; }
+          }
+          excelMap.set(code, { matricule, date_debut: dateFormatted, prenom_nom: prenomNom });
         }
       }
 
-      console.log(`${nameToMatricule.size} entrées dans le fichier Excel`);
+      console.log(`${excelMap.size} entrées avec données dans le fichier Excel`);
 
       const matches = data
-        .filter((d) => {
-          const resp = d.responsable_administratif?.trim();
-          if (!resp) return false;
-          const normalizedResp = normalize(resp);
-          return nameToMatricule.has(normalizedResp);
-        })
-        .map((d) => ({
-          code_uo: d.code_uo,
-          responsable: d.responsable_administratif || "",
-          matricule: nameToMatricule.get(normalize(d.responsable_administratif!)) || "",
-          id: d.id || "",
-        }));
+        .filter(d => d.code_uo && excelMap.has(d.code_uo.trim()))
+        .map(d => {
+          const info = excelMap.get(d.code_uo.trim())!;
+          return {
+            code_uo: d.code_uo,
+            responsable: info.prenom_nom || d.responsable_administratif || "",
+            matricule: info.matricule,
+            date_debut: info.date_debut,
+            id: d.id || "",
+          };
+        });
 
-      console.log(`${matches.length} correspondances trouvées`);
+      console.log(`${matches.length} correspondances trouvées sur ${rows.length} lignes`);
 
       if (matches.length === 0) {
-        // Show some debug info
-        const sampleUO = data.filter(d => d.responsable_administratif?.trim()).slice(0, 3).map(d => `"${d.responsable_administratif}"`).join(", ");
-        const sampleExcel = Array.from(nameToMatricule.keys()).slice(0, 3).join(", ");
-        toast({ title: "Aucune correspondance", description: `Exemples UO: ${sampleUO} | Exemples Excel: ${sampleExcel}`, variant: "destructive" });
+        const sampleExcel = Array.from(excelMap.keys()).slice(0, 5).join(", ");
+        const sampleUO = data.slice(0, 5).map(d => d.code_uo).join(", ");
+        toast({ title: "Aucune correspondance", description: `Codes Excel: ${sampleExcel} | Codes UO: ${sampleUO}`, variant: "destructive" });
         if (matriculeInputRef.current) matriculeInputRef.current.value = "";
         return;
       }
 
-      setMatriculePreview({ matches, total: nameToMatricule.size });
+      setMatriculePreview({ matches, total: rows.length });
       setIsMatriculeConfirmOpen(true);
     } catch (err) {
-      console.error("Erreur import matricules:", err);
+      console.error("Erreur import:", err);
       toast({ title: "Erreur", description: "Impossible de lire le fichier.", variant: "destructive" });
     }
     if (matriculeInputRef.current) matriculeInputRef.current.value = "";
