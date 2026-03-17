@@ -22,6 +22,9 @@ interface UONode {
   code_uai: string;
   responsable_composante: string;
   responsable_administratif: string;
+  matricule_responsable: string;
+  date_debut_responsable: string;
+  date_fin_responsable: string;
   numero_voie: string;
   complement_adresse: string;
   adresse: string;
