@@ -146,6 +146,8 @@ const UOPage = () => {
   const [matriculePreview, setMatriculePreview] = useState<{ matches: { code_uo: string; responsable: string; matricule: string; date_debut: string; id: string }[]; total: number } | null>(null);
   const [isMatriculeConfirmOpen, setIsMatriculeConfirmOpen] = useState(false);
   const matriculeInputRef = useRef<HTMLInputElement>(null);
+  const dateFinInputRef = useRef<HTMLInputElement>(null);
+  const [isImportingDateFin, setIsImportingDateFin] = useState(false);
   const { toast } = useToast();
 
   // Extract unique responsable administratif names
