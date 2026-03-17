@@ -17,18 +17,18 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Read the uploaded Excel file from the request
-    const formData = await req.formData();
-    const file = formData.get("file") as File;
+    // Read the Excel file from the request body (raw binary)
+    const arrayBuffer = await req.arrayBuffer();
     
-    if (!file) {
-      return new Response(JSON.stringify({ error: "No file provided" }), {
+    if (!arrayBuffer || arrayBuffer.byteLength === 0) {
+      return new Response(JSON.stringify({ error: "No file data provided" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
+    console.log(`File size: ${arrayBuffer.byteLength} bytes`);
+
     const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     
@@ -37,10 +37,14 @@ serve(async (req) => {
     const allRows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, dateNF: "dd/mm/yyyy" }) as any[][];
     
     console.log(`Total rows in Excel: ${allRows.length}`);
-    console.log(`Header row: ${JSON.stringify(allRows[2])}`);
+    if (allRows.length > 2) {
+      console.log(`Header row: ${JSON.stringify(allRows[2])}`);
+    }
+    if (allRows.length > 3) {
+      console.log(`First data row: ${JSON.stringify(allRows[3])}`);
+    }
 
     // Build a map from Excel data: key = code_uo + date_debut + nom_upper
-    // For each key, store date_fin
     const excelMap = new Map<string, string>();
     
     for (let i = 3; i < allRows.length; i++) {
@@ -51,17 +55,22 @@ serve(async (req) => {
       const dateDebut = row[1] ? String(row[1]).trim() : "";
       const dateFin = row[2] ? String(row[2]).trim() : "";
       const nom = row[3] ? String(row[3]).trim().toUpperCase() : "";
-      const prenom = row[4] ? String(row[4]).trim().toUpperCase() : "";
       
       if (!dateFin || !codeUo || !dateDebut) continue;
       
-      // Key: code_uo | date_debut | NOM
-      // We match on code_uo + date_debut + last name present in responsable_administratif
       const key = `${codeUo}|${dateDebut}|${nom}`;
       excelMap.set(key, dateFin);
     }
 
     console.log(`Excel entries with date_fin: ${excelMap.size}`);
+    // Log some sample keys
+    let sampleCount = 0;
+    for (const [key, val] of excelMap) {
+      if (sampleCount < 5) {
+        console.log(`  Sample key: "${key}" => "${val}"`);
+        sampleCount++;
+      }
+    }
 
     // Fetch all UO rows with responsable_administratif set
     let allUo: any[] = [];
@@ -87,17 +96,19 @@ serve(async (req) => {
     let updated = 0;
     let matched = 0;
     const updates: { id: string; code_uo: string; responsable: string; date_fin: string }[] = [];
+    const noMatch: string[] = [];
 
     for (const uo of allUo) {
       if (!uo.code_uo || !uo.date_debut_responsable || !uo.responsable_administratif) continue;
       
-      // Extract last name from responsable_administratif (could be "PRENOM NOM" or "NOM PRENOM" or "Prénom NOM")
-      const respParts = uo.responsable_administratif.trim().toUpperCase().split(/\s+/);
+      const respName = uo.responsable_administratif.trim().toUpperCase();
+      const respParts = respName.split(/\s+/);
       
-      // Try matching with each part as potential last name
       let foundDateFin: string | null = null;
       
+      // Try matching each single word as last name
       for (const part of respParts) {
+        if (part === "-" || part.length < 2) continue;
         const key = `${uo.code_uo}|${uo.date_debut_responsable}|${part}`;
         const dateFin = excelMap.get(key);
         if (dateFin) {
@@ -106,9 +117,8 @@ serve(async (req) => {
         }
       }
 
-      // Also try with full last name (multi-word like "DOS SANTOS", "BAIET DUVAL")
+      // Try multi-word last names
       if (!foundDateFin && respParts.length >= 2) {
-        // Try last two words as surname
         for (let j = 0; j < respParts.length - 1; j++) {
           const twoWordName = `${respParts[j]} ${respParts[j + 1]}`;
           const key = `${uo.code_uo}|${uo.date_debut_responsable}|${twoWordName}`;
@@ -120,9 +130,17 @@ serve(async (req) => {
         }
       }
 
+      // Try full name as key
+      if (!foundDateFin) {
+        const key = `${uo.code_uo}|${uo.date_debut_responsable}|${respName}`;
+        const dateFin = excelMap.get(key);
+        if (dateFin) {
+          foundDateFin = dateFin;
+        }
+      }
+
       if (foundDateFin) {
         matched++;
-        // Only update if date_fin_responsable is currently empty
         if (!uo.date_fin_responsable) {
           updates.push({
             id: uo.id,
@@ -131,10 +149,17 @@ serve(async (req) => {
             date_fin: foundDateFin,
           });
         }
+      } else {
+        if (noMatch.length < 10) {
+          noMatch.push(`${uo.code_uo}|${uo.date_debut_responsable}|${respName}`);
+        }
       }
     }
 
-    // Perform updates in batches
+    console.log(`Matched: ${matched}, To update: ${updates.length}`);
+    console.log(`Sample no-match: ${JSON.stringify(noMatch)}`);
+
+    // Perform updates
     for (const upd of updates) {
       const { error } = await supabase
         .from("uo")
@@ -154,16 +179,15 @@ serve(async (req) => {
       matched,
       updated,
       sample_updates: updates.slice(0, 20),
+      sample_no_match: noMatch,
     };
-
-    console.log(`Result: matched=${matched}, updated=${updated}`);
 
     return new Response(JSON.stringify(result, null, 2), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error.message, stack: error.stack }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
