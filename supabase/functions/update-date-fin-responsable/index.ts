@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { parsedMarkdown } from "./data.ts";
+import parsedMarkdown from "./data.md" with { type: "text" };
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
