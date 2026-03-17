@@ -646,14 +646,79 @@ const UOPage = () => {
               <Download className="h-4 w-4" />
               Export Resp. ({selectedItems.size} sél.)
             </Button>
-            <Button
-              size="sm"
-              variant={showNoResponsable ? "default" : "outline"}
-              className="h-9 gap-1.5 whitespace-nowrap"
-              onClick={() => setShowNoResponsable(!showNoResponsable)}
-            >
-              UO sans responsable
-            </Button>
+            <Popover open={isDatePickerOpen} onOpenChange={setIsDatePickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  size="sm"
+                  variant={showNoResponsable ? "default" : "outline"}
+                  className="h-9 gap-1.5 whitespace-nowrap"
+                >
+                  <CalendarIcon className="h-4 w-4" />
+                  {showNoResponsable
+                    ? noResponsableDate
+                      ? `Date fin > ${format(noResponsableDate, "dd/MM/yyyy")}`
+                      : "UO sans responsable"
+                    : "UO sans responsable"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-3 space-y-2" align="start">
+                <p className="text-sm font-medium">Choisir une date de référence</p>
+                <p className="text-xs text-muted-foreground">
+                  Affiche les UO dont la date fin responsable est postérieure à la date choisie.
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setNoResponsableDate(undefined);
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }}
+                  >
+                    Sans responsable
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setNoResponsableDate(new Date());
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }}
+                  >
+                    Aujourd'hui
+                  </Button>
+                  {showNoResponsable && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => {
+                        setShowNoResponsable(false);
+                        setNoResponsableDate(undefined);
+                        setIsDatePickerOpen(false);
+                      }}
+                    >
+                      Réinitialiser
+                    </Button>
+                  )}
+                </div>
+                <Calendar
+                  mode="single"
+                  selected={noResponsableDate}
+                  onSelect={(date) => {
+                    if (date) {
+                      setNoResponsableDate(date);
+                      setShowNoResponsable(true);
+                      setIsDatePickerOpen(false);
+                    }
+                  }}
+                  locale={fr}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
             <Button
               size="sm"
               variant="outline"
