@@ -664,7 +664,7 @@ const UOPage = () => {
               <PopoverContent className="w-auto p-3 space-y-2" align="start">
                 <p className="text-sm font-medium">Choisir une date de référence</p>
                 <p className="text-xs text-muted-foreground">
-                  Affiche les UO dont la date fin responsable est postérieure à la date choisie.
+                  Affiche les UO dont la date fin responsable est antérieure à la date choisie.
                 </p>
                 <div className="flex gap-2">
                   <Button
