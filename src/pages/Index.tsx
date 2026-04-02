@@ -447,13 +447,6 @@ const Index = () => {
           ))}
         </div>
 
-        {/* CTA Section */}
-        <div className="mt-8 sm:mt-16 rounded-lg bg-gradient-to-r from-primary to-accent p-4 sm:p-8 text-center text-white">
-          <h2 className="mb-3 sm:mb-4 text-xl sm:text-3xl font-bold">Prêt à explorer vos référentiels ?</h2>
-          <p className="mb-4 sm:mb-6 text-sm sm:text-lg opacity-90">
-            Utilisez le menu de navigation ci-dessus pour accéder aux différents référentiels
-          </p>
-        </div>
       </div>
 
       {/* Edit Dialog */}
