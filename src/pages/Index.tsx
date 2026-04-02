@@ -373,8 +373,14 @@ const Index = () => {
       <div className="container mx-auto max-w-7xl px-3 sm:px-4 py-6 sm:py-12">
         {/* Hero Section */}
         <div className="mb-8 sm:mb-16 text-center">
-          <div className="mb-4 sm:mb-6 inline-flex items-center justify-center rounded-full bg-primary/10 p-3 sm:p-4">
-            <img src={logoSiham} alt="Logo SIHAM" className="h-10 w-10 sm:h-16 sm:w-16" />
+          <div className="mb-4 sm:mb-6 relative inline-flex items-center justify-center">
+            {/* Animated rings */}
+            <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: '3s' }} />
+            <div className="absolute -inset-3 rounded-full border border-primary/20 animate-pulse" style={{ animationDuration: '2s' }} />
+            <div className="absolute -inset-6 rounded-full border border-primary/10 animate-pulse" style={{ animationDuration: '4s' }} />
+            <div className="relative rounded-2xl bg-white/80 shadow-lg shadow-primary/10 p-3 sm:p-4 backdrop-blur-sm">
+              <img src={logoSiham} alt="Logo SIHAM" className="h-16 w-auto sm:h-24" />
+            </div>
           </div>
           <h1 className="mb-3 sm:mb-4 text-3xl sm:text-5xl font-bold text-foreground">
             Référentiel SIHAM
