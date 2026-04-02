@@ -373,8 +373,8 @@ const Index = () => {
       <div className="container mx-auto max-w-7xl px-3 sm:px-4 py-6 sm:py-12">
         {/* Hero Section */}
         <div className="mb-8 sm:mb-16 text-center">
-          <div className="mb-4 sm:mb-6 inline-flex items-center justify-center">
-            <img src={logoSiham} alt="Logo SIHAM" className="h-16 w-auto sm:h-24" />
+          <div className="mb-4 sm:mb-6 inline-flex items-center justify-center bg-white rounded-lg p-4">
+            <img src={logoSiham} alt="Logo SIHAM" style={{ width: '327px', height: '146px' }} />
           </div>
           <p className="mx-auto max-w-2xl text-base sm:text-xl text-muted-foreground">
             Plateforme de consultation des référentiels principaux SIHAM.
