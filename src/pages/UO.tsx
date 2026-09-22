@@ -17,6 +17,7 @@ import { fr } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useAdmin } from "@/contexts/AdminContext";
 
 interface UOItem {
   id?: string;
