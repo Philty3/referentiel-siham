@@ -130,6 +130,7 @@ function AutocompleteInput({
 }
 
 const UOPage = () => {
+  const { isAdmin } = useAdmin();
   const [data, setData] = useState<UOItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<UOItem | null>(null);
