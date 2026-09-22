@@ -259,12 +259,14 @@ const UOPage = () => {
   }, []);
 
   const handleAdd = () => {
+    if (!isAdmin) return;
     setEditingItem({ ...emptyItem });
     setEditingIndex(null);
     setIsDialogOpen(true);
   };
 
   const handleEdit = (item: UOItem, index: number) => {
+    if (!isAdmin) return;
     setEditingItem({ ...item });
     setEditingIndex(index);
     setIsDialogOpen(true);
