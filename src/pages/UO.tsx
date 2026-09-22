@@ -754,8 +754,8 @@ const UOPage = () => {
         }
       />
 
-      {/* Edit / Add dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Edit / Add dialog - visible only when authenticated as admin */}
+      <Dialog open={isDialogOpen && isAdmin} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
