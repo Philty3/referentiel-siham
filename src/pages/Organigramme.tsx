@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAdmin } from "@/contexts/AdminContext";
 
 interface UONode {
   id?: string;
@@ -422,6 +423,7 @@ const TreeListItem = ({
 };
 
 const Organigramme = () => {
+  const { isAdmin } = useAdmin();
   const [data, setData] = useState<UONode[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
@@ -917,7 +919,7 @@ const Organigramme = () => {
         </div>
 
         {/* Detail panel */}
-        {selectedNodeData && (
+        {selectedNodeData && isAdmin && (
           <div className="w-80 border rounded-lg bg-card p-4 flex-shrink-0 h-fit sticky top-24">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-bold text-foreground">Détails de l'UO</h3>
