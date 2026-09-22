@@ -394,7 +394,8 @@ const UOPage = () => {
       <div><p className="font-semibold text-foreground mb-1">Groupe EVAL:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_eval}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Groupe PhaRe:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_phare}</p></div>
     </div>
-  );
+    );
+  };
 
   const fields: { key: keyof UOItem; label: string }[] = [
     { key: "code_uo", label: "Code UO" },
