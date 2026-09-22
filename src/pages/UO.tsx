@@ -366,7 +366,9 @@ const UOPage = () => {
     { key: "statut", label: "Statut", width: "w-[100px]" },
   ];
 
-  const renderExpandedContent = (row: UOItem) => (
+  const renderExpandedContent = (row: UOItem) => {
+    if (!isAdmin) return null;
+    return (
     <div className="grid grid-cols-2 gap-4 text-xs">
       <div><p className="font-semibold text-foreground mb-1">Code UO:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Libellé long:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.libelle_long}</p></div>
