@@ -245,7 +245,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                 Export
               </Button>
             )}
-            {!hideAddButton && (
+            {!hideAddButton && showActions && (
               <Button
                 onClick={onAdd}
                 size="sm"
