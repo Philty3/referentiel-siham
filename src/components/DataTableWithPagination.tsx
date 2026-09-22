@@ -37,6 +37,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   renderExpandedContent: (item: T) => React.ReactNode;
   itemsPerPage?: number;
   hideAddButton?: boolean;
+  showActions?: boolean;
   hideSearchField?: boolean;
   onExport?: () => void;
   showUpCiteIcon?: boolean;
@@ -61,6 +62,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   renderExpandedContent,
   itemsPerPage = 20,
   hideAddButton = false,
+  showActions = true,
   hideSearchField = false,
   onExport,
   showUpCiteIcon = false,
@@ -243,7 +245,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                 Export
               </Button>
             )}
-            {!hideAddButton && (
+            {!hideAddButton && showActions && (
               <Button
                 onClick={onAdd}
                 size="sm"
@@ -415,28 +417,32 @@ export function DataTableWithPagination<T extends Record<string, any>>({
                           </TableCell>
                           <TableCell className={`sticky ${showSelection ? 'left-[100px]' : 'left-[60px]'} z-10 bg-background px-2 py-0.5`}>
                             <div className="flex gap-0.5">
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="h-6 w-6 p-0"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onEdit(row, originalIndex);
-                                }}
-                              >
-                                <Edit className="h-3 w-3" />
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                className="h-6 w-6 p-0 text-destructive hover:text-destructive"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onDelete(originalIndex);
-                                }}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
+                              {showActions && (
+                                <>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-6 w-6 p-0"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onEdit(row, originalIndex);
+                                    }}
+                                  >
+                                    <Edit className="h-3 w-3" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    className="h-6 w-6 p-0 text-destructive hover:text-destructive"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      onDelete(originalIndex);
+                                    }}
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                </>
+                              )}
                               <Button
                                 size="sm"
                                 variant="ghost"

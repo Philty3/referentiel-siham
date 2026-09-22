@@ -17,6 +17,7 @@ import { fr } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useAdmin } from "@/contexts/AdminContext";
 
 interface UOItem {
   id?: string;
@@ -129,6 +130,7 @@ function AutocompleteInput({
 }
 
 const UOPage = () => {
+  const { isAdmin } = useAdmin();
   const [data, setData] = useState<UOItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<UOItem | null>(null);
@@ -257,12 +259,14 @@ const UOPage = () => {
   }, []);
 
   const handleAdd = () => {
+    if (!isAdmin) return;
     setEditingItem({ ...emptyItem });
     setEditingIndex(null);
     setIsDialogOpen(true);
   };
 
   const handleEdit = (item: UOItem, index: number) => {
+    if (!isAdmin) return;
     setEditingItem({ ...item });
     setEditingIndex(index);
     setIsDialogOpen(true);
@@ -362,7 +366,9 @@ const UOPage = () => {
     { key: "statut", label: "Statut", width: "w-[100px]" },
   ];
 
-  const renderExpandedContent = (row: UOItem) => (
+  const renderExpandedContent = (row: UOItem) => {
+    if (!isAdmin) return null;
+    return (
     <div className="grid grid-cols-2 gap-4 text-xs">
       <div><p className="font-semibold text-foreground mb-1">Code UO:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.code_uo}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Libellé long:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.libelle_long}</p></div>
@@ -388,7 +394,8 @@ const UOPage = () => {
       <div><p className="font-semibold text-foreground mb-1">Groupe EVAL:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_eval}</p></div>
       <div><p className="font-semibold text-foreground mb-1">Groupe PhaRe:</p><p className="text-muted-foreground whitespace-pre-wrap">{row.groupe_phare}</p></div>
     </div>
-  );
+    );
+  };
 
   const fields: { key: keyof UOItem; label: string }[] = [
     { key: "code_uo", label: "Code UO" },
@@ -606,6 +613,7 @@ const UOPage = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         onAdd={handleAdd}
+        showActions={isAdmin}
         renderExpandedContent={renderExpandedContent}
         onExport={() => {
           const filteredForExport = showNoResponsable
@@ -749,8 +757,8 @@ const UOPage = () => {
         }
       />
 
-      {/* Edit / Add dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* Edit / Add dialog - visible only when authenticated as admin */}
+      <Dialog open={isDialogOpen && isAdmin} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{editingIndex !== null ? "Modifier l'élément" : "Ajouter un nouvel élément"}</DialogTitle>
