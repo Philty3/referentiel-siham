@@ -37,6 +37,7 @@ interface DataTableWithPaginationProps<T extends Record<string, any>> {
   renderExpandedContent: (item: T) => React.ReactNode;
   itemsPerPage?: number;
   hideAddButton?: boolean;
+  showActions?: boolean;
   hideSearchField?: boolean;
   onExport?: () => void;
   showUpCiteIcon?: boolean;
@@ -61,6 +62,7 @@ export function DataTableWithPagination<T extends Record<string, any>>({
   renderExpandedContent,
   itemsPerPage = 20,
   hideAddButton = false,
+  showActions = true,
   hideSearchField = false,
   onExport,
   showUpCiteIcon = false,
