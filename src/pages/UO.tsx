@@ -610,6 +610,7 @@ const UOPage = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         onAdd={handleAdd}
+        showActions={isAdmin}
         renderExpandedContent={renderExpandedContent}
         onExport={() => {
           const filteredForExport = showNoResponsable
